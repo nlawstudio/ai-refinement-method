@@ -1,0 +1,74 @@
+# method.config.yaml — Method configuration for this project
+#
+# This file holds STRUCTURED SETTINGS (what's configured for this project).
+# AGENTS.md holds PROSE CONSTITUTION (how we work — principles + conventions).
+# Credentials live in ~/.claude/mcp.json (per-user, never in git).
+#
+# Schema docs: https://github.com/nlawstudio/ai-refinement-method/blob/main/METHOD.md#configuration
+# Defaults are documented inline. Any missing field falls through to its default.
+
+method_version: 1.2.0
+
+# ─── Operational tracker ──────────────────────────────────────────────────
+# The Method is tracker-agnostic. Pick one type, fill in the matching block.
+# Other blocks are ignored. `type: none` means git tree.yaml is the
+# operational state — no remote tracker, /plan and /build run in dry-run mode.
+
+tracker:
+  # Required. One of: linear | jira | github-issues | none
+  type: none
+
+  # MCP server name as registered in your Claude Code MCP config.
+  # The Method calls this server name when reading/writing the tracker.
+  # Required for any type other than "none". Ignored when type: none.
+  mcp_server: null
+
+  # ── Linear-specific (used only when type: linear) ──
+  linear:
+    team_id: null                 # Linear team ID (e.g., "TEAM_ABC123")
+    # Tip: after wiring the Linear MCP, run a list-teams call to find this.
+
+  # ── Jira-specific (used only when type: jira) ──
+  jira:
+    site: null                    # Jira site (e.g., "company.atlassian.net")
+    project_key: null             # Jira project key (e.g., "PROJ" — issues become PROJ-123)
+    epic_issue_type: "Epic"       # Jira issue type name for epics (default: "Epic")
+    story_issue_type: "Story"     # Jira issue type name for stories (default: "Story")
+    points_custom_field: null     # Jira custom field ID for story points
+                                  # (e.g., "customfield_10016" — find in your Jira admin)
+
+  # ── GitHub Issues-specific (used only when type: github-issues) ──
+  github_issues:
+    owner: null                   # repo owner (org or user)
+    repo: null                    # repo name
+    epic_label: "epic"            # label that marks an issue as an epic
+    story_label: "story"          # label that marks an issue as a story
+
+# ─── Story sizing ─────────────────────────────────────────────────────────
+# Used by Decomposer for splitting and by Verifier in DoR mode.
+
+story_points:
+  scale: fibonacci                # fibonacci | t-shirt | custom
+  ceiling: 3                      # DoR rejects stories above this value
+
+# ─── Story format ─────────────────────────────────────────────────────────
+# Used by Decomposer when drafting story titles.
+
+story_format: user-story          # user-story | technical | freeform
+                                  #   user-story: "As a {user}, I want {action}, so that {benefit}"
+                                  #   technical:  technical descriptor (best for infra work)
+                                  #   freeform:   any clear story title
+
+# ─── Compliance (for test tagging) ────────────────────────────────────────
+# Used by Test Author for tagging tests with control IDs, and by /plan
+# for compliance manifest generation. Empty list = no tagging.
+
+compliance:
+  frameworks: []                  # e.g., [soc2, iso27001, hipaa, fedramp]
+
+# ─── Testing ──────────────────────────────────────────────────────────────
+# Used by Verifier and Critic to enforce project-wide test discipline.
+
+testing:
+  race_detector_required: true    # require race detector pass on every PR
+  property_tests_for_value_objects: true   # require property tests on value objects

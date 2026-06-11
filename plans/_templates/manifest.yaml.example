@@ -1,0 +1,120 @@
+# Compliance manifest — the SOC 2 / ISO 27001 evidence package per epic.
+# Generated automatically as a side effect of /plan. Not a separate exercise.
+# Located at plans/{epic-slug}/manifest.yaml
+
+epic:
+  id: AR-EPIC-42
+  title: "Implement bulk asset export"
+  refined_at: 2026-06-08T10:00:00Z
+  driver: nicky@ar
+
+# Threat model — interview-driven, transcript is the evidence
+threat_model:
+  performed_at: 2026-06-08T10:45:00Z
+  drafted_by: threat-modeller-agent
+  reviewed_by: nicky@ar
+  reviewed_at: 2026-06-08T11:14:00Z
+  transcript: plans/AR-EPIC-42/threat-model.md
+  threats_identified: 7
+  threats_with_mitigation: 7
+  open_threats: 0
+  evidence_quality: human-engaged    # human-engaged | draft-only | not-performed
+
+# Privacy impacts per data-touching story
+privacy_impacts:
+  - story: AR-142
+    classification: Confidential
+    rationale: "Export endpoint exposes asset data including custody chain to the requesting user; bulk operation"
+    retention_policy: standard
+    subject_rights: "Article 15 supported via existing export tooling"
+    assessed_at: 2026-06-08T11:50:00Z
+    reviewed_by: nicky@ar
+  - story: AR-143
+    classification: Internal              # audit events are internal-class
+    rationale: "Audit event records the export operation; does not include exported data itself"
+    retention_policy: standard
+    subject_rights: "Pseudonymisation contract per ADR-018"
+    assessed_at: 2026-06-08T11:55:00Z
+    reviewed_by: nicky@ar
+
+# ADRs produced this epic
+adrs_produced:
+  - id: ADR-021
+    title: "Streaming export over paginated batch"
+    file: docs/adr/ADR-021-streaming-export.md
+    promoted_via: /plan
+    decision_required: true
+    decided_at: 2026-06-08T12:30:00Z
+    decided_by: nicky@ar
+
+# Critic activity
+critic:
+  test_critique_findings: 5
+  test_critique_addressed: 5
+  code_critique_findings: 3
+  code_critique_addressed: 3
+  all_findings_resolved: true
+
+# Test coverage breakdown
+test_coverage:
+  unit_tests: 12
+  integration_tests: 4
+  property_tests: 2                       # WalletAddress and CaseRef invariants
+  e2e_tests: 1
+  total: 19
+  race_detector_pass: true
+  coverage_pct: 78.4                      # exceeds 70% minimum (ADR-015)
+
+# Evidenced controls — the SOC 2 / ISO 27001 evidence pack
+evidenced_controls:
+  soc2:
+    - control: CC6.1
+      framework: SOC 2 TSC 2017
+      description: "Logical access controls"
+      evidenced_by:
+        - tests/export_api_test.go:TestUnauthenticatedRequest_Returns401
+        - tests/export_api_test.go:TestWrongTenant_Returns404
+    - control: CC6.6
+      framework: SOC 2 TSC 2017
+      description: "Logical access controls — least privilege"
+      evidenced_by:
+        - tests/export_api_test.go:TestUserWithoutExportPerm_Returns403
+    - control: CC7.2
+      framework: SOC 2 TSC 2017
+      description: "System monitoring — audit logging"
+      evidenced_by:
+        - tests/export_audit_test.go:TestExportCompleted_EmitsAuditEvent
+        - tests/export_audit_test.go:TestExportFailed_EmitsAuditEvent
+
+  iso27001:
+    - control: A.5.15
+      framework: ISO 27001:2022 Annex A
+      description: "Access control"
+      evidenced_by:
+        - tests/export_api_test.go:TestUnauthenticatedRequest_Returns401
+        - tests/export_api_test.go:TestWrongTenant_Returns404
+    - control: A.8.3
+      framework: ISO 27001:2022 Annex A
+      description: "Information access restriction"
+      evidenced_by:
+        - tests/export_api_test.go:TestUserWithoutExportPerm_Returns403
+    - control: A.8.15
+      framework: ISO 27001:2022 Annex A
+      description: "Logging"
+      evidenced_by:
+        - tests/export_audit_test.go:TestExportCompleted_EmitsAuditEvent
+        - tests/export_audit_test.go:TestExportFailed_EmitsAuditEvent
+
+  nist: []                                # FedRAMP engagement not yet triggered
+
+# Stories promoted to Linear
+stories_promoted_to_linear:
+  - AR-142
+  - AR-143
+  - AR-144                                # story-3 once it reaches harness-ready
+
+# Sign-off
+sign_off:
+  refinement_complete_at: 2026-06-08T16:00:00Z
+  signed_off_by: nicky@ar
+  ready_for_build: true

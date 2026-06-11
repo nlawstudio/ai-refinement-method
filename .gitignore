@@ -1,0 +1,22 @@
+# macOS
+.DS_Store
+
+# Generated artifacts (regeneratable from .md sources)
+*.html
+
+# Local Claude Code settings (machine-specific)
+.claude/settings.local.json
+
+# Editor
+.vscode/
+.idea/
+
+# Live plans (the operational refinement artifacts; templates are kept)
+plans/*/
+!plans/_templates/
+.gstack/
+
+# Method handoffs (session-continuity snapshots — local only by default)
+# Override per-project by removing this line if you want handoffs committed
+# for team visibility.
+.method/handoffs/

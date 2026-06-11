@@ -1,0 +1,143 @@
+# Refinement tree state — the structured form of the plan.
+# Persisted alongside conversation.md, decisions.md, threat-model.md, manifest.yaml.
+# YAML chosen over JSON for diffability in PR review.
+
+plan:
+  epic_id: AR-EPIC-42                    # Linear epic ID
+  epic_title: "Implement bulk asset export"
+  started_at: 2026-06-08T10:00:00Z
+  driver: nicky@ar
+  status: in_refinement                  # in_refinement | paused | complete | abandoned
+
+# Ring of relevant context pulled from gbrain at session start
+context:
+  related_past_plans:
+    - plans/AR-EPIC-33-asset-listing/    # similar export-shaped work
+  relevant_adrs:
+    - ADR-005  # repository pattern (affects how export reads data)
+    - ADR-007  # audit log (export is an audited event)
+    - ADR-009  # multi-tenancy (export must respect schema-per-tenant)
+    - ADR-018  # data handling (bulk export is a sensitive operation)
+
+# The tree itself — flat list of nodes with parent references.
+# Easier to manipulate and diff than nested YAML.
+nodes:
+
+  # Root
+  - id: root
+    parent: null
+    type: epic
+    title: "Implement bulk asset export"
+    linear_id: AR-EPIC-42
+    status: in_refinement
+    flag: null                            # root expanded by Analyst at kickoff
+    children: [scope, threat-model, decision-1, story-1, story-2, story-3]
+
+  # Scope outcome from Analyst interview
+  - id: scope
+    parent: root
+    type: scope_node
+    title: "Scope assessment"
+    status: complete
+    output: plans/AR-EPIC-42/scope.md
+    decision_required: false
+
+  # Threat model (mandatory at epic kickoff)
+  - id: threat-model
+    parent: root
+    type: threat_model
+    title: "Threat model for bulk asset export"
+    status: complete
+    output: plans/AR-EPIC-42/threat-model.md
+    transcript_captured: true
+    reviewed_by: nicky@ar
+    reviewed_at: 2026-06-08T11:14:00Z
+
+  # An architectural decision surfaced during refinement
+  - id: decision-1
+    parent: root
+    type: decision
+    title: "Streaming export vs paginated batch"
+    status: complete
+    flag: needs-decision
+    promoted_to_adr: ADR-021
+    decision_required: true
+    decided_at: 2026-06-08T12:30:00Z
+
+  # Stories — leaves that have reached harness-ready
+  - id: story-1
+    parent: root
+    type: story
+    title: "Define export request API endpoint"
+    flag: harness-ready-check
+    status: harness_ready
+    linked_adrs: [ADR-005, ADR-009, ADR-021]
+    points: 2
+    ac:
+      - "Given an authenticated user with export permission, when POST /api/v1/exports is called with valid request, then a 202 Accepted response with export ID is returned"
+      - "Given an unauthenticated request, when POST /api/v1/exports is called, then a 401 is returned"
+      - "Given a request from a different tenant context, when an export ID is queried, then a 404 is returned (not 403 — no information leak)"
+    stop_conditions: [standard]
+    test_file: plans/AR-EPIC-42/tests/export_api_test.go
+    linear_id: AR-142
+    promoted_to_linear_at: 2026-06-08T14:22:00Z
+    decision_required: false
+
+  - id: story-2
+    parent: root
+    type: story
+    title: "Audit log emission for export operations"
+    flag: harness-ready-check
+    status: harness_ready
+    linked_adrs: [ADR-007]
+    points: 1
+    ac:
+      - "Given an export is initiated, when it completes successfully, then an audit_events row of type 'export.completed' is written in the same transaction as the export status update"
+      - "Given an export fails, when the failure is recorded, then an audit_events row of type 'export.failed' is written with the failure reason in metadata"
+    stop_conditions: [standard]
+    test_file: plans/AR-EPIC-42/tests/export_audit_test.go
+    evidenced_controls:
+      soc2: [CC7.2]
+      iso27001: [A.8.15]
+    linear_id: AR-143
+    decision_required: false
+
+  - id: story-3
+    parent: root
+    type: story
+    title: "Bulk export rate limiting per tenant"
+    flag: harness-ready-check
+    status: open                          # not yet at harness-ready
+    linked_adrs: [ADR-009, ADR-021]
+    points: 3
+    ac:
+      - "Given a tenant has initiated 5 exports in the last hour, when a 6th export is requested, then a 429 Too Many Requests is returned"
+      - "Given the limit window has passed, when a new export is requested, then it proceeds normally"
+    stop_conditions: [standard]
+    test_file: null                       # Test Author hasn't run yet
+    linear_id: null                       # not yet promoted to Linear
+    decision_required: false
+
+# Open questions blocking progress
+open_questions:
+  - id: q1
+    question: "Should bulk export be available to read-only users or only to users with explicit export permission?"
+    blocking_node: story-1
+    raised_at: 2026-06-08T11:30:00Z
+    raised_by: analyst-agent
+    resolved: false
+
+# Promotion log — every canonical artifact produced this session
+promotions:
+  - artifact: ADR-021
+    rule: adr_promotion
+    promoted_at: 2026-06-08T12:30:00Z
+    confirmed_by: nicky@ar
+  - artifact: Linear AR-142
+    rule: linear_story_promotion
+    promoted_at: 2026-06-08T14:22:00Z
+    confirmed_by: nicky@ar
+  - artifact: Linear AR-143
+    rule: linear_story_promotion
+    promoted_at: 2026-06-08T14:25:00Z
+    confirmed_by: nicky@ar
