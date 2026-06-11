@@ -1,0 +1,26 @@
+name: Question
+description: Ask how to do something with the Method
+title: "[Question]: "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Quick questions are welcome. If your question is open-ended or speculative, GitHub Discussions (once enabled) may be a better fit.
+
+        Before asking, please skim [TUTORIAL.md](https://github.com/nlawstudio/ai-refinement-method/blob/main/TUTORIAL.md) — many "how do I..." questions are covered there.
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Your question
+    validations:
+      required: true
+
+  - type: textarea
+    id: tried
+    attributes:
+      label: What you've already tried or read
+      description: Helps avoid duplicating answers you've already seen.
+    validations:
+      required: false

@@ -1,9 +1,12 @@
 # Agentic Refinement Method
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](LICENSE)
+[![Version](https://img.shields.io/github/v/release/nlawstudio/ai-refinement-method?label=version)](https://github.com/nlawstudio/ai-refinement-method/releases)
+[![CI](https://github.com/nlawstudio/ai-refinement-method/actions/workflows/ci.yml/badge.svg)](https://github.com/nlawstudio/ai-refinement-method/actions/workflows/ci.yml)
+
 A packaged tool that installs into any project repo to bring AI-first refinement and build workflows. A developer describes what they want to do in plain language; the method figures out the shape of the work, decomposes it through interview-based dialogue with the team, and produces a coherent set of tracker tasks ready to be built — with acceptance criteria, risk assessments, compliance tags, test specs, and linked ADRs all in place. The build phase picks up from there, with an off-course bridge back to refinement when stop conditions fire.
 
-
-**Current version:** `v1.2.1` — quickstart-shaped tutorial. Tracker-agnostic since v1.1.0; structured `method.config.yaml` config since v1.2.0. See [CHANGELOG.md](CHANGELOG.md).
+**Current version:** `v1.2.4` — proper OSS scaffolding (license, contributing, security, CI). Quickstart-shaped tutorial since v1.2.1; structured `method.config.yaml` since v1.2.0; tracker-agnostic since v1.1.0. See [CHANGELOG.md](CHANGELOG.md).
 
 ## Install
 
@@ -184,8 +187,8 @@ See [TUTORIAL.md](TUTORIAL.md) for the 15-minute quickstart.
 
 ## Contributing
 
-The Method is installable in any project, with sensible defaults for B2B SaaS work. If you're using it and want to contribute back, open a PR. Substantive changes to the role panel, modes, or promotion rules should go through an ADR in the Method's own `docs/adr/` (currently empty — the Method has been built collaboratively but doesn't yet have its own decision record).
+The Method is installable in any project, with sensible defaults for B2B SaaS work. See [CONTRIBUTING.md](CONTRIBUTING.md) for what kinds of PRs are welcome, how to open issues, and the style/tone guide for new agent or skill files. Security issues: see [SECURITY.md](SECURITY.md). All participants are expected to follow the [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## License
 
-[License TBD]
+Released under the [MIT License](LICENSE). Use freely; the Method ships as files into your repo so the license effectively applies to your installed copy as well.

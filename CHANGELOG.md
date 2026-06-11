@@ -4,6 +4,28 @@ All notable changes to the method will be documented here. Versions follow [SemV
 
 ---
 
+## [1.2.4] — 2026-06-11
+
+Standard OSS project scaffolding added. Behavioural change: none — the Method itself is unchanged.
+
+### Added
+- `LICENSE` — MIT (permissive). Copyright Nicholas Lawrence Studio.
+- `CONTRIBUTING.md` — what kinds of contributions are welcome, style/tone guide for agent and skill files, versioning policy, PR checklist
+- `SECURITY.md` — private vulnerability disclosure process; scope of in-/out-of-scope issues
+- `CODE_OF_CONDUCT.md` — adopts Contributor Covenant 2.1 by reference
+- `.github/ISSUE_TEMPLATE/` — three YAML-form templates (bug, feature, question) plus `config.yml` pointing first-time visitors at the tutorial and security policy
+- `.github/PULL_REQUEST_TEMPLATE.md` — checklist enforcing scope, no project-specific references, CHANGELOG entry, smoke-test for agent changes
+- `.github/workflows/ci.yml` — three jobs: `shellcheck` on shipped scripts, `yaml-lint` on shipped YAML, internal markdown link check via lychee
+- README badges — license, version, CI status
+
+### Changed
+- `README.md` — Contributing section now points at the new community files; License section names MIT explicitly with link
+
+### Why
+v1.2.3 published the Method publicly but lacked the standard OSS legal and community infrastructure. v1.2.4 fills that out so the repo is friendly to contributors, discoverable, and verifiable on CI.
+
+---
+
 ## [1.2.3] — 2026-06-11 — **First public release**
 
 The Method is now open source. Previously developed in a private repo; this is the first version published publicly.

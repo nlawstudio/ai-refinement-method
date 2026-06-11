@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  shellcheck:
+    name: shellcheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run shellcheck on shipped scripts
+        uses: ludeeus/action-shellcheck@master
+        with:
+          severity: warning
+          scandir: '.'
+          format: tty
+
+  yaml-lint:
+    name: yaml-lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install yamllint
+        run: pip install yamllint
+      - name: Lint shipped YAML
+        run: |
+          yamllint -d "{extends: relaxed, rules: {line-length: disable}}" \
+            method.config.template.yaml \
+            plans/_templates/manifest.yaml.example \
+            plans/_templates/tree.yaml.example \
+            .github/workflows/
+
+  link-check:
+    name: internal-link-check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check internal markdown links
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --offline
+            --no-progress
+            README.md TUTORIAL.md METHOD.md INSTALL.md AGENT_INSTALL.md
+            CHANGELOG.md CONTRIBUTING.md SECURITY.md CODE_OF_CONDUCT.md
+          fail: true

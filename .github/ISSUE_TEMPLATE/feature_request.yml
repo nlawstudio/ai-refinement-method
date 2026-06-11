@@ -1,0 +1,56 @@
+name: Feature request
+description: Propose a new role, skill, tracker integration, or behaviour change
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for proposing a change. Before writing this up, please skim [METHOD.md](https://github.com/nlawstudio/ai-refinement-method/blob/main/METHOD.md) to see how the proposal fits the existing framework.
+
+        Substantive changes (new role, new skill, change to the loop / modes / promotion rules) typically warrant an ADR — outline your thinking here and the maintainer will work with you on it.
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of change?
+      options:
+        - New skill (`/<command>`)
+        - New role (agent)
+        - New tracker integration
+        - Change to an existing role/skill
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Describe the situation the Method handles poorly today. Be concrete.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: What would the Method do differently after this change? Sketch the shape — file paths, prompt edits, new commands — at the level you'd want a reviewer to see.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: What other approaches did you weigh? Why this one?
+    validations:
+      required: false
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else
+    validations:
+      required: false
