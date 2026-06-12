@@ -2,16 +2,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 :root {
-  --bg: #F7F5F0;
-  --ink: #14110F;
-  --muted: #6F665A;
-  --line: #E5E0D5;
-  --accent: #C84B31;
-  --dark: #14110F;
-  --code-bg: #EEEAE0;
-  --chat-bg: #FBFAF6;
-  --human: #C84B31;
-  --agent: #2B5F8E;
+  --bg: #E9D9D5;        /* dusty rose — page */
+  --ink: #16233D;       /* deep navy — primary text */
+  --muted: #59657A;     /* muted navy-slate — secondary */
+  --line: #D8C6C1;      /* rose hairline */
+  --accent: #D5674C;    /* coral */
+  --sage: #9FC1B2;      /* sage green */
+  --mustard: #E6BC5C;   /* mustard */
+  --dark: #16233D;      /* navy — dark blocks, callouts, code */
+  --code-bg: #F1E6E1;   /* warm code bg, readable on rose */
+  --paper: #F6EEEA;     /* near-white cream — text on navy */
+  --chat-bg: #F3E9E5;   /* chat card on rose */
+  --human: #D5674C;     /* coral — human turns */
+  --agent: #3E7E6B;     /* deep sage — agent turns */
 }
 
 html, body { background: var(--bg); color: var(--ink); margin: 0; padding: 0; }
@@ -51,7 +54,7 @@ ul, ol { margin: 0 0 18px 0; padding-left: 22px; }
 li { margin-bottom: 8px; }
 li::marker { color: var(--accent); }
 strong { font-weight: 600; }
-em { color: var(--accent); font-style: normal; font-weight: 500; }
+em { color: var(--accent); font-style: normal; font-weight: 600; }
 code {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
   font-size: 0.85em; background: var(--code-bg);
@@ -86,14 +89,23 @@ hr { border: none; border-top: 1px solid var(--line); margin: 48px 0; }
 a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent); }
 a:hover { background: var(--code-bg); }
 
-.cover { margin: 0 0 80px 0; padding: 0 0 48px 0; border-bottom: 1px solid var(--line); }
+.cover {
+  position: relative; overflow: hidden;
+  background: var(--dark); color: var(--paper);
+  border-radius: 20px; margin: 0 0 80px 0; padding: 76px 56px 60px;
+}
+.cover::after {
+  content: ""; position: absolute; top: -90px; right: -70px;
+  width: 260px; height: 260px; border-radius: 50%; background: var(--accent);
+}
+.cover > * { position: relative; z-index: 1; }
 .cover .eyebrow {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
   font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--accent); font-weight: 600; margin-bottom: 32px;
+  color: var(--mustard); font-weight: 600; margin-bottom: 32px;
 }
-.cover h1 { font-size: 72px; font-weight: 700; letter-spacing: -0.04em; line-height: 0.98; margin: 0 0 24px 0; }
-.cover .subtitle { font-size: 24px; color: var(--muted); font-weight: 400; max-width: 640px; line-height: 1.35; margin-bottom: 56px; }
+.cover h1 { font-size: 76px; font-weight: 700; letter-spacing: -0.04em; line-height: 0.96; margin: 0 0 24px 0; color: var(--paper); }
+.cover .subtitle { font-size: 24px; color: rgba(246,238,234,0.78); font-weight: 400; max-width: 600px; line-height: 1.35; margin-bottom: 0; }
 
 .toc { background: var(--code-bg); border-radius: 8px; padding: 32px 36px; margin: 48px 0 80px 0; }
 .toc .toc-label {
@@ -128,7 +140,7 @@ a:hover { background: var(--code-bg); }
 .chat .role.agent { color: var(--agent); }
 .chat .body { color: var(--ink); }
 .chat .body p:last-child { margin-bottom: 0; }
-.chat em { color: var(--accent); font-weight: 500; }
+.chat em { color: var(--accent); font-weight: 600; }
 
 .callout {
   background: var(--dark); color: var(--bg);
@@ -295,9 +307,9 @@ flowchart LR
     Triage --> Loop[Recursive decomposition<br/>until DoR]
     Loop --> Output[Linear / Jira / GitHub<br/>+ git audit trail]
 
-    style Intent fill:#C84B31,color:#fff
-    style Triage fill:#fff4e0
-    style Output fill:#e0f0f8
+    style Intent fill:#D5674C,color:#fff
+    style Triage fill:#F4E6C6
+    style Output fill:#DCE4EC
 ```
 
 <div class="diagram-caption">The whole Method in one diagram</div>
@@ -350,11 +362,11 @@ flowchart TD
     Shape -->|Epic-sized work| EPIC[Full refinement<br/>→ storm? + stories<br/>+ ADRs + threat model]
     Shape -->|Multi-epic goal| MULTI[Epic decomposition<br/>→ N epics<br/>each fully refined]
 
-    style Intent fill:#C84B31,color:#fff
-    style Shape fill:#fff4e0
-    style STORM fill:#e8f4e8
-    style EPIC fill:#e0f0f8
-    style MULTI fill:#e0f0f8
+    style Intent fill:#D5674C,color:#fff
+    style Shape fill:#F4E6C6
+    style STORM fill:#DBEAE1
+    style EPIC fill:#DCE4EC
+    style MULTI fill:#DCE4EC
 ```
 
 <div class="diagram-caption">Triage — how the Method picks the right depth for your intent</div>
@@ -806,11 +818,11 @@ flowchart TB
 
     Tracker -.bidirectional link.-> Git
 
-    style Intent fill:#C84B31,color:#fff
-    style Loop fill:#fff4e0
-    style Tracker fill:#e0f0f8
-    style Git fill:#fff4e0
-    style gbrain fill:#f4e8f4
+    style Intent fill:#D5674C,color:#fff
+    style Loop fill:#F4E6C6
+    style Tracker fill:#DCE4EC
+    style Git fill:#F4E6C6
+    style gbrain fill:#EFDED9
 ```
 
 <div class="diagram-caption">Three places artifacts land — tracker, git, gbrain</div>

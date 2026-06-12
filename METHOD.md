@@ -2,13 +2,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 :root {
-  --bg: #F7F5F0;
-  --ink: #14110F;
-  --muted: #6F665A;
-  --line: #E5E0D5;
-  --accent: #C84B31;
-  --dark: #14110F;
-  --code-bg: #EEEAE0;
+  --bg: #E9D9D5;        /* dusty rose — page */
+  --ink: #16233D;       /* deep navy — primary text */
+  --muted: #59657A;     /* muted navy-slate — secondary */
+  --line: #D8C6C1;      /* rose hairline */
+  --accent: #D5674C;    /* coral */
+  --sage: #9FC1B2;      /* sage green */
+  --mustard: #E6BC5C;   /* mustard */
+  --dark: #16233D;      /* navy — dark blocks, callouts, code */
+  --code-bg: #F1E6E1;   /* warm code bg, readable on rose */
+  --paper: #F6EEEA;     /* near-white cream — text on navy */
 }
 
 html, body {
@@ -86,7 +89,7 @@ li { margin-bottom: 8px; }
 li::marker { color: var(--accent); }
 
 strong { font-weight: 600; }
-em { color: var(--accent); font-style: normal; font-weight: 500; }
+em { color: var(--accent); font-style: normal; font-weight: 600; }
 
 code {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
@@ -148,31 +151,48 @@ a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--
 a:hover { background: var(--code-bg); }
 
 .cover {
+  position: relative;
+  overflow: hidden;
+  background: var(--dark);
+  color: var(--paper);
+  border-radius: 20px;
   margin: 0 0 80px 0;
-  padding: 0 0 48px 0;
-  border-bottom: 1px solid var(--line);
+  padding: 76px 56px 56px;
 }
+.cover::after {
+  content: "";
+  position: absolute;
+  top: -90px;
+  right: -70px;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.cover > * { position: relative; z-index: 1; }
 .cover .eyebrow {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
   font-size: 12px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--mustard);
   font-weight: 600;
   margin-bottom: 32px;
 }
 .cover h1 {
-  font-size: 72px;
+  font-size: 76px;
   font-weight: 700;
   letter-spacing: -0.04em;
-  line-height: 0.98;
+  line-height: 0.96;
   margin: 0 0 24px 0;
+  color: var(--paper);
+  max-width: 600px;
 }
 .cover .subtitle {
   font-size: 24px;
-  color: var(--muted);
+  color: rgba(246,238,234,0.78);
   font-weight: 400;
-  max-width: 640px;
+  max-width: 600px;
   line-height: 1.35;
   margin-bottom: 56px;
   letter-spacing: -0.015em;
@@ -180,12 +200,12 @@ a:hover { background: var(--code-bg); }
 .cover .meta {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
   font-size: 13px;
-  color: var(--muted);
+  color: rgba(246,238,234,0.6);
   letter-spacing: 0.04em;
   line-height: 2;
 }
 .cover .meta strong {
-  color: var(--ink);
+  color: var(--sage);
   font-weight: 600;
   text-transform: uppercase;
   font-size: 11px;
@@ -268,10 +288,11 @@ a:hover { background: var(--code-bg); }
 
 .role-card {
   border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
   border-radius: 8px;
   padding: 28px 32px;
   margin: 24px 0;
-  background: rgba(255,255,255,0.4);
+  background: rgba(246,238,234,0.55);
 }
 .role-card h3 {
   margin-top: 0;
@@ -438,11 +459,11 @@ flowchart TB
 
     tracker --> Audit[(Git audit trail<br/>tree, transcript,<br/>ADRs, threat model,<br/>compliance manifest)]
 
-    style Start fill:#C84B31,color:#fff
-    style Triage fill:#fff4e0
-    style Decompose fill:#f4e8f4
-    style tracker fill:#e0f0f8
-    style Audit fill:#fff4e0
+    style Start fill:#D5674C,color:#fff
+    style Triage fill:#F4E6C6
+    style Decompose fill:#EFDED9
+    style tracker fill:#DCE4EC
+    style Audit fill:#F4E6C6
 ```
 
 <div class="diagram-caption">The unified loop — same shape, depth adapts to the input</div>
@@ -471,8 +492,8 @@ flowchart LR
     Memory[(gbrain memory<br/>session/project/org)] -.-> Loop
     Memory -.-> Roles
 
-    style Loop fill:#C84B31,color:#fff
-    style Memory fill:#f4e8f4
+    style Loop fill:#D5674C,color:#fff
+    style Memory fill:#EFDED9
 ```
 
 <div class="diagram-caption">Layers — the developer interacts with the loop; everything else is internal</div>
@@ -488,9 +509,9 @@ flowchart LR
     B -->|Has a good draft| D[DRAFTING<br/>AI drafts<br/>Human signs off]
     B -->|Needs human expertise| E[INTERVIEWING<br/>AI asks<br/>Human answers<br/>AI cleans + structures<br/>Human signs off]
 
-    style C fill:#e8f4e8
-    style D fill:#fff4e0
-    style E fill:#f4e8f4
+    style C fill:#DBEAE1
+    style D fill:#F4E6C6
+    style E fill:#EFDED9
 ```
 
 <div class="diagram-caption">The three modes of every agent output</div>
@@ -550,10 +571,10 @@ flowchart TB
         Critic[Critic<br/>adversarial review]
     end
 
-    style Understand fill:#e8f4e8
-    style Discovery fill:#f4e8f4
-    style Design fill:#fff4e0
-    style Spec fill:#e0f0f8
+    style Understand fill:#DBEAE1
+    style Discovery fill:#EFDED9
+    style Design fill:#F4E6C6
+    style Spec fill:#DCE4EC
 ```
 
 <div class="diagram-caption">The role panel — grouped by where they fire. The Explorer maps the domain; the Cartographer reads the code; the rest turn that understanding into a ready spec.</div>
@@ -729,10 +750,10 @@ flowchart TD
     Shape -->|Epic-sized work| EPIC[Full refinement:<br/>scope → threat → ADRs<br/>→ design → decompose<br/>→ tests → tracker]
     Shape -->|Goal too big for 1 epic| MULTI[Epic decomposition first:<br/>break goal into epic shapes<br/>→ then per-epic full flow]
 
-    style Intent fill:#C84B31,color:#fff
-    style Shape fill:#fff4e0
-    style EPIC fill:#e0f0f8
-    style MULTI fill:#e0f0f8
+    style Intent fill:#D5674C,color:#fff
+    style Shape fill:#F4E6C6
+    style EPIC fill:#DCE4EC
+    style MULTI fill:#DCE4EC
 ```
 
 <div class="diagram-caption">Triage — how the method decides what depth to run at</div>
@@ -774,9 +795,9 @@ flowchart LR
     BC -.shapes.-> Epics[Epic structure]
     Glossary -.read by.-> Everyone[Every agent, thereafter]
 
-    style Intent fill:#C84B31,color:#fff
-    style Storm fill:#e8f4e8
-    style Glossary fill:#fff4e0
+    style Intent fill:#D5674C,color:#fff
+    style Storm fill:#DBEAE1
+    style Glossary fill:#F4E6C6
 ```
 
 <div class="diagram-caption">Event storming as the front of refinement — its outputs feed decisions, scope, and structure</div>
@@ -822,9 +843,9 @@ flowchart TB
 
     Leaf --> Done([Leaf complete])
 
-    style Unit fill:#fff4e0
-    style Check fill:#f4e8f4
-    style Done fill:#e0f0f8
+    style Unit fill:#F4E6C6
+    style Check fill:#EFDED9
+    style Done fill:#DCE4EC
 ```
 
 <div class="diagram-caption">Recursive decomposition — every non-leaf node loops back through DoR</div>
@@ -845,10 +866,10 @@ flowchart TB
     FullFlow --> PerEpic
     PerEpic -->|All epics refined| Complete([Multi-epic plan complete])
 
-    style Goal fill:#C84B31,color:#fff
-    style Review fill:#fff4e0
-    style FullFlow fill:#e0f0f8
-    style Complete fill:#e0f0f8
+    style Goal fill:#D5674C,color:#fff
+    style Review fill:#F4E6C6
+    style FullFlow fill:#DCE4EC
+    style Complete fill:#DCE4EC
 ```
 
 <div class="diagram-caption">Multi-epic decomposition — adds one outer loop before the per-epic flow</div>
@@ -884,9 +905,9 @@ flowchart LR
     C -->|Both yes| ADR[Promote to canonical ADR<br/>announce to human]
     C -->|Either no| Informal[Record as informal<br/>decision in session log]
 
-    style A fill:#C84B31,color:#fff
-    style C fill:#fff4e0
-    style ADR fill:#e0f0f8
+    style A fill:#D5674C,color:#fff
+    style C fill:#F4E6C6
+    style ADR fill:#DCE4EC
 ```
 
 <div class="diagram-caption">Promotion rules decide what gets created — skills are entry points, not gatekeepers</div>
@@ -948,10 +969,10 @@ flowchart TD
     Review -->|No| Edit[Edit per human feedback]
     Edit --> Review
 
-    style Conv fill:#C84B31,color:#fff
-    style A fill:#fff4e0
-    style B fill:#fff4e0
-    style Land fill:#e0f0f8
+    style Conv fill:#D5674C,color:#fff
+    style A fill:#F4E6C6
+    style B fill:#F4E6C6
+    style Land fill:#DCE4EC
 ```
 
 <div class="diagram-caption">ADR promotion — never silent</div>
@@ -977,10 +998,10 @@ flowchart TB
     INT --- PROP
     PROP --- UNIT
 
-    style UNIT fill:#e0f0f8
-    style PROP fill:#fff4e0
-    style INT fill:#f4e8f4
-    style E2E fill:#e8f4e8
+    style UNIT fill:#DCE4EC
+    style PROP fill:#F4E6C6
+    style INT fill:#EFDED9
+    style E2E fill:#DBEAE1
 ```
 
 <div class="diagram-caption">The testing pyramid — bottom-heavy by design</div>
@@ -1052,9 +1073,9 @@ flowchart LR
 
     Manifest --> Audit[SOC 2 / ISO 27001<br/>evidence pack]
 
-    style Practices fill:#f4e8f4
-    style Manifest fill:#e0f0f8
-    style Audit fill:#C84B31,color:#fff
+    style Practices fill:#EFDED9
+    style Manifest fill:#DCE4EC
+    style Audit fill:#D5674C,color:#fff
 ```
 
 <div class="diagram-caption">Compliance baked in — engagement produces evidence as a side effect</div>
@@ -1123,9 +1144,9 @@ flowchart LR
     Convene --> Drive
     Drive --> Disperse
 
-    style Convene fill:#f4e8f4
-    style Drive fill:#fff4e0
-    style Disperse fill:#e0f0f8
+    style Convene fill:#EFDED9
+    style Drive fill:#F4E6C6
+    style Disperse fill:#DCE4EC
 ```
 
 <div class="diagram-caption">Team pattern — async by default, sync only when stakes warrant</div>
@@ -1169,10 +1190,10 @@ flowchart TB
     Project --> Loop
     Org --> Loop
 
-    style Loop fill:#C84B31,color:#fff
-    style Org fill:#f4e8f4
-    style Project fill:#fff4e0
-    style Session fill:#e0f0f8
+    style Loop fill:#D5674C,color:#fff
+    style Org fill:#EFDED9
+    style Project fill:#F4E6C6
+    style Session fill:#DCE4EC
 ```
 
 <div class="diagram-caption">Memory rings — outer rings inform inner-ring decisions</div>
@@ -1240,10 +1261,10 @@ flowchart TB
     Loop --> Structured
     Loop -.queries.-> OnDemand
 
-    style Loop fill:#C84B31,color:#fff
-    style Always fill:#e0f0f8
-    style Structured fill:#fff4e0
-    style OnDemand fill:#f4e8f4
+    style Loop fill:#D5674C,color:#fff
+    style Always fill:#DCE4EC
+    style Structured fill:#F4E6C6
+    style OnDemand fill:#EFDED9
 ```
 
 <div class="diagram-caption">Three tiers of context — different load patterns, different update cadences</div>
@@ -1397,10 +1418,10 @@ flowchart TB
     tracker -.bidirectional link.-> Git
     Git -.refines into.-> tracker
 
-    style Loop fill:#C84B31,color:#fff
-    style tracker fill:#e0f0f8
-    style Git fill:#fff4e0
-    style gbrain fill:#f4e8f4
+    style Loop fill:#D5674C,color:#fff
+    style tracker fill:#DCE4EC
+    style Git fill:#F4E6C6
+    style gbrain fill:#EFDED9
 ```
 
 <div class="diagram-caption">tracker holds operational state. Git holds the audit trail. gbrain holds memory.</div>
