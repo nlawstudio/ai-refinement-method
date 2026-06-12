@@ -58,9 +58,9 @@ The Method layers **ten specialised agents** and **ten skills** on top of Claude
 - **Every output is tracker-ready** (Linear / Jira / GitHub Issues — or just git if you prefer no tracker)
 - **Session continuity** — close a session, resume days later in any agent
 
-### Not for vibe coding
+### This isn't vibe coding. It's vibe spec'ing.
 
-A different camp ships code by feel and finds out at runtime. Fine for prototypes. The Method is for software that has to stand up — production B2B, regulated environments, a real audit and a real blast radius. For that work, the hour saved skipping refinement is the quarter spent in remediation.
+A different camp ships code by feel and finds out at runtime. Fine for prototypes. The Method takes that same speed and looseness and points it *upstream* — at the spec, where being wrong is cheap and being right compounds. It's for software that has to stand up — production B2B, regulated environments, a real audit and a real blast radius. For that work, the hour saved skipping refinement is the quarter spent in remediation.
 
 ## What you get
 

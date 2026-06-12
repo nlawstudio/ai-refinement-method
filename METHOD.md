@@ -73,7 +73,7 @@ AI fixes the economics. A patient, expert facilitator is available on demand; th
 <p>You bring taste, domain knowledge, and the final call. You stay the author. The Method makes you a sharper one.</p>
 </div>
 
-**This is not vibe coding.** That camp ships by feel and finds out at runtime — fine for prototypes, fatal for software that has to stand up. The Method is for production B2B, regulated environments, systems with a real audit and a real blast radius. For that work, the hour saved skipping refinement is the quarter spent in remediation.
+**This isn't vibe coding. It's vibe spec'ing.** That other camp ships by feel and finds out at runtime — fine for prototypes, fatal for software that has to stand up. The Method takes the same speed and looseness and points it upstream, where being wrong is cheap and being right compounds. It's for production B2B, regulated environments, systems with a real audit and a real blast radius. For that work, the hour saved skipping refinement is the quarter spent in remediation.
 
 The human contributes judgment. The Method interrogates it, structures it, remembers it, and turns it into work the team can ship.
 

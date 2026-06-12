@@ -4,6 +4,24 @@ All notable changes to the method will be documented here. Versions follow [SemV
 
 ---
 
+## [2.0.1] — 2026-06-12
+
+Visual refresh for the styled decks, plus a real render pipeline so they actually display. No changes to the Method itself.
+
+### Added
+- **`theme/theme.css`** — single source of truth for the deck design system: deep navy ink on dusty rose, coral accent, with sage and mustard secondaries (inspired by a reference mockup).
+- **`scripts/build-docs.mjs`** + **`npm run build:docs`** — renders `METHOD.md` and `TUTORIAL.md` to self-contained `dist/*.html` with the theme inlined and Mermaid diagrams drawn. Pure Node stdlib; markdown-it and Mermaid load from CDN in the output page.
+- README "Viewing the styled docs" section.
+
+### Changed
+- Restyled both decks to the new palette — color-blocked navy cover with a coral circle motif, warm-palette Mermaid fills, coral-spined role cards, sage agent turns in the tutorial chats.
+- Removed the inline `<style>` blocks from `METHOD.md` and `TUTORIAL.md` — the styling now lives only in `theme/theme.css`. (GitHub and most previewers strip inline `<style>`, so those blocks never rendered anyway; the build pipeline is how the decks are meant to be viewed.)
+
+### Why
+The decks carried their CSS in `<style>` blocks that GitHub strips, so the design never showed. Moving styling into `theme/theme.css` and adding a build step makes it viewable (open the built HTML, or print to PDF) and gives one place to maintain the look.
+
+---
+
 ## [2.0.0] — 2026-06-12 — **Refocused on spec generation**
 
 The Method is now a **spec-generation method**, full stop. It turns fuzzy intent into a ready spec — domain mapped, decisions captured, threats modelled, stories testable — and hands off to whatever coding tool you already use. It no longer writes production code.

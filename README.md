@@ -4,11 +4,13 @@
 [![Version](https://img.shields.io/github/v/release/nlawstudio/ai-refinement-method?label=version)](https://github.com/nlawstudio/ai-refinement-method/releases)
 [![CI](https://github.com/nlawstudio/ai-refinement-method/actions/workflows/ci.yml/badge.svg)](https://github.com/nlawstudio/ai-refinement-method/actions/workflows/ci.yml)
 
+> ### This isn't vibe coding. It's vibe spec'ing.
+
 A packaged tool that installs into any project repo to make AI-first **refinement** cheap and rigorous. A developer describes what they want in plain language; the method figures out the shape of the work, maps the domain through event-storming-style dialogue, and produces a coherent set of tracker stories ready to build — with acceptance criteria, failing tests, risk assessments, compliance tags, threat models, and linked ADRs all in place.
 
 Code got cheap; spec quality is the new bottleneck. The Method puts the rigour of event storming, domain-driven design, and refinement within reach of every team — and hands off a spec your coding tool (Claude Code, Cursor, Codex) can execute. It stops at the spec; it doesn't write your production code. That's the point.
 
-**Current version:** `v1.2.4` — proper OSS scaffolding (license, contributing, security, CI). Quickstart-shaped tutorial since v1.2.1; structured `method.config.yaml` since v1.2.0; tracker-agnostic since v1.1.0. See [CHANGELOG.md](CHANGELOG.md).
+**Current version:** `v2.0.1` — refocused on spec generation (build phase removed; Explorer + `/storm` event storming added in v2.0.0). Styled decks now render via `npm run build:docs`. See [CHANGELOG.md](CHANGELOG.md).
 
 ## Install
 
