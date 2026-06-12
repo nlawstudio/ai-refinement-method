@@ -31,9 +31,15 @@ Example:
 
 Every `/plan` session opens with these phases, in order, before general refinement:
 
+### Phase 0 — Domain discovery (Explorer, when the domain needs mapping)
+
+**Conditional.** If the epic is in unfamiliar or contested domain territory — greenfield, a rebuild, or a domain the team doesn't yet share a model of — invoke the Explorer (`/storm`) first. The event-storming session maps domain events, policies, and hotspots; proposes bounded contexts; and captures the ubiquitous language in `docs/domain-glossary.md`. Its hotspots become the agenda for scope (Phase 1), threat modelling (Phase 2), and decisions (Phase 3); its bounded contexts shape how the epic decomposes (Phase 5).
+
+Skip this phase when the domain is already well understood — go straight to scope.
+
 ### Phase 1 — Scope (Analyst, scope mode)
 
-Invoke Analyst in interviewing mode. The human is interviewed on scope. The output (a scope block) is saved to `plans/{epic}/scope.md` and added to the tree as a `scope_node`.
+Invoke Analyst in interviewing mode. The human is interviewed on scope. The output (a scope block) is saved to `plans/{epic}/scope.md` and added to the tree as a `scope_node`. If Phase 0 ran, the domain map and its hotspots are input here.
 
 Do not proceed until the human has signed off on scope. Vague scope here pollutes everything downstream.
 
@@ -177,7 +183,7 @@ Then: open a PR for the `plans/{epic-slug}/` directory. The PR is the artifact t
 - **Always tag outputs with mode and decision_required.**
 - **Never silently transition between skills.** If `/plan` surfaces something that warrants `/threat-model` invocation, announce.
 - **Never accept a leaf as ready that does not pass all eight DoR criteria.**
-- **Never silently fix architectural issues.** Use `/off-course` (build-phase scope; for now surface as open question if `/off-course` is not yet built).
+- **Never silently fix architectural issues.** Surface them — route a missing decision to `/decide` or `/adr`, a domain gap to `/storm`, an ambiguous scope back to the Analyst.
 
 ## What happens when something goes wrong
 

@@ -16,7 +16,7 @@ The method runs as **one loop**, invoked by a developer describing what they wan
 2. **Decomposes recursively** through dialogue with the human, going only as deep as the work warrants
 3. **Produces structured output** — tracker stories, ADRs, threat models, compliance manifests — with this project's SDLC requirements baked in
 
-The same loop runs at every depth. Skills (`/plan`, `/adr`, `/decide`, `/spike`, `/threat-model`, `/explain`, `/review`, `/onboard`, `/build`, `/off-course`) exist as internal capabilities the method composes — users don't typically invoke them by name.
+The same loop runs at every depth. Skills (`/plan`, `/storm`, `/adr`, `/decide`, `/spike`, `/threat-model`, `/explain`, `/review`, `/onboard`, `/handoff`) exist as internal capabilities the method composes — users don't typically invoke them by name. The Method stops at a ready spec; implementation happens in the developer's own coding tool.
 
 ---
 
@@ -56,7 +56,7 @@ The Critic role is adversarial by default, not consensus. Its job is to refute. 
 
 ### No silent fixes
 
-Do not silently fix architectural issues. If a stop condition fires during build, route it upstream via `/off-course`.
+Do not silently fix architectural issues. Surface them to the human instead — a missing decision goes to `/decide` or `/adr`, a domain gap to `/storm`, an ambiguous scope back to the Analyst.
 
 ---
 
@@ -95,12 +95,12 @@ Every accepted ADR in `/docs/adr/` is binding. Quick reference table:
 - [Property-based testing for value objects]
 - [Named test categories — tenant isolation, audit emission, etc.]
 
-### TDD via the Test Author / Builder split
+### Test-first — the test is the spec
 
 - Test Author writes the failing test from AC — **does not see implementation**
-- Verifier confirms the test fails for the right reason before Builder runs
-- Builder sees the test as the spec
-- Critic adversarially reviews tests (first pass) and code (second pass)
+- Verifier confirms the test fails for the right reason before the story is marked ready
+- Critic adversarially reviews the test (and, on demand via `/review`, code or designs)
+- The story ships with the failing test as its spec; a developer implements it downstream in their own coding tool
 - This discipline is enforced by separate agent contexts, not by team process
 
 ### Data handling
@@ -147,7 +147,7 @@ If only one holds, record as an informal decision in the chat log. Do not produc
 
 ### Standard stop conditions
 
-Every leaf story prompt includes these. When a Builder hits any, the task pauses and routes upstream via `/off-course`:
+Every leaf story carries these as part of its spec. They're the contract for whoever implements it: hitting one signals a refinement gap — come back to the Method (`/decide`, `/adr`, `/storm`, re-scope), don't improvise:
 
 - Task requires a decision not covered by linked ADRs
 - Completing this would require modifying `AGENTS.md`, an ADR, or a skill
@@ -187,11 +187,14 @@ The standard structured reference paths:
 
 | File | Contents | Used by |
 |---|---|---|
-| `docs/schema.sql` | Database DDL (output of `atlas schema inspect` or equivalent) | Designer, Architect, Builder, Test Author |
+| `docs/domain-glossary.md` | Ubiquitous language — the project's domain terms, one agreed definition each (owned by the Explorer) | **All roles** |
+| `docs/schema.sql` | Database DDL (output of `atlas schema inspect` or equivalent) | Designer, Architect, Test Author |
 | `docs/openapi.yaml` *(or `docs/openapi.json`)* | API contracts | Designer, Architect, Critic |
-| `docs/module-map.md` | Module dependency graph | Architect, Decomposer, Builder, Critic |
-| `docs/domain-types.md` | Value object / domain primitive registry | Designer, Builder, Test Author, Critic |
+| `docs/module-map.md` | Module dependency graph | Architect, Decomposer, Critic |
+| `docs/domain-types.md` | Value object / domain primitive registry | Designer, Test Author, Critic |
 | `docs/adr/INDEX.md` | ADR titles + 1-line summaries (full text loaded on demand) | All roles |
+
+The **domain glossary** sits at the top deliberately: the ubiquitous language is the backbone of the model, so every agent reads it first and uses its terms exactly. The Explorer maintains it; when any agent notices a term drifting from the glossary, it flags the drift rather than letting it propagate.
 
 These are the **structured reference layer** — distinct from:
 
@@ -216,8 +219,9 @@ Every agent:
 
 ## What not to do
 
-- Do not silently fix architectural issues. Use `/off-course` to route upstream.
-- Do not write code outside the constitution. If a rule needs to change, surface for human decision; do not change in place.
+- Do not silently fix architectural issues. Surface them for a human decision (`/decide`, `/adr`, `/storm`).
+- Do not let a story exit refinement without a failing test. The test is the spec.
+- Do not write the project's production code — the Method produces specs; implementation is the developer's job in their own tool.
 - Do not make unsourced claims about existing code. Cite or do not claim.
 - Do not approve your own work as Critic. Be adversarial.
 - Do not produce checkbox compliance evidence. Engagement is the evidence.

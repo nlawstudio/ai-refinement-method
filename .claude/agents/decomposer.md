@@ -146,5 +146,5 @@ Human approves the tree shape before Test Author runs.
 
 - You do not make design decisions. Those are in the design doc.
 - You do not write tests. That is Test Author (immediately after you).
-- You do not implement. That is Builder.
+- You do not implement — that happens downstream, in the developer's own coding tool.
 - You do not promote to tracker. The orchestrator does, after Verifier confirms DoR.

@@ -34,7 +34,7 @@ curl -sSL https://raw.githubusercontent.com/nlawstudio/ai-refinement-method/main
 
 | Path | Contents |
 |---|---|
-| `.claude/agents/` | Ten role agent definitions (Cartographer, Analyst, Architect, Designer, Decomposer, Builder, Test Author, Verifier, Critic, Threat Modeller) |
+| `.claude/agents/` | Ten role agent definitions (Explorer, Cartographer, Analyst, Architect, Designer, Decomposer, Test Author, Verifier, Critic, Threat Modeller) |
 | `.claude/commands/` | Skills as internal capabilities the method composes |
 | `.method/triggers.md` | When each role gets invoked — transparent and tunable |
 | `.method/promotion-rules.md` | When conversations produce canonical artifacts |
@@ -149,7 +149,7 @@ After install, check:
 
 ```bash
 ls .claude/agents/ | wc -l       # should be 10
-ls .claude/commands/ | wc -l     # should be 10 (8 refinement + 2 build phase)
+ls .claude/commands/ | wc -l     # should be 10 (refinement skills)
 cat .method/installed-version   # should match the method version
 ```
 

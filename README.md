@@ -4,7 +4,9 @@
 [![Version](https://img.shields.io/github/v/release/nlawstudio/ai-refinement-method?label=version)](https://github.com/nlawstudio/ai-refinement-method/releases)
 [![CI](https://github.com/nlawstudio/ai-refinement-method/actions/workflows/ci.yml/badge.svg)](https://github.com/nlawstudio/ai-refinement-method/actions/workflows/ci.yml)
 
-A packaged tool that installs into any project repo to bring AI-first refinement and build workflows. A developer describes what they want to do in plain language; the method figures out the shape of the work, decomposes it through interview-based dialogue with the team, and produces a coherent set of tracker tasks ready to be built — with acceptance criteria, risk assessments, compliance tags, test specs, and linked ADRs all in place. The build phase picks up from there, with an off-course bridge back to refinement when stop conditions fire.
+A packaged tool that installs into any project repo to make AI-first **refinement** cheap and rigorous. A developer describes what they want in plain language; the method figures out the shape of the work, maps the domain through event-storming-style dialogue, and produces a coherent set of tracker stories ready to build — with acceptance criteria, failing tests, risk assessments, compliance tags, threat models, and linked ADRs all in place.
+
+Code got cheap; spec quality is the new bottleneck. The Method puts the rigour of event storming, domain-driven design, and refinement within reach of every team — and hands off a spec your coding tool (Claude Code, Cursor, Codex) can execute. It stops at the spec; it doesn't write your production code. That's the point.
 
 **Current version:** `v1.2.4` — proper OSS scaffolding (license, contributing, security, CI). Quickstart-shaped tutorial since v1.2.1; structured `method.config.yaml` since v1.2.0; tracker-agnostic since v1.1.0. See [CHANGELOG.md](CHANGELOG.md).
 
@@ -49,10 +51,13 @@ The script copies framework files into the target. Existing `AGENTS.md`, `method
 You don't pick which "skill" to invoke. You describe what you want:
 
 ```
-I need to fix the bug where wallet linkage fails for Solana addresses
+Map the domain for our new case-management module
 ```
 ```
 Should we use UUIDv7 over UUIDv4 for primary keys?
+```
+```
+I need to fix the bug where wallet linkage fails for Solana addresses
 ```
 ```
 Add a bulk asset export feature
@@ -60,17 +65,14 @@ Add a bulk asset export feature
 ```
 Clean-slate the platform rebuild
 ```
-```
-Build NEW-142
-```
 
 The method:
 
-1. **Triages** — figures out whether this is a question, a decision, a bug, a story, an epic, a multi-epic effort, or a build request
-2. **Decomposes recursively** through dialogue with you, going only as deep as the shape of the work warrants
-3. **Produces structured output** in the right place — tracker stories under the right epic, ADRs in `docs/adr/`, threat models and audit trail in `plans/{epic}/`, PRs with full context, and any project-specific SDLC requirements baked in
+1. **Triages** — figures out whether this is a question, a domain to map, a decision, a bug, a story, an epic, or a multi-epic effort
+2. **Decomposes recursively** through dialogue with you, going only as deep as the shape of the work warrants — storming the domain first when the shape itself is unclear
+3. **Produces structured output** in the right place — tracker stories under the right epic, ADRs in `docs/adr/`, the domain map and threat models in `plans/{epic}/`, the ubiquitous-language glossary in `docs/domain-glossary.md`, all of it a ready spec a developer (or their coding agent) can build from
 
-The same loop runs at every depth. Small things get a single turn; multi-epic goals get many turns. Build picks up from refinement; off-course routes back when needed.
+The same loop runs at every depth. Small things get a single turn; multi-epic goals get many turns. The Method stops at a ready spec — implementation happens in your own coding tool, against everything the Method produced.
 
 ## Read these in order
 
@@ -89,16 +91,18 @@ Ten roles. Each has a distinct context, output shape, quality bar, trigger profi
 
 | Role | Mode | Job |
 |---|---|---|
+| Explorer | Interviewing | Event storming — maps the domain, owns the ubiquitous-language glossary |
 | Cartographer | Doing | Reads existing code, produces cited findings |
 | Analyst | Interviewing / Drafting | Discovery (scope) and privacy lens |
 | Architect | Interviewing / Drafting | Decisions and ADR drafting |
 | Designer | Drafting | Design docs |
 | Decomposer | Drafting | Story tree breakdown |
-| Builder | Doing | Implements from failing tests |
 | Test Author | Drafting | Failing tests (does not see implementation) |
-| Verifier | Doing | DoR check and behavioural check |
-| Critic | Doing | Adversarial review (two passes) |
+| Verifier | Doing | DoR gate — confirms a story is ready |
+| Critic | Doing | Adversarial review (test critique + on-demand `/review`) |
 | Threat Modeller | Interviewing | STRIDE at epic kickoff — engagement is the evidence |
+
+Every interviewing role is a **thinking partner, not a stenographer** — it brings expertise, surfaces gaps, and pushes back on weak reasoning. The point is to make your judgment sharper, not to transcribe it.
 
 ## Internal capabilities (skills)
 
@@ -107,15 +111,14 @@ These exist as internal patterns the method composes; you don't have to invoke t
 | Skill | What it does internally |
 |---|---|
 | `/plan` | Full multi-phase refinement (the method's default for anything bigger than a bug) |
+| `/storm` | Explorer-led event storming — maps the domain, captures ubiquitous language |
 | `/adr` | Architect interview that produces an ADR via the promotion rule |
 | `/decide` | Architect interview that may or may not produce an ADR |
 | `/spike` | Cartographer + Architect investigation |
 | `/threat-model` | Standalone threat modelling |
 | `/explain` | Cartographer-led walkthrough of existing code |
-| `/review` | Critic-led adversarial review |
+| `/review` | Critic-led adversarial review of a PR, file, or design |
 | `/onboard` | Generates orientation for a new dev |
-| `/build` | Build-loop: Builder → Verifier → Critic → PR |
-| `/off-course` | Bridge back to refinement when build hits a stop condition |
 | `/handoff` | Capture session state at end of session; `/handoff resume` picks up where you left off |
 
 ## Repo layout
@@ -123,7 +126,7 @@ These exist as internal patterns the method composes; you don't have to invoke t
 ```
 .claude/
   agents/                ← 10 role definitions (ship in install)
-  commands/              ← 11 skills (ship in install)
+  commands/              ← 10 skills (ship in install)
 
 .method/
   triggers.md            ← role invocation conditions (ship)
@@ -170,18 +173,20 @@ The method triages to a decision, routes to the Architect in interview mode, and
 For something bigger:
 
 ```
-Implement [feature]
+Add [feature]
 ```
 
-This routes to the full refinement flow.
+This routes to the full refinement flow — scope, decisions, design, threat model, and a tree of ready stories.
 
-To build a refined story:
+When the domain itself is unclear, storm it first:
 
 ```
-Build [story-id]
+Map the domain for [area]
 ```
 
-The build loop picks it up.
+The Explorer facilitates an event-storming session and captures the ubiquitous language.
+
+Then take the ready stories — each with a failing test as its spec — into your coding tool to implement.
 
 See [TUTORIAL.md](TUTORIAL.md) for the 15-minute quickstart.
 

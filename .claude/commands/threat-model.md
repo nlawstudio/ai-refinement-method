@@ -1,5 +1,5 @@
 ---
-description: Standalone STRIDE-style threat modelling interview via the Threat Modeller. Same agent as runs at epic kickoff in /plan, but invoked here for ad hoc threat modelling outside a refinement session. Produces a structured threat model with verbatim engineer transcript — engagement is the compliance evidence.
+description: Standalone STRIDE-style threat modelling interview via the Threat Modeller. Same agent as runs at epic kickoff in /plan, but invoked here for ad hoc threat modelling outside a refinement session. Produces a structured threat model — cleaned, structured, and signed off by the engineer; engagement is the compliance evidence.
 ---
 
 # /threat-model
@@ -70,7 +70,7 @@ mode: interviewing
 decision_required: true
 ```
 
-The human signs off on the threat model after the interview, confirming the verbatim transcript is accurate.
+The human signs off on the threat model after the interview, confirming the cleaned model accurately reflects what they said.
 
 ## The anti-theatre rule, re-stated
 

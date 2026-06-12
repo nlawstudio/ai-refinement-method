@@ -4,6 +4,54 @@ All notable changes to the method will be documented here. Versions follow [SemV
 
 ---
 
+## [2.0.0] — 2026-06-12 — **Refocused on spec generation**
+
+The Method is now a **spec-generation method**, full stop. It turns fuzzy intent into a ready spec — domain mapped, decisions captured, threats modelled, stories testable — and hands off to whatever coding tool you already use. It no longer writes production code.
+
+This is a deliberate narrowing. The thesis: **code got cheap; spec quality is the new bottleneck.** Build tooling is a crowded, commodity space (every coding agent ships it). Refinement — event storming, domain-driven design, the upstream thinking where taste is load-bearing — is the neglected, high-leverage part. The Method does that one thing well.
+
+### Removed — the build phase
+- `.claude/agents/builder.md` — the Builder agent
+- `.claude/commands/build.md` — the `/build` skill
+- `.claude/commands/off-course.md` — the `/off-course` bridge skill
+- METHOD.md "The build phase and the off-course bridge" section (replaced by "Where the Method ends: the handoff to build")
+- All build-phase triggers and the off-course promotion rule from `.method/`
+- The build example and Builder references throughout TUTORIAL.md, README.md, AGENTS.template.md, INSTALL.md, AGENT_INSTALL.md
+
+### Added — domain discovery (event storming + DDD)
+- **`.claude/agents/explorer.md`** — the Explorer role. Facilitates event storming as a conversation: maps domain events, commands, policies, read models, and hotspots; proposes bounded contexts; owns the ubiquitous-language glossary.
+- **`.claude/commands/storm.md`** — the `/storm` skill.
+- **`docs/domain-glossary.md`** — the ubiquitous language as a first-class artifact, wired into the top of the structured reference layer (Tier 2) so every agent reads it and uses its terms exactly. Soft-enforced: agents flag drift rather than letting it propagate.
+- METHOD.md "Domain discovery — event storming and ubiquitous language" section.
+- `/plan` gains a conditional **Phase 0 — domain discovery** that runs the Explorer before scope when the domain needs mapping.
+- A worked event-storming example in TUTORIAL.md (Example 3 — mapping a domain).
+
+### Added — the partnership / anti-sycophancy spine
+- Every interviewing agent (Explorer, Analyst, Architect, Threat Modeller) now has an explicit **"partner, not a stenographer"** instruction: bring expertise, surface gaps, and *push back* on weak reasoning. Sycophancy is named as a failure mode. The AI is a thinking partner that makes your judgment sharper — not a transcriber, and not a rubber-stamp.
+
+### Changed — roles trimmed to refinement
+- **Verifier** is now single-purpose: the DoR gate. (Its build-time "behavioural check" mode is gone.)
+- **Critic** keeps its test-critique pass and its on-demand `/review` of PRs/code/designs; the automatic post-Builder "code critique" step is gone (there's no Builder).
+- **Test Author** reframed: the failing test it writes is the spec a developer implements against, downstream, in their own tool.
+- **Stop conditions** are now the handoff contract on each story — signals to come back to the Method, not build-loop pauses.
+- Role panel: still ten roles (Builder out, Explorer in). Skills: ten (`/build` + `/off-course` out, `/storm` in).
+- Thesis (METHOD.md §2) rewritten around the DDD/event-storming lineage, the three-move partnership, the anti-vibe-coding stance, and an "isn't this waterfall?" rebuttal.
+
+### Fixed
+- Removed several stale "verbatim transcript" references that contradicted the cleaned-and-signed interview pattern (Analyst, Threat Modeller, `/threat-model`, promotion rules).
+- Genericised leaked project-specific ADR numbers in `.method/promotion-rules.md`.
+
+### Migration
+This is a major version for a reason. If you relied on `/build` or `/off-course`, they're gone — implementation now happens in your own coding tool against the specs the Method produces. Re-install or upgrade:
+
+```bash
+curl -sSL https://raw.githubusercontent.com/nlawstudio/ai-refinement-method/main/install.sh | sh
+```
+
+The installer preserves your `AGENTS.md`, `method.config.yaml`, and `docs/adr/`. Your `docs/domain-glossary.md` will be created the first time you run `/storm`.
+
+---
+
 ## [1.2.4] — 2026-06-11
 
 Standard OSS project scaffolding added. Behavioural change: none — the Method itself is unchanged.

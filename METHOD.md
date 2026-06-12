@@ -330,12 +330,12 @@ a:hover { background: var(--code-bg); }
 
 # The Method
 
-<div class="subtitle">An agentic refinement and build method. One loop. Many depths. Your project's SDLC baked in.</div>
+<div class="subtitle">An agentic refinement method. Event storming, domain-driven design, and refinement — made cheap. One loop. Many depths.</div>
 
 <div class="meta">
 
 <strong>Status</strong> Canonical — current locked design<br>
-<strong>Scope</strong> The unified refinement + build method. Both phases first-class; off-course bridge in between.<br>
+<strong>Scope</strong> Spec generation — from fuzzy intent to DoR-ready stories with tests, decisions, and compliance evidence. Implementation happens in your own coding tool, against the specs the Method produces.<br>
 <strong>Date</strong> June 2026<br>
 <strong>Audience</strong> Engineering teams using the Method, and the AI agents being built against it
 
@@ -354,6 +354,7 @@ a:hover { background: var(--code-bg); }
 <li><a href="#the-three-modes">The three modes — doing, drafting, interviewing</a></li>
 <li><a href="#the-role-panel">The role panel</a></li>
 <li><a href="#triage-and-routing">Triage and routing</a></li>
+<li><a href="#domain-discovery">Domain discovery — event storming and ubiquitous language</a></li>
 <li><a href="#recursive-decomposition">Recursive decomposition</a></li>
 <li><a href="#skills-as-internal-capabilities">Skills as internal capabilities</a></li>
 <li><a href="#definition-of-ready">Definition of Ready — the gate</a></li>
@@ -367,7 +368,6 @@ a:hover { background: var(--code-bg); }
 <li><a href="#the-three-tier-context-model">The three-tier context model</a></li>
 <li><a href="#failure-modes-and-mitigations">Failure modes and mitigations</a></li>
 <li><a href="#storage-and-artifacts">Storage and artifacts</a></li>
-<li><a href="#the-build-phase">The build phase and the off-course bridge</a></li>
 <li><a href="#distribution-and-versioning">Distribution and versioning</a></li>
 <li><a href="#whats-out-of-scope">What's out of scope</a></li>
 <li><a href="#open-questions">Open questions</a></li>
@@ -387,17 +387,26 @@ Sections 1–7 set the framing and the architecture. Sections 8–13 cover mecha
 
 ## Thesis
 
-The role of a software engineer building B2B SaaS will look fundamentally different two years from now. The teams that go on that journey deliberately will outperform those who don't.
+Code got cheap. Spec quality is the new bottleneck. Everyone building seriously has noticed.
 
-The shift is from owning code to owning outcomes — from executing tickets to conducting an AI bench of collaborators. Most teams will lean on Claude Code, Cursor, and similar as productivity boosters around the existing workflow. The Method goes further: a codified way of working that turns the team's expertise into a multiplier the team has to learn how to use.
+The thinking traditions already had the answer. **Event storming** maps a domain until its real boundaries show. **Domain-driven design** keeps the model in the code honest to the model in the conversation. **Refinement** turns fog into stories a developer can pick up. All correct. All chronically skipped — because they needed a skilled facilitator, time the team had already promised elsewhere, and produced artifacts that were lost the week after.
 
-The Method is the deliverable. Real engineering work — refinement, decisions, design, threat modelling, story breakdown, building, off-course handling — is what it's tested against.
+AI fixes the economics. A patient, expert facilitator is available on demand; the conversation *becomes* the artifact; the artifact persists and turns into work. What was a two-day workshop is a forty-minute session.
 
 <div class="callout">
-<div class="callout-label">Why refinement first</div>
-<p>Most teams underinvest in refinement. A 30-minute backlog-grooming meeting that adds AC to stories someone else already wrote.</p>
-<p>What we're building is the full upstream chunk: <em>idea → decisions → design → tasks</em> — discovery, architectural design, refinement, and documentation collapsed into one iterative agent-driven process.</p>
-<p>If refinement is great, the build phase gets dramatically easier. If refinement is mediocre, no downstream tooling fixes it.</p>
+<div class="callout-label">The partnership</div>
+<p>The AI is not taking dictation, and you are not rubber-stamping its output. It <em>brings</em> expertise — patterns from a thousand systems, the option you didn't reach for. It <em>surfaces</em> gaps — the unasked question, the edge case. And it <em>pushes back</em> — that contradicts your audit-log decision; you're assuming single-tenant; this story is doing two things.</p>
+<p>You bring taste, domain knowledge, and the final call. You stay the author. The Method makes you a sharper one.</p>
+</div>
+
+**This is not vibe coding.** That camp ships by feel and finds out at runtime — fine for prototypes, fatal for software that has to stand up. The Method is for production B2B, regulated environments, systems with a real audit and a real blast radius. For that work, the hour saved skipping refinement is the quarter spent in remediation.
+
+The human contributes judgment. The Method interrogates it, structures it, remembers it, and turns it into work the team can ship.
+
+<div class="callout">
+<div class="callout-label">Isn't this waterfall?</div>
+<p>Waterfall failed because upstream thinking was <em>slow</em> — months of analysis, stale before the first commit. The Agile correction was never "stop thinking", it was "think small, ship small, learn." That only works when the thinking is cheap. Now it is.</p>
+<p>Stories stay ≤3 points. Discovery is continuous, not a phase. One developer runs every role through the AI — no handoff chain. This is waterfall's rigour made affordable, not waterfall's calendar revived.</p>
 </div>
 
 ## The unified loop
@@ -519,14 +528,15 @@ Ten roles. Each has a distinct context window, output shape, quality bar, invoca
 
 ```mermaid
 flowchart TB
+    subgraph Understand["Understanding reality"]
+        Explorer[Explorer<br/>event storming + glossary]
+        Cart[Cartographer<br/>cited code findings]
+    end
+
     subgraph Discovery["Discovery & decisions"]
         Analyst[Analyst<br/>scope + privacy]
         Architect[Architect<br/>decisions + ADRs]
         Threat[Threat Modeller<br/>STRIDE interview]
-    end
-
-    subgraph Reading["Reading existing code"]
-        Cart[Cartographer<br/>cited findings]
     end
 
     subgraph Design["Design & breakdown"]
@@ -534,22 +544,36 @@ flowchart TB
         Dec[Decomposer<br/>story tree]
     end
 
-    subgraph Build["Build & verify"]
+    subgraph Spec["Test & verify"]
         TA[Test Author<br/>failing tests]
-        B[Builder<br/>implementation]
-        V[Verifier<br/>DoR + behaviour]
+        V[Verifier<br/>DoR gate]
         Critic[Critic<br/>adversarial review]
     end
 
+    style Understand fill:#e8f4e8
     style Discovery fill:#f4e8f4
-    style Reading fill:#e8f4e8
     style Design fill:#fff4e0
-    style Build fill:#e0f0f8
+    style Spec fill:#e0f0f8
 ```
 
-<div class="diagram-caption">The role panel — grouped by where they fire</div>
+<div class="diagram-caption">The role panel — grouped by where they fire. The Explorer maps the domain; the Cartographer reads the code; the rest turn that understanding into a ready spec.</div>
 
 Detailed role cards follow. Each describes the role's job, context, output, quality bar, triggers, and failure mode.
+
+<div class="role-card">
+
+### Explorer
+<div class="role-tags">Mode: interviewing · Triggered by: /storm, front of an epic in unfamiliar domain</div>
+
+<dl>
+<dt>Job</dt><dd>Facilitates event storming as a conversation. Maps domain events, commands, actors, policies, read models, and hotspots; proposes bounded contexts; owns the ubiquitous-language glossary. Where the Cartographer reads what's <em>built</em>, the Explorer maps what's <em>true</em> about the domain.</dd>
+<dt>Context</dt><dd>The intent, the domain glossary, past domain maps from gbrain, Cartographer findings if existing code encodes part of the domain.</dd>
+<dt>Output</dt><dd><code>plans/{epic}/domain-map.md</code> (events, policies, hotspots, proposed bounded contexts) + updates to <code>docs/domain-glossary.md</code>.</dd>
+<dt>Quality bar</dt><dd>Map in the language of the domain, not technical jargon. Hotspots named, not smoothed. A better model than the human's first pass — evidence the Explorer brought, surfaced, and pushed back. No unresolved language drift.</dd>
+<dt>Triggers</dt><dd>Front of an epic in unfamiliar or contested territory; greenfield; rebuilds; a team that doesn't yet share a model.</dd>
+<dt>Failure mode</dt><dd>Stenography — transcribing the human's first-pass model. Smoothing hotspots. Letting language drift. Modelling a seamed domain as one blob.</dd>
+</dl>
+</div>
 
 <div class="role-card">
 
@@ -628,21 +652,6 @@ Detailed role cards follow. Each describes the role's job, context, output, qual
 
 <div class="role-card">
 
-### Builder
-<div class="role-tags">Mode: doing → human reviews at PR</div>
-
-<dl>
-<dt>Job</dt><dd>Implements stories. Sees the failing test from Test Author as its spec. Writes minimum code to pass.</dd>
-<dt>Context</dt><dd>Story, AC, linked ADR, failing test file, constitution.</dd>
-<dt>Output</dt><dd>Code + passing test + PR.</dd>
-<dt>Quality bar</dt><dd>Test passes, race detector clean, conforms to constitution and linked ADRs.</dd>
-<dt>Triggers</dt><dd>Leaf passes DoR, failing test exists.</dd>
-<dt>Failure mode</dt><dd>Writes code that passes the test without solving the underlying intent.</dd>
-</dl>
-</div>
-
-<div class="role-card">
-
 ### Test Author
 <div class="role-tags">Mode: drafting · Runs during refinement, not after</div>
 
@@ -659,30 +668,30 @@ Detailed role cards follow. Each describes the role's job, context, output, qual
 <div class="role-card">
 
 ### Verifier
-<div class="role-tags">Modes: DoR check (refinement), behavioural check (build)</div>
+<div class="role-tags">Mode: doing — DoR gate</div>
 
 <dl>
-<dt>Job</dt><dd><strong>DoR mode</strong>: confirms a leaf passes the eight readiness criteria. <strong>Behavioural mode</strong>: confirms code meets test specs and equivalence requirements (rebuild).</dd>
-<dt>Context</dt><dd>DoR: the leaf + checklist. Behavioural: PR + tests + (for rebuild) legacy behaviour.</dd>
-<dt>Output</dt><dd>Pass/fail report with specific findings.</dd>
+<dt>Job</dt><dd>Confirms a leaf passes the eight Definition-of-Ready criteria, including that a failing test exists and fails for the right reason. The gate a story passes before exiting refinement.</dd>
+<dt>Context</dt><dd>The leaf + the DoR checklist + the test file to run.</dd>
+<dt>Output</dt><dd>Pass/fail report with specific blockers.</dd>
 <dt>Quality bar</dt><dd>No false positives on "ready". A leaf marked ready genuinely meets every DoR criterion.</dd>
-<dt>Triggers</dt><dd>Refinement: leaf reaching candidate-ready. Build: PR ready for landing.</dd>
-<dt>Failure mode</dt><dd>Passes leaves that don't actually meet DoR; misses equivalence regressions.</dd>
+<dt>Triggers</dt><dd>A leaf reaching candidate-ready state.</dd>
+<dt>Failure mode</dt><dd>Passes leaves that don't actually meet DoR; treats the failing-test check as optional.</dd>
 </dl>
 </div>
 
 <div class="role-card">
 
 ### Critic
-<div class="role-tags">Mode: doing — two passes (test critique, code critique)</div>
+<div class="role-tags">Mode: doing — test critique (auto) + on-demand review</div>
 
 <dl>
-<dt>Job</dt><dd>Adversarial review. <strong>First pass</strong> after Test Author: does this test exercise the right behaviour, or just hit coverage? <strong>Second pass</strong> after Builder: what could break this that the tests don't catch?</dd>
-<dt>Context</dt><dd>First pass: <code>(story, AC, design, test file)</code>. Second pass: <code>(story, AC, test file, implementation)</code>.</dd>
+<dt>Job</dt><dd>Adversarial review. <strong>Test critique</strong> after Test Author: does this test exercise the right behaviour, or just hit coverage? <strong>On-demand critique</strong> via <code>/review</code>: refutes a PR, code file, or design doc the human points it at.</dd>
+<dt>Context</dt><dd>Test critique: <code>(story, AC, design, test file)</code>. On-demand: the review target + any supplied spec + ADRs + the structured reference layer.</dd>
 <dt>Output</dt><dd>Structured findings with severity and rationale.</dd>
 <dt>Quality bar</dt><dd>Findings are concrete and actionable. Adversarial <em>by default</em>; defaults to "refuted" when uncertain.</dd>
-<dt>Triggers</dt><dd>Test file produced (first pass); PR produced (second pass).</dd>
-<dt>Failure mode</dt><dd>Going along with the test/code; consensus illusion with other agents.</dd>
+<dt>Triggers</dt><dd>Test file produced (test critique); <code>/review</code> invoked (on-demand).</dd>
+<dt>Failure mode</dt><dd>Going along with the test/work; consensus illusion with other agents.</dd>
 </dl>
 </div>
 
@@ -739,6 +748,53 @@ flowchart TD
 The triage step is **always interview-led**. If the AI is uncertain about the shape, it asks the human. *"This sounds like it could be a single epic or three — do you want me to scope it as one body of work and decompose, or should we split it up front?"*
 
 The triage decision is **explicit and visible** — the human sees what the method concluded and can override before the loop continues.
+
+<a id="domain-discovery"></a>
+## Domain discovery — event storming and ubiquitous language
+
+For anything bigger than a well-understood change, the loop's first real move is to understand the domain — not the code, the *domain*. This is where the Method leans hardest on domain-driven design and event storming, and it's the **Explorer's** territory.
+
+### Why discovery comes first
+
+You cannot scope, decide, or decompose well in a domain you haven't mapped. Teams that skip this build the wrong abstractions — features that cut across the domain's natural seams, models that fight the business reality, language that means three things to three people. The classic fix is an event-storming workshop: gather the team, map what happens on a wall of stickies, argue until the bounded contexts reveal themselves. It works, and almost nobody does it, because it's expensive to facilitate and the output evaporates.
+
+The Method makes it cheap. `/storm` runs the workshop as a conversation. The Explorer facilitates; the output is durable and feeds everything downstream.
+
+### What a storm produces
+
+```mermaid
+flowchart LR
+    Intent([Domain or epic area]) --> Storm[Explorer facilitates<br/>event storming]
+    Storm --> Events[Events · Commands<br/>Policies · Read models]
+    Storm --> Hot[Hotspots<br/>the contested bits]
+    Storm --> BC[Bounded contexts<br/>proposed seams]
+    Storm --> Glossary[(docs/domain-glossary.md<br/>ubiquitous language)]
+
+    Hot -.becomes.-> Decisions[ADRs · threat models<br/>scoping questions]
+    BC -.shapes.-> Epics[Epic structure]
+    Glossary -.read by.-> Everyone[Every agent, thereafter]
+
+    style Intent fill:#C84B31,color:#fff
+    style Storm fill:#e8f4e8
+    style Glossary fill:#fff4e0
+```
+
+<div class="diagram-caption">Event storming as the front of refinement — its outputs feed decisions, scope, and structure</div>
+
+- **A domain map** (`plans/{epic}/domain-map.md`) — events in the domain's language, the commands and actors behind them, the policies that connect them, the read models people need to decide.
+- **Hotspots** — every contested or uncertain point, named rather than smoothed. These are the agenda for the Architect (decisions), Threat Modeller (attack surface), and Analyst (scope).
+- **Proposed bounded contexts** — the real seams in the domain, which shape how epics are cut. Epics follow context boundaries instead of arbitrary feature buckets.
+- **The ubiquitous language** (`docs/domain-glossary.md`) — one agreed definition per domain term, read by *every* agent thereafter so the model stays consistent from conversation to spec to story to code.
+
+### The ubiquitous language is load-bearing
+
+The glossary isn't documentation — it's infrastructure. It sits at the top of the structured reference layer (Tier 2), so every agent loads it first and uses its terms exactly. When the Decomposer names a story, when the Designer names a type, when the Architect writes an ADR, they speak the same language the domain map established. When any agent notices drift — a synonym creeping in, one word stretched across two concepts — it flags it rather than letting the model fracture. The Explorer owns the glossary; everyone else honours it.
+
+This is DDD's core discipline — keep the model in the artifacts honest to the model in the conversation — made automatic.
+
+### When the loop storms (and when it doesn't)
+
+Storming is for when the *shape of the domain* is the open question: greenfield work, rebuilds where the model is buried in old code, contested territory, a team that doesn't yet share a model. For a small bug or a well-understood change, the loop skips it entirely — depth adapts to the work, as everywhere else in the Method.
 
 ## Recursive decomposition
 
@@ -854,7 +910,7 @@ A story that cannot be made to meet these isn't ready. It either gets split furt
 
 ## Stop conditions
 
-Standard block, included in every leaf story's enriched prompt:
+Every leaf story carries a standard block of stop conditions as part of its spec. These are the contract for whoever implements it later — a signal that the work has hit something refinement should have resolved, and the right move is to come back to the Method, not to improvise:
 
 - This task requires a decision not covered by linked ADRs
 - Completing this would require modifying AGENTS.md, an ADR, or a skill
@@ -867,7 +923,7 @@ Standard block, included in every leaf story's enriched prompt:
 - AC cannot be expressed as a single testable assertion
 - Required test level (unit / integration / e2e) is unclear
 
-When a Builder hits any of these, the task pauses and the loop routes the upstream change through governance via `/off-course` (build-phase tooling — out of scope for this document).
+The Method's job is to drive these to zero *before* a story ships — a story that trips one of these at implementation time is a refinement miss. When implementation (in the developer's own coding tool) hits one anyway, the fix is upstream: re-open the story in the Method, run `/decide` or `/adr` for a missing decision, `/storm` for a domain gap, or re-scope with the Analyst. Don't paper over it in code.
 
 ## ADRs and the promotion rule
 
@@ -936,7 +992,9 @@ flowchart TB
 - **Audit-event-emitted tests** — every mutation tests the audit event emitted in the *same transaction*
 - **Compliance-tagged tests** — each test optionally carries SOC 2 / ISO 27001 control evidence tags
 
-### TDD via the Test Author / Builder split
+### The test is the spec
+
+The Method writes the failing test *before* the story is ready, and ships it as part of the spec. Implementation happens later, in the developer's own coding tool — and it starts from a test that already exists and already fails for the right reason. That's TDD with the hardest part (writing the honest test first) already done.
 
 ```mermaid
 sequenceDiagram
@@ -944,7 +1002,6 @@ sequenceDiagram
     participant TA as Test Author
     participant V as Verifier
     participant C as Critic
-    participant B as Builder
 
     H->>TA: story + AC + design + ADRs (no implementation)
     TA->>TA: write failing test
@@ -954,18 +1011,12 @@ sequenceDiagram
     H->>C: review test
     C->>C: test-critique pass
     C-->>H: findings or pass
-    H->>B: green-light implementation
-    B->>B: write minimum code to pass
-    B->>V: PR
-    V->>V: run test — confirm passes + race detector clean
-    V->>C: code-critique pass
-    C-->>H: findings or pass
-    H->>H: merge
+    Note over H: Story is now DoR-ready —<br/>a failing test is its spec.<br/>Developer implements downstream.
 ```
 
-<div class="diagram-caption">TDD enforced by separate agent contexts</div>
+<div class="diagram-caption">The test is authored, verified, and critiqued during refinement — so the spec a developer receives is executable</div>
 
-The hard split is what makes TDD work with agents. The discipline isn't a process the team has to follow — it's enforced by the agents' separate contexts.
+The Test Author never sees an implementation — there isn't one yet. That separation is what makes the test honest: it's written against the AC, not reverse-engineered from code. When a developer (or their coding agent) picks the story up, "done" is unambiguous: the test passes, for the right reason.
 
 ## Compliance baked in
 
@@ -1169,6 +1220,7 @@ flowchart TB
     end
 
     subgraph Structured["TIER 2 — Structured references"]
+        S0[docs/domain-glossary.md — ubiquitous language]
         S1[docs/schema.sql — DDL]
         S2[docs/openapi.yaml — API contracts]
         S3[docs/module-map.md — dependency graph]
@@ -1212,7 +1264,8 @@ Project-specific files that **constrain** decisions without describing implement
 
 | File | Why it's high-leverage |
 |---|---|
-| `docs/schema.sql` | The data shape constrains every domain decision. Designer can't accidentally specify a column that conflicts with reality. Builder writes code with accurate types. Test Author writes fixtures that match. Architect spots decisions that contradict the schema before drafting an ADR. |
+| `docs/domain-glossary.md` | The ubiquitous language is the backbone of the model. Loaded first, used by every agent, so the same word means the same thing from conversation to spec to story. The Explorer owns it; any agent that notices drift flags it rather than letting it spread. |
+| `docs/schema.sql` | The data shape constrains every domain decision. Designer can't accidentally specify a column that conflicts with reality. Test Author writes fixtures that match. Architect spots decisions that contradict the schema before drafting an ADR. |
 | `docs/openapi.yaml` | Existing API contracts constrain every endpoint decision. The Designer adds endpoints consistent with current patterns; the Critic spots inconsistencies. |
 | `docs/module-map.md` | The dependency graph constrains every cross-module decision. The Decomposer doesn't propose breaking module boundaries; the Critic catches violations. |
 | `docs/domain-types.md` | The registry of value objects + domain primitives constrains every domain decision. New types added cleanly; existing types referenced precisely. |
@@ -1246,6 +1299,7 @@ Each tier-2 file has an ideal refresh trigger:
 
 | File | Refreshed when |
 |---|---|
+| `docs/domain-glossary.md` | Every `/storm` session, and whenever a new domain term is agreed (maintained by the Explorer, not CI) |
 | `docs/schema.sql` | After every Atlas migration (or equivalent migration tool runs) |
 | `docs/openapi.yaml` | On every API change (generated from code, or hand-maintained) |
 | `docs/module-map.md` | On every cross-module dependency change (CI script) |
@@ -1271,7 +1325,7 @@ The system will produce wrong things. Design for it.
 
 - **Citation discipline.** Every claim about existing code carries a `file:line` reference. Every ADR reference carries the ADR ID. The orchestrator rejects unsourced claims.
 - **Critic is adversarial by default**, not consensus. Two passes (test critique + code critique).
-- **Verifier confirms tests fail for the right reason** before Builder is invoked.
+- **Verifier confirms tests fail for the right reason** before a story is marked ready.
 - **Hash artifacts.** Every ADR, tree state, test file gets a content hash. Drift detection becomes mechanical.
 - **Periodic constitution check.** `/audit-constitution` (v2) — Cartographer-led, flags ADRs whose stated invariants don't hold in code.
 - **Trigger profiles are transparent.** Humans can read the conditions and tune them.
@@ -1353,74 +1407,30 @@ flowchart TB
 
 Bidirectional traceability: every tracker story has a link to its git plan artifact. Every tree.yaml leaf records its tracker story ID.
 
-## The build phase
+## Where the Method ends: the handoff to build
 
-The method ships with both halves of the SDLC: refinement (turning intent into DoR-ready stories) and build (turning DoR-ready stories into merged PRs). The two halves share the role panel; the build loop is `/build`, with `/off-course` as the bridge back to refinement when a stop condition fires.
+The Method stops at a ready spec. It does not write your production code.
 
-```mermaid
-flowchart TB
-    subgraph Refinement["Refinement loop"]
-        R1[Type intent] --> R2[Triage]
-        R2 --> R3[Recursive decomposition]
-        R3 --> R4[tracker stories ready]
-    end
+This is a deliberate boundary, not a missing feature. Implementation is the part of the SDLC that AI coding tools — Claude Code, Cursor, Codex — already do well. Pointing one of them at a story that carries testable AC, a failing test, linked ADRs, a threat model, and a domain glossary is a fundamentally easier task than pointing it at "add a bulk export feature." The Method's whole thesis is that **the leverage is upstream**: get the spec right and the build gets dramatically easier, regardless of which tool does it.
 
-    subgraph Build["Build loop"]
-        B1[Story moves to In Progress]
-        B1 --> B2[Builder in worktree]
-        B2 --> B3[Verifier — tests + race]
-        B3 --> B4[Critic — code critique]
-        B4 --> B5[PR opens]
-        B5 --> B6[Human review + merge]
-    end
-
-    R4 --> B1
-    B2 -.stop condition.-> OC[/off-course bridge/]
-    OC -.upstream change needed.-> R2
-    R2 -.routes to amendment.-> Amend["Architect drafts ADR amendment<br/>OR Analyst clarifies AC<br/>OR Threat Modeller supplements"]
-    Amend -.merged.-> Unblock[Story unblocks]
-    Unblock --> B1
-
-    style OC fill:#C84B31,color:#fff
-    style Refinement fill:#f4e8f4
-    style Build fill:#e0f0f8
-```
-
-### The build loop (`/build`)
-
-When a story passes Definition of Ready during refinement and moves to `Ready` in tracker, `/build` picks it up. The flow:
+So the handoff is the product. A story leaving the Method carries everything an implementer — human or agent — needs:
 
 ```
-Story (Ready) → worktree → Builder reads test + AC + linked ADRs + AGENTS.md
-            → Builder writes minimum code to pass test
-            → Verifier runs tests + race detector + broader suite
-            → Critic code-critique pass
-            → If clean: PR opens
-            → tracker: In Review → human merges → Done
-            → Downstream stories unblock
+tracker story (Ready)
+├── testable acceptance criteria
+├── a failing test that defines "done"        → plans/{epic}/tests/{story}_test.go
+├── linked ADRs (the decisions already made)  → docs/adr/
+├── the domain glossary (ubiquitous language) → docs/domain-glossary.md
+├── threat model + privacy notes where relevant
+└── stop conditions (when to come back, not improvise)
 ```
 
-The Builder runs in **doing** mode — no human signoff in the moment. The human's signoff is at PR merge time.
+The implementer's job is the smallest it can be: make the failing test pass, honour the linked decisions, respect the constitution. When they hit a wall, the stop conditions tell them it's a refinement gap — and the door back into the Method is open (`/decide`, `/adr`, `/storm`, re-scope). The flow is one-directional by design — refinement feeds build — but build can always send a question back upstream, because the spec, the decisions, and the conversation that produced them are all still there in git.
 
-### The off-course bridge
-
-If Builder hits any stop condition mid-build, it does **not** try to work around. The build pauses; `/off-course` is invoked with the diagnostic.
-
-`/off-course` diagnoses what kind of upstream change is needed and routes to the appropriate refinement role:
-
-| Diagnosis | Refinement role | Upstream artifact |
-|---|---|---|
-| ADR gap or contradiction | Architect (interview) | New or superseding ADR |
-| AC ambiguity | Analyst + Test Author | Updated AC + revised failing test |
-| Threat model gap | Threat Modeller | Supplementary threat model |
-| Missing existing-code context | Cartographer | Findings doc |
-| Scope expansion needed | Analyst + Decomposer | Rescoped + split |
-| Missing test data generator | Test Author | Generator code |
-| Architectural boundary crossed | Decomposer | Story split |
-
-Every off-course event produces a governed PR against the upstream artifact. Once merged, the original tracker story moves from `Blocked` back to `Ready`. The off-course event is recorded in the epic's manifest as audit-trail evidence — showing the team surfaced and routed the upstream issue rather than papering over it.
-
-The off-course bridge is what makes the two halves of the SDLC live side-by-side rather than as a one-way pipeline. Build doesn't merely consume refinement output; build can require refinement to evolve, and the bridge handles that loop explicitly.
+<div class="callout">
+<div class="callout-label">Why not own the build too?</div>
+<p>Earlier versions did. It was the wrong shape. Build tooling is a crowded, fast-moving, commodity space — every coding agent ships it, and ships it well. Refinement is the neglected, high-leverage, hard-to-do-well part. The Method does one thing: it makes the upstream thinking cheap and rigorous, and hands off a spec any build tool can execute.</p>
+</div>
 
 <a id="configuration"></a>
 ## Configuration
@@ -1539,7 +1549,7 @@ See [INSTALL.md](INSTALL.md) for full setup including gbrain MCP and tracker MCP
 | Category | What |
 |---|---|
 | Role definitions | Ten agent files in `.claude/agents/` |
-| Skill definitions | Ten skill files in `.claude/commands/` (refinement + build) |
+| Skill definitions | Ten skill files in `.claude/commands/` |
 | Trigger profiles | `.method/triggers.md` |
 | Promotion rules | `.method/promotion-rules.md` |
 | Templates | `plans/_templates/tree.yaml.example`, `plans/_templates/manifest.yaml.example` |
@@ -1566,7 +1576,10 @@ Versions follow SemVer in `VERSION`. Major releases when the role panel or core 
 | **1.1.0** | Tracker-agnostic (Linear / Jira / GitHub Issues / none). |
 | **1.2.0** | Structured `method.config.yaml` config file; credentials separated to `~/.claude/mcp.json`. |
 | **1.2.1** | Tutorial rewritten as a 15-minute quickstart. |
-| 1.3.0+ | TBD as the Method is used and tuned |
+| **1.2.3** | First public release (open source, MIT). |
+| **1.2.4** | Standard OSS scaffolding (license, contributing, security, CI). |
+| **2.0.0** | Refocused on spec generation. Build phase removed (Builder, `/build`, `/off-course`). Added the Explorer role and `/storm` for event-storming domain discovery, the ubiquitous-language glossary, and an explicit push-back/anti-sycophancy spine across the interviewing agents. |
+| 2.1.0+ | TBD as the Method is used and tuned |
 
 `CHANGELOG.md` tracks what changed at each version. Git tags mark releases; GitHub releases include release notes.
 
@@ -1582,23 +1595,22 @@ The script preserves your `AGENTS.md` and `docs/adr/`. It only overwrites the fr
 
 ## What's out of scope
 
-Explicitly not addressed in this framework:
+Explicitly not addressed by the Method:
 
-- **Sprint cadence.** Cycle structure, build-phase weekly rhythm, recovery time. Team decision.
-- **Build-phase tooling beyond what supports refinement.** Builder is scoped here; CI integration, deployment automation, automated dispatch are follow-ups.
-- **Hiring, business strategy, and operating model beyond the refinement system.**
-- **The `/off-course` skill** — referenced in stop conditions but its implementation is build-phase scope.
+- **Implementation.** The Method produces ready specs; it does not write production code. That's your coding tool's job. See "Where the Method ends" above.
+- **Sprint cadence.** Cycle structure, weekly rhythm, recovery time. A team decision the Method deliberately doesn't prescribe.
+- **CI/CD, deployment, and release automation.** Downstream of the spec.
+- **Hiring, business strategy, and operating model.**
 
-## Open questions
+## Tuning the Method to your project
 
-These remain unresolved and are the agenda for the team's working sessions:
+The Method ships with defaults; a few things are worth setting deliberately when you adopt it:
 
-1. **Story format and point scale.** Team's current scale (Fibonacci, t-shirt, custom) and story format need to be locked before the Decomposer prompt is finalised.
-2. **Definition of Ready today.** Does the team have a current DoR? If so, reconcile with the canonical version above.
-3. **First epic for the method.** Probably the rebuild's first concrete piece (set up new repo with locked stack).
-4. **Team review of this document.** The three other PEs haven't seen the design. The doing/deciding split, the role panel, the interview pattern all need their buy-in before going further.
-5. **First real use.** Pick a small concrete task from the rebuild and run the loop end-to-end. Tune from what's learned.
-6. **tracker MCP wiring.** Needs API key and workspace configuration before `/plan` can promote stories.
+1. **Story format and point scale.** Set your scale (Fibonacci, t-shirt, custom) and story format in `method.config.yaml` before relying on the Decomposer's estimates.
+2. **Definition of Ready.** If your team already has a DoR, reconcile it with the canonical eight-point version above — keep the test-exists criterion, adapt the rest.
+3. **Compliance vocabulary.** Set your frameworks (SOC 2, ISO 27001, etc.) in `method.config.yaml` so the Threat Modeller and compliance tagging speak your auditor's language.
+4. **Tracker wiring.** Connect your tracker MCP so `/plan` can promote stories; until then, the git `tree.yaml` is the operational state.
+5. **First run.** Pick one small, real piece of work and run the loop end-to-end. Tune the agent prompts (`.claude/agents/*.md`) from what you learn — they're yours once installed.
 
 ## Glossary
 
@@ -1608,32 +1620,36 @@ These remain unresolved and are the agenda for the team's working sessions:
 | **AGENTS.md** | The constitution. Linux Foundation open standard for agent project instructions. |
 | **Analyst** | Role: scope discovery (interviewing) and privacy lens (drafting). |
 | **Architect** | Role: surfaces and resolves decisions; drafts ADRs. |
-| **Builder** | Role: implements stories from failing tests. |
+| **Bounded context** | A DDD boundary within which a domain model and its language apply consistently. Surfaced by the Explorer; shapes epic structure. |
 | **Cartographer** | Role: reads existing code, produces cited findings. |
 | **Constitution** | The set of shared decisions encoded in AGENTS.md + ADRs. |
-| **Critic** | Role: adversarial review on tests (first pass) and code (second pass). |
+| **Critic** | Role: adversarial review on tests (during refinement) and on PRs/code/designs (on-demand via /review). |
+| **Domain map** | The Explorer's output: events, commands, policies, read models, hotspots, and proposed bounded contexts. |
 | **Decomposer** | Role: breaks design into DoR-ready story tree. |
 | **Designer** | Role: produces design docs from brief + ADRs + Cartographer's map. |
 | **DoR** | Definition of Ready. The eight-point checklist a leaf story must pass to exit refinement. |
 | **Doing** | Agent mode: AI acts autonomously, no human signoff in the moment. |
 | **Drafting** | Agent mode: AI generates a draft, human signs off. |
 | **Epic** | A multi-week scoped outcome with a single owning metric. |
-| **gbrain** | The memory layer. Three rings: session, project, org. Accessed via MCP. |
+| **Event storming** | A collaborative domain-discovery practice — mapping domain events, commands, policies, and hotspots. The Explorer runs it as a conversation. |
+| **Explorer** | Role: facilitates event storming, maps the domain, owns the ubiquitous-language glossary. |
+| **gbrain** | The memory layer. Per-project scoped. Accessed via MCP. |
+| **Hotspot** | A point of contention or uncertainty surfaced during event storming — flags where an ADR, threat model, or scoping decision is needed. |
 | **Initiative Lead** | The PE leading the current epic. Rotates per epic. |
 | **Interviewing** | Agent mode: AI asks, human answers, AI cleans/structures/augments, human signs off. |
 | **Loop** | The unified refinement loop — same shape, depth adapts to input. |
 | **Mode** | One of doing / drafting / interviewing. |
 | **Multi-epic decomposition** | Pre-step that runs when a goal is too big for a single epic. |
-| **Off-course** | Skill (build-phase scope) routing deviations through governance. |
 | **Plan-as-PR** | Pattern of treating refinement output as a versioned git artifact reviewed like code. |
 | **Promotion rule** | The conditions under which a conversation produces a canonical artifact. |
 | **Role** | An agent primitive. Ten exist in this framework. |
 | **Skill** | An internal capability composing roles × modes. Not the user-facing surface. |
 | **Story** | A leaf work item that meets DoR. Estimated at ≤3 points. |
-| **Stop condition** | An explicit trigger that pauses an agent and routes to a human. |
-| **Test Author** | Role: writes the failing test from AC, before Builder. Does not see implementation. |
+| **Stop condition** | An explicit trigger documented on a story — signals that implementation hit a refinement gap and should return to the Method. |
+| **Test Author** | Role: writes the failing test from AC. Does not see implementation. The test is the spec a developer later builds against. |
 | **Threat Modeller** | Role: drives STRIDE-style threat modelling interview at epic kickoff. |
 | **Triage** | The first step of the unified loop — determining input shape and depth. |
 | **Trigger profile** | The conditions under which a role gets invoked. Transparent to humans. |
+| **Ubiquitous language** | The project's agreed domain vocabulary, captured in `docs/domain-glossary.md` and read by every agent. A DDD concept; the Explorer maintains it. |
 | **Unified loop** | The single primary interaction pattern — triage → recursive decomposition → tracker + git. |
-| **Verifier** | Role: DoR check (refinement) and behavioural check (build). |
+| **Verifier** | Role: the DoR gate — confirms a leaf passes all eight readiness criteria. |

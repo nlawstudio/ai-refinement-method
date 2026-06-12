@@ -180,9 +180,10 @@ a:hover { background: var(--code-bg); }
 <li><a href="#how-the-method-routes-your-intent">How the Method routes your intent</a></li>
 <li><a href="#example-1-a-decision">Example 1 — a decision</a></li>
 <li><a href="#example-2-a-bug">Example 2 — a bug</a></li>
-<li><a href="#example-3-an-epic">Example 3 — an epic</a></li>
-<li><a href="#example-4-a-threat-model">Example 4 — a threat model</a></li>
-<li><a href="#example-5-end-of-session-handoff">Example 5 — end-of-session handoff</a></li>
+<li><a href="#example-3-mapping-a-domain">Example 3 — mapping a domain</a></li>
+<li><a href="#example-4-an-epic">Example 4 — an epic</a></li>
+<li><a href="#example-5-a-threat-model">Example 5 — a threat model</a></li>
+<li><a href="#example-6-end-of-session-handoff">Example 6 — end-of-session handoff</a></li>
 <li><a href="#where-artifacts-land">Where artifacts land</a></li>
 <li><a href="#pushing-back-on-agents">Pushing back on agents</a></li>
 <li><a href="#troubleshooting">Troubleshooting</a></li>
@@ -193,28 +194,33 @@ a:hover { background: var(--code-bg); }
 
 ## Why this exists
 
-AI coding tools give you a smart assistant. For real engineering work, you need more than smart suggestions.
+Code got cheap. Spec quality is the new bottleneck. Everyone building seriously has noticed.
 
-You need decisions captured so you (and the team) remember why. Scope clear before you start building. Tests defined as the spec, not as an afterthought. Threat models that count as compliance evidence. Audit trails that satisfy SOC 2 / ISO 27001 auditors. Coherent breakdowns of big goals into shippable work.
+Event storming, domain-driven design, and refinement already had the answer — the upstream work is where the leverage is. The problem was always the cost: a skilled facilitator, time the team had promised elsewhere, and artifacts that got lost the week after. AI fixes the cost. The Method puts that to work.
 
-Without structure, every Claude Code conversation reinvents the wheel. You finish with code that works, but no record of why, no captured threats, and no plan for the next person.
+It's not dictation, and it's not vibe coding. The AI is a thinking partner — it brings expertise, surfaces the gaps, and *pushes back* on weak reasoning. You bring taste, domain knowledge, and the final call. You stay the author; the Method makes you a sharper one.
 
-The Method fixes this by layering **ten specialised agents** and **eleven skills** on top of Claude Code, governed by a constitution your project owns. You're not "talking to Claude" any more — you're running a methodology that happens to use Claude.
+The Method layers **ten specialised agents** and **ten skills** on top of Claude Code, governed by a constitution your project owns. You're not "talking to Claude" any more — you're running a methodology that happens to use Claude.
 
 <div class="callout">
 <div class="callout-label">In one sentence</div>
-<p>The Method is a multi-agent system that takes your intent and produces refined work, captured decisions, and compliance evidence — automatically, <em>by structure</em>.</p>
+<p>The Method turns fuzzy intent into a ready spec — domain mapped, decisions captured, threats modelled, stories testable — that any coding tool can build from. It stops at the spec; it doesn't write your production code. <em>That's the point.</em></p>
 </div>
 
 ### What this gives you that raw Claude Code doesn't
 
+- **Domains get mapped** — event storming as a conversation, surfacing the real boundaries and the contested bits
+- **One shared language** — the ubiquitous-language glossary every agent reads, so the same word means the same thing everywhere
 - **Decisions become ADRs** without you having to remember to write them
-- **Stories arrive at "ready"** — testable acceptance criteria, ≤3 story points, linked ADRs, failing test in place
+- **Stories arrive at "ready"** — testable acceptance criteria, ≤3 story points, linked ADRs, a failing test already in place
 - **Threat models count** as compliance evidence because the engineer's engagement is recorded, not just an AI-generated template
-- **Bugs get broken** into one-PR-each pieces
 - **Multi-epic goals** become coherent bodies of work, not 100-item to-do lists
 - **Every output is tracker-ready** (Linear / Jira / GitHub Issues — or just git if you prefer no tracker)
 - **Session continuity** — close a session, resume days later in any agent
+
+### Not for vibe coding
+
+A different camp ships code by feel and finds out at runtime. Fine for prototypes. The Method is for software that has to stand up — production B2B, regulated environments, a real audit and a real blast radius. For that work, the hour saved skipping refinement is the quarter spent in remediation.
 
 ## What you get
 
@@ -223,15 +229,15 @@ For each shape of input, you get a different set of outputs. Same loop, differen
 | You type | Outputs |
 |---|---|
 | *"Should we use X or Y?"* | An ADR (if alternatives are real) or an informal decision logged |
+| *"Map the domain for X"* | A domain map — events, policies, hotspots, bounded contexts — plus the ubiquitous-language glossary |
 | *"How does X work in our codebase?"* | A cited code walkthrough — every claim has a `file:line` reference |
 | *"Fix the X bug"* | One tracker story with a failing test as the spec |
 | *"Add feature X"* | A refined epic with stories, ADRs, threat model, tests, compliance manifest |
 | *"Rebuild the platform"* | A multi-epic plan with all the above for each epic, sequenced |
-| *"Build story X"* | A PR with code, passing test, race detector clean, Critic-reviewed |
 | *"Threat-model this integration"* | A signed threat model with engineer's engagement recorded |
 | *"Review PR 142"* | Structured adversarial findings with severity |
 
-Every output is structured. Every output is in git. The right outputs land in your tracker. **Nothing important leaves your head without being recorded.**
+Every output is structured. Every output is in git. The right outputs land in your tracker. Then you take the ready stories — each with a failing test as its spec — into your own coding tool to implement. **Nothing important leaves your head without being recorded.**
 
 ## 15-minute quickstart
 
@@ -273,7 +279,7 @@ Fix the Solana wallet linkage bug
 
 The Method triages it as a bug. Cartographer locates the issue and produces cited findings. Analyst confirms scope. Test Author writes a failing test from the AC. You get back one tracker-ready story with a failing test that defines the fix.
 
-You've gone from *"I should fix that bug"* to *"here's the failing test that defines the fix, ready for a Builder to make pass"* in ten minutes.
+You've gone from *"I should fix that bug"* to *"here's the failing test that defines the fix, ready for a developer to make pass"* in ten minutes. The implementation itself is a five-minute job in your own coding tool — because the spec is now airtight.
 
 That's the Method. Everything else is variation on this loop.
 
@@ -305,10 +311,10 @@ Every agent output is in one of three modes. Knowing them tells you when to expe
 | Mode | Pattern | When |
 |---|---|---|
 | **Doing** | AI acts, no signoff | Mechanical work — reading code, running tests |
-| **Drafting** | AI drafts → human signs off | Code, tests, decompositions |
-| **Interviewing** | AI asks → human answers → AI structures and augments → human signs off | Scope, decisions, threat modelling |
+| **Drafting** | AI drafts → human signs off | Tests, decompositions, designs |
+| **Interviewing** | AI asks → challenges → human answers → AI structures and augments → human signs off | Domain mapping, scope, decisions, threat modelling |
 
-The interview pattern matters most. When the Method interviews you (scope, ADRs, threat models), the chat captures the conversation as-is, but the *artifact* is cleaned up, structured, and signed off by you. You don't have to type beautifully — the AI structures your thinking into the final document.
+The interview pattern matters most — and it's a partnership, not a transcription. When the Method interviews you, the AI doesn't just record your answers; it brings expertise, surfaces gaps, and pushes back when your reasoning has a hole. The chat captures the conversation as-is, but the *artifact* is cleaned up, structured, and signed off by you. You don't have to type beautifully — the AI structures your thinking into the final document, and sharpens it on the way.
 
 ### Ten agents, doing distinct jobs
 
@@ -316,20 +322,20 @@ You'll rarely think about them by name — the loop composes them — but knowin
 
 | Role | Job |
 |---|---|
+| **Explorer** | Event storming; maps the domain; owns the ubiquitous-language glossary |
 | **Cartographer** | Reads existing code; cited findings |
 | **Analyst** | Scope discovery; privacy lens |
 | **Architect** | Decisions; ADR drafting |
 | **Designer** | Design docs |
 | **Decomposer** | Breaks down into stories |
-| **Builder** | Implements from failing tests |
 | **Test Author** | Writes failing tests; never sees implementation |
-| **Verifier** | DoR check; behaviour check |
-| **Critic** | Adversarial review on tests and code |
+| **Verifier** | DoR gate — confirms a story is ready |
+| **Critic** | Adversarial review on tests, and on PRs/code/designs via `/review` |
 | **Threat Modeller** | STRIDE interview at epic kickoff |
 
 ## How the Method routes your intent
 
-The first thing the loop does is figure out the shape. Six shapes, each with a different depth.
+The first thing the loop does is figure out the shape. Each shape gets a different depth.
 
 ```mermaid
 flowchart TD
@@ -337,23 +343,25 @@ flowchart TD
     Read --> Shape{What shape?}
 
     Shape -->|Question / walkthrough| QA[Cited code walkthrough<br/>or abstract answer]
+    Shape -->|Unmapped domain| STORM[Explorer event storming<br/>→ domain map + glossary]
     Shape -->|Decision| DEC[Architect interview<br/>→ ADR or informal]
     Shape -->|Bug| BUG[Locate → AC → test<br/>→ 1 tracker story]
-    Shape -->|Story / small feature| STORY[Lightweight refinement<br/>→ 1-3 tracker stories]
-    Shape -->|Epic-sized work| EPIC[Full refinement<br/>→ 1 epic + stories<br/>+ ADRs + threat model]
+    Shape -->|Story / small feature| STORY2[Lightweight refinement<br/>→ 1-3 tracker stories]
+    Shape -->|Epic-sized work| EPIC[Full refinement<br/>→ storm? + stories<br/>+ ADRs + threat model]
     Shape -->|Multi-epic goal| MULTI[Epic decomposition<br/>→ N epics<br/>each fully refined]
 
     style Intent fill:#C84B31,color:#fff
     style Shape fill:#fff4e0
+    style STORM fill:#e8f4e8
     style EPIC fill:#e0f0f8
     style MULTI fill:#e0f0f8
 ```
 
 <div class="diagram-caption">Triage — how the Method picks the right depth for your intent</div>
 
-The triage step is always interview-led when uncertain. If the AI can't tell which shape your intent is, it asks. You see the conclusion before the loop continues; you can override.
+The triage step is always interview-led when uncertain. If the AI can't tell which shape your intent is, it asks. You see the conclusion before the loop continues; you can override. For epic-sized work in unfamiliar territory, the loop storms the domain first — mapping it before scoping it.
 
-The next five sections walk through the five shapes you'll hit most.
+The next sections walk through the shapes you'll hit most.
 
 ## Example 1 — a decision
 
@@ -491,7 +499,7 @@ Verifier confirms: test compiles, fails on assertion (currently returns 400), fa
 <div class="turn">
 <span class="role agent">Method</span>
 <div class="body">
-Promoted to your tracker as story <strong>NEW-156</strong>. Description includes the AC, test reference, no-architectural-impact tag (adding a chain to a list, not changing validation strategy). Ready for a Builder to make pass.
+Promoted to your tracker as story <strong>NEW-156</strong>. Description includes the AC, test reference, no-architectural-impact tag (adding a chain to a list, not changing validation strategy). Ready for a developer to make pass — the failing test defines done.
 </div>
 </div>
 
@@ -499,7 +507,94 @@ Promoted to your tracker as story <strong>NEW-156</strong>. Description includes
 
 Total: ~8 minutes. One tracker story with a failing test ready for a developer to pick up. No threat model (not security-sensitive), no ADR (no real decision), no design doc (mechanical fix). Right depth for the shape.
 
-## Example 3 — an epic
+## Example 3 — mapping a domain
+
+**Intent:** *"Map the domain for our new chain-of-custody module — we're rebuilding it from scratch"*
+
+This is greenfield in contested territory: the team doesn't yet share a model. The Method routes to the **Explorer** for an event-storming session. Notice the push-back — the Explorer isn't transcribing, it's interrogating.
+
+<div class="chat">
+
+<div class="turn">
+<span class="role human">Nicky</span>
+<div class="body">
+Map the domain for our new chain-of-custody module — we're rebuilding it from scratch
+</div>
+</div>
+
+<div class="turn">
+<span class="role agent">Explorer</span>
+<div class="body">
+Let's storm it. Walk me through what *happens* in custody, in the past tense — start wherever the story starts.
+</div>
+</div>
+
+<div class="turn">
+<span class="role human">Nicky</span>
+<div class="body">
+asset gets seized, then it's assigned to a custodian, then it can move between custodians, eventually it's disposed or returned
+</div>
+</div>
+
+<div class="turn">
+<span class="role agent">Explorer</span>
+<div class="body">
+So far: <em>Asset Seized → Custodian Assigned → Custody Transferred → Asset Disposed / Asset Returned</em>. Two questions. First — what happens when a transfer is <strong>rejected</strong>? You described the happy path; the rejection path is usually where custody systems get sued. Second — you said "assigned to a custodian" and "move between custodians" — is the first assignment a different event from a transfer, or the same one with no prior holder?
+</div>
+</div>
+
+<div class="turn">
+<span class="role human">Nicky</span>
+<div class="body">
+huh. yeah a rejected transfer is a thing — the receiving custodian can refuse. and... I think they're the same event actually, first assignment is just a transfer from "the system"
+</div>
+</div>
+
+<div class="turn">
+<span class="role agent">Explorer</span>
+<div class="body">
+I'd push back on collapsing them. "Seizure intake" and "custodian-to-custodian transfer" have different actors, different authority checks, and different audit requirements — modelling them as one event will haunt the permissions design later. I'm marking that as a <strong>hotspot</strong>, not deciding it now. And <em>Custody Transfer Rejected</em> goes on the board as an event.
+
+One more: you said "the system" assigns. Who or what is that — an intake officer, an automated rule? That's a real actor and it matters for attribution.
+</div>
+</div>
+
+<div class="turn">
+<span class="role human">Nicky</span>
+<div class="body">
+intake officer, manual for now. ok the seizure-vs-transfer split makes sense, leave it as a hotspot
+</div>
+</div>
+
+<div class="turn">
+<span class="role agent">Explorer</span>
+<div class="body">
+Captured. Here's where we are:
+
+<strong>Events:</strong> Asset Seized · Custodian Assigned (intake) · Custody Transfer Requested · Custody Transfer Accepted · Custody Transfer Rejected · Asset Disposed · Asset Returned
+
+<strong>Hotspot:</strong> is intake-assignment the same concept as custodian transfer? (→ needs an ADR before design)
+
+<strong>Glossary additions:</strong> <em>Custodian</em>, <em>Custody Transfer</em>, <em>Intake Officer</em>, <em>Disposition</em> — each with the definition you gave.
+
+<strong>Proposed bounded contexts:</strong> <em>Intake</em> (seizure → first custody) and <em>Custody</em> (transfers → disposition) — the pivot is "Asset Seized". Sign off, or move the seam?
+</div>
+</div>
+
+<div class="turn">
+<span class="role human">Nicky</span>
+<div class="body">
+that's right. sign off
+</div>
+</div>
+
+</div>
+
+The domain map lands in `plans/custody-rebuild/domain-map.md`; the glossary in `docs/domain-glossary.md`, read by every agent from now on. The hotspot becomes the first thing the Architect tackles. The bounded contexts shape how the rebuild's epics get cut.
+
+Total: ~25 minutes. The output isn't a transcript of what you already knew — it's a sharper model than you walked in with, because the Explorer found the rejection path, challenged the event collapse, and pinned the actor. That's the partnership.
+
+## Example 4 — an epic
 
 **Intent:** *"Implement a bulk asset export endpoint with rate limiting and audit"*
 
@@ -576,9 +671,9 @@ docs/adr/
   ADR-022-export-rate-limiting.md
 ```
 
-The plan PR lands. Reviewers click through the tree, comment on stories. Final merge → the work is ready for the build phase.
+The plan PR lands. Reviewers click through the tree, comment on stories. Final merge → every story is a ready spec, and the team can start pulling them into implementation.
 
-## Example 4 — a threat model
+## Example 5 — a threat model
 
 The Threat Modeller has the strictest interview pattern. Here's the anti-theatre check in action.
 
@@ -625,7 +720,7 @@ This is the Method's compliance backbone. Without the anti-theatre check, the sy
 
 When the user *does* engage genuinely, the Threat Modeller cleans up their casual answers (typos, abbreviations, half-finished thoughts), adds threats they didn't surface (clearly marked as AI-sourced vs human-sourced), and produces a structured signed model that becomes real compliance evidence. The chat transcript lives separately in `plans/{epic}/conversation.md` as the underlying audit trail.
 
-## Example 5 — end-of-session handoff
+## Example 6 — end-of-session handoff
 
 Long conversations have a context-window cost. Closing a session forfeits any context not committed to disk. The `/handoff` skill captures the cheap-to-write, expensive-to-lose state.
 
@@ -647,9 +742,9 @@ Drafting a handoff from session state. Here's what I captured:
 
 <strong>Last action:</strong> Manifest finalised. NEW-EPIC-42 set to "Refined" in the tracker.
 
-<strong>Next action:</strong> Run <code>/build NEW-142</code> to start the build phase on the export request API story.
+<strong>Next action:</strong> Hand NEW-142 (export request API) to implementation — it's DoR-ready with a failing test. Or, if you want to keep refining, NEW-147 (async export job) still has an open decision on the queue backend.
 
-<strong>Mental model:</strong> You're comfortable with the rate-limit ADR but want the team to react to the streaming-vs-batch decision before any of these stories goes to build.
+<strong>Mental model:</strong> You're comfortable with the rate-limit ADR but want the team to react to the streaming-vs-batch decision before any of these stories goes to a developer.
 
 <strong>Open question:</strong> Should NEW-144 (rate limit) wait for team review of ADR-022, or can it start immediately?
 
@@ -743,7 +838,7 @@ The Method records every pushback. If you push back on the Decomposer the same w
 ## Troubleshooting
 
 ### "Tracker MCP isn't connected"
-Until your tracker MCP is wired up, `/plan` and `/build` operate in **dry-run mode** — they produce all the git artifacts (tree, ADRs, threat model, tests, manifest) but don't push to the tracker. Everything else works normally.
+Until your tracker MCP is wired up, `/plan` operates in **dry-run mode** — it produces all the git artifacts (tree, domain map, ADRs, threat model, tests, manifest) but doesn't push to the tracker. Everything else works normally.
 
 ### "gbrain isn't connected"
 Past plans and ADR memory across sessions won't be queryable. The agents still work; they just lose the project-ring context. Run `/setup-gbrain` inside your project's directory to fix.
@@ -769,7 +864,7 @@ Edit it. `.claude/agents/{name}.md` is just markdown. Adjust the system prompt, 
 No. For a five-line bug fix, just fix it. The Method is for work where the *upstream thinking* matters — decisions, designs, threat models, complex stories.
 
 ### Can I invoke a specific skill directly?
-Yes. Power users can invoke `/adr`, `/decide`, `/spike`, `/explain`, `/threat-model`, `/review`, `/onboard`, `/plan`, `/build`, `/off-course`, `/handoff` directly. The intent-routing is the default, not the only path.
+Yes. Power users can invoke `/storm`, `/adr`, `/decide`, `/spike`, `/explain`, `/threat-model`, `/review`, `/onboard`, `/plan`, `/handoff` directly. The intent-routing is the default, not the only path.
 
 ### Does the Method work without a tracker?
 Yes. Set `tracker.type: none` in `method.config.yaml`. The git `tree.yaml` becomes the operational state. Suitable for solo work or small teams.
@@ -784,7 +879,7 @@ No, if you set up project-scoped gbrain. See METHOD.md "Memory via gbrain → gb
 Edit the agent files. `.claude/agents/*.md` is just markdown — adjust them to match your team's vocabulary, conventions, and tone. The framework is yours once installed.
 
 ### How do I know if the Method is actually working?
-Watch first-pass merge rate (PRs merged without rework), how often refinement output gets used vs. ignored, how many decisions you can find six months later when you need them. The signals in METHOD.md §11 cover this.
+Watch how often a story gets implemented without coming back for clarification (a clean spec needs no round-trips), how often refinement output gets used vs. ignored, and how many decisions you can find six months later when you need them. The signals in METHOD.md cover this.
 
 ### What happens if this turns out to be over-engineered for our project?
 You've shipped a few epics with high-quality refinement and detailed compliance evidence as a side effect. Worst case: scale it back, keep the parts you want. The downside is bounded; retrofitting refinement discipline later is the more expensive direction.

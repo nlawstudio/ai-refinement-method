@@ -2,7 +2,7 @@
 # sync-schema.sh — write the current database schema to docs/schema.sql
 #
 # The method reads docs/schema.sql at session start as part of the structured
-# reference layer. Every Designer, Architect, Builder, and Test Author sees the
+# reference layer. Every Designer, Architect, and Test Author sees the
 # actual data shape — no guessing, no greps, no decisions that contradict reality.
 #
 # Run this:

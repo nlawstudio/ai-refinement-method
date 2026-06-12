@@ -25,6 +25,21 @@ Operates in **doing** mode. No human sign-off needed for reading.
 
 ---
 
+## Explorer
+
+Invoked when:
+- The front of an epic in unfamiliar or contested domain territory — before scope or decomposition
+- Greenfield work where the domain model doesn't exist yet
+- A rebuild or migration where the model is implicit in old code and needs surfacing
+- The conversation reveals the team doesn't share a model (same word for different things, or different words for one thing)
+- `/storm` skill invoked
+
+**Not invoked for:** small bugs or well-understood changes where the domain shape isn't the open question.
+
+Operates in **interviewing** mode. Maps the domain (events, commands, policies, hotspots), proposes bounded contexts, and maintains the ubiquitous-language glossary. Transcript captured; map and glossary signed off.
+
+---
+
 ## Analyst — Scope mode
 
 Invoked when:
@@ -92,45 +107,25 @@ Operates in **drafting** mode.
 
 ---
 
-## Builder
-
-Invoked when:
-- A leaf story passes DoR (all eight criteria met)
-- A failing test exists from Test Author
-- The story is in `Ready` state in tracker
-
-Operates in **doing** mode. PR is reviewed by human + Critic.
-
----
-
 ## Test Author
 
 Invoked when:
 - A story has AC and is approaching DoR (during refinement, not after)
 - A node carries flag `needs-test-spec`
-- Builder is about to be invoked on a story that doesn't yet have a failing test
+- A story is reaching candidate-ready state without a failing test yet
 
-**Does not see implementation.** Operates in **drafting** mode.
+**Does not see implementation.** Operates in **drafting** mode. The failing test is the spec a developer later implements against, in their own tool.
 
 ---
 
-## Verifier — DoR check mode
+## Verifier
 
 Invoked when:
 - A leaf story is a candidate for "ready"
 - All eight DoR criteria need confirmation
 - Test Author has produced a test file (Verifier confirms it fails for the right reason)
 
-Operates in **doing** mode.
-
-## Verifier — Behavioural check mode
-
-Invoked when:
-- A PR is ready for review (post-Builder)
-- For rebuild work: equivalence checks against legacy system needed
-- Acceptance criteria need confirmation against running code
-
-Operates in **doing** mode.
+Operates in **doing** mode. The gate a story passes before exiting refinement.
 
 ---
 
@@ -140,11 +135,11 @@ Invoked **immediately after** Test Author produces a test file. Job: does this t
 
 Operates in **doing** mode. Default to "this is insufficient" unless the test genuinely exercises behaviour.
 
-## Critic — Code critique pass
+## Critic — Code or design critique (on-demand)
 
-Invoked **immediately after** Builder produces an implementation. Job: what could break this that the tests don't catch? Where would I attack this?
+Invoked when `/review` targets a PR, a code file, or a design doc. Job: what could break this that the tests don't catch? What does it hand-wave? Where would I attack it?
 
-Operates in **doing** mode. Default to "refuted" rather than "accepted" when uncertain.
+Operates in **doing** mode. Default to "refuted" rather than "accepted" when uncertain. Not an automated step — invoked deliberately by the human against work that already exists.
 
 ---
 
@@ -159,55 +154,6 @@ Invoked when:
 - `/threat-model` skill invoked standalone
 
 Operates in **interviewing** mode. The engineer's engaged input — cleaned by the AI and signed off — is the compliance evidence. Generic STRIDE output without engineer engagement does not count.
-
----
-
-## Builder
-
-Invoked when:
-- A leaf story passes DoR (all eight criteria met)
-- A failing test exists from Test Author
-- The story is in `Ready` state in tracker
-- A `/build` skill invocation is active
-- Dependencies are confirmed merged (no "blocked by" outstanding)
-
-Operates in **doing** mode. PR is reviewed by human + Critic before merge.
-
----
-
-## Verifier — Build mode
-
-Invoked when:
-- Builder has produced an implementation in build phase
-- For rebuild work: equivalence checks against legacy system needed
-- Acceptance criteria need confirmation against running code
-- Race detector or language-equivalent concurrency check needs running
-
-Operates in **doing** mode.
-
----
-
-## Off-course bridge
-
-Invoked when:
-- Builder hits any stop condition during `/build`
-- A human notices an upstream issue (ambiguous AC, missing ADR, etc.) outside of build
-- A Critic finding indicates an upstream change is needed (not just code-level)
-- A story's failing test no longer compiles against the current codebase
-
-Operates in **interviewing** mode initially (diagnosing), then **drafting** (producing the upstream change).
-
-The off-course bridge routes to the appropriate refinement role based on the diagnosis:
-
-| Diagnosis | Refinement role |
-|---|---|
-| ADR gap or contradiction | Architect (interview) |
-| AC ambiguity | Analyst + Test Author (revise AC + rewrite test) |
-| Threat model gap | Threat Modeller (supplementary session) |
-| Missing existing-code context | Cartographer |
-| Scope expansion | Analyst (rescope) + Decomposer (split if needed) |
-| Missing test data generator | Test Author (build the generator first) |
-| Architectural boundary crossed | Decomposer (split the story) |
 
 ---
 

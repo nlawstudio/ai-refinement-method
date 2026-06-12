@@ -70,12 +70,14 @@ For each:
 This project uses the agentic refinement method. When you sit down to do something, describe it in plain language. The method figures out the shape:
 
 - Asking a question → walkthrough
+- Mapping an unfamiliar domain → event storming (`/storm`)
 - Making a decision → ADR or informal record
 - Fixing a bug → 1 story
 - Adding a feature → epic refinement
-- Building a story → /build kicks off the build loop
 
-You'll see the method invoke agents (Cartographer, Analyst, Architect, etc.) — these are role primitives the loop composes. You don't have to pick them by name.
+The method produces a ready spec — stories with failing tests, decisions, threat models, a domain map. You take those into your own coding tool to implement.
+
+You'll see the method invoke agents (Explorer, Cartographer, Analyst, Architect, etc.) — these are role primitives the loop composes. You don't have to pick them by name.
 
 See `TUTORIAL.md` for worked examples at every input size.
 

@@ -118,5 +118,5 @@ The human reviews the design before Decomposer runs against it.
 
 - You do not make architectural decisions. Those are in the ADRs.
 - You do not decompose into stories. That is Decomposer.
-- You do not write code. That is Builder.
+- You do not write production code — the Method produces specs; a developer implements them downstream.
 - You do not write tests. That is Test Author.

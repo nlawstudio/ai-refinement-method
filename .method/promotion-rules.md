@@ -47,13 +47,25 @@ A threat modelling exercise produces a canonical threat model if:
 
 - It was an **interview**, not a generated STRIDE template
 - The engineer **engaged verbally** with at least the questions: "what are the assets here?", "who would attack this?", "what's the worst-case data exposure?"
-- The transcript captures the engineer's verbatim responses (not paraphrased)
+- The engineer's input was **cleaned and structured by the AI and signed off** by the engineer (the signed artifact is the evidence; the raw chat is preserved alongside for verification)
 
 If those conditions hold, the threat model is stored at `plans/{epic}/threat-model.md` and referenced in the compliance manifest.
 
 If the engineer skipped the interview ("just generate it") — the system **refuses to produce a canonical threat model**. It produces a draft labelled "not human-engaged" that does not count as compliance evidence.
 
 This is the anti-theatre check.
+
+---
+
+## Domain map and glossary promotion rule
+
+A `/storm` session produces a canonical domain map when:
+
+- The Explorer facilitated an event-storming conversation (events, commands, policies, read models, hotspots), not a generated map
+- The human engaged and signed off on the map and its proposed bounded contexts
+- Hotspots are named, not smoothed over, each tagged with what it needs next (ADR / threat model / scoping decision / spike)
+
+Stored at `plans/{epic}/domain-map.md`. Every new domain term agreed during the session is added to `docs/domain-glossary.md` (the ubiquitous language), which is read by every agent thereafter. The glossary is append-and-revise, never silently overwritten — a changed definition is a decision the human signs off on.
 
 ---
 
@@ -85,7 +97,7 @@ On promotion:
 
 A privacy impact assessment becomes a canonical artifact entry in the manifest when:
 
-- A node touches data classified Confidential or Restricted (per ADR-018)
+- A node touches data classified Confidential or Restricted (per the project's data-handling ADR)
 - The Analyst (privacy mode) has assessed: classification, retention, subject rights, third-party exposure
 - The human has reviewed and signed off
 
@@ -108,28 +120,7 @@ A test becomes a tagged compliance evidence artifact when:
 The current tag vocabulary:
 - **SOC 2 Trust Services Criteria** (CC, A, PI, P, C series)
 - **ISO 27001 Annex A** controls (A.5 through A.8 series in 2022 version)
-- **NIST 800-53 Rev 5** — optional, added when a FedRAMP engagement is triggered (per ADR-016)
-
----
-
-## Off-course promotion rule
-
-When `/build` hits a stop condition, `/off-course` diagnoses the kind of upstream change needed and produces a governed PR against the right artifact. The diagnosis follows this routing:
-
-| Kind of upstream change | Diagnostic signal | Refinement role | Target artifact |
-|---|---|---|---|
-| **ADR gap** | Required decision is not in linked ADRs | Architect (interview) | New `docs/adr/ADR-XXX.md` |
-| **ADR contradiction** | AC and an existing ADR conflict | Architect (interview) | New superseding ADR + AC update |
-| **AC ambiguity** | The failing test does not make clear what to build | Analyst + Test Author | Updated AC in tracker + revised test file |
-| **Threat model gap** | Builder discovers a threat not in the threat model | Threat Modeller | Supplementary threat model entry + manifest update |
-| **Missing existing-code context** | Builder needs to understand legacy or adjacent behaviour | Cartographer | Findings doc; no governed artifact (informational) |
-| **Scope expansion** | Story cannot be completed without scope expansion | Analyst + Decomposer | Updated scope + new split story |
-| **Missing test data generator** | Test needs a fixture type that doesn't exist | Test Author | Generator code + updated test |
-| **Architectural boundary crossed** | Implementation would touch multiple boundaries | Decomposer | Split into new stories |
-
-Every off-course event is recorded in the original epic's manifest as an audit-trail entry — showing the team surfaced and routed the upstream issue rather than papering over it.
-
-The original tracker story is set to `Blocked` until the governed PR merges, then moves back to `Ready` for Builder to resume.
+- **NIST 800-53 Rev 5** — optional, added when a FedRAMP engagement is triggered (per the project's compliance-scope ADR)
 
 ---
 

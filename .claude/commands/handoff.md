@@ -110,7 +110,7 @@ The handoff document is plain markdown, so it works across any agent (Claude Cod
 ## To resume — instructions for the next session
 
 ### First action
-{The single most concrete thing the next session should do to pick up. E.g., "Open `plans/bulk-export/tree.yaml`, read the node tagged `needs-decision`, resume the Architect interview." Or "Pull STORY-144 from tracker, run `/build STORY-144` — last attempt hit a stop condition on rate-counter storage, route through `/off-course` if same stop fires again.")}
+{The single most concrete thing the next session should do to pick up. E.g., "Open `plans/bulk-export/tree.yaml`, read the node tagged `needs-decision`, resume the Architect interview." Or "Resume the `/storm` session on the custody domain — the Custody Disputed event was a hotspot we hadn't resolved; pick up there."}
 
 ### Context the next session needs
 {Files to read, ADRs to load, gbrain queries to run. Anything that puts the next session at the same starting point.}

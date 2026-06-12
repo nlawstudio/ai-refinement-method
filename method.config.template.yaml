@@ -12,7 +12,7 @@ method_version: 1.2.0
 # ─── Operational tracker ──────────────────────────────────────────────────
 # The Method is tracker-agnostic. Pick one type, fill in the matching block.
 # Other blocks are ignored. `type: none` means git tree.yaml is the
-# operational state — no remote tracker, /plan and /build run in dry-run mode.
+# operational state — no remote tracker, /plan runs in dry-run mode.
 
 tracker:
   # Required. One of: linear | jira | github-issues | none
