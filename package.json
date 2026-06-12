@@ -1,0 +1,11 @@
+{
+  "name": "ai-refinement-method",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Build tooling for the Method's styled docs.",
+  "type": "module",
+  "scripts": {
+    "build:docs": "node scripts/build-docs.mjs"
+  },
+  "license": "MIT"
+}

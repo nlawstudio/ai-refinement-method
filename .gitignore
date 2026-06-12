@@ -20,3 +20,5 @@ plans/*/
 # Override per-project by removing this line if you want handoffs committed
 # for team visibility.
 .method/handoffs/
+dist/
+node_modules/

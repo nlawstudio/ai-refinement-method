@@ -135,6 +135,10 @@ These exist as internal patterns the method composes; you don't have to invoke t
 scripts/
   sync-schema.sh         ← regenerates docs/schema.sql (Atlas + pg_dump)
   sync-adr-index.sh      ← regenerates docs/adr/INDEX.md
+  build-docs.mjs         ← renders the styled decks to self-contained HTML
+
+theme/
+  theme.css              ← single source of truth for the deck styling
 
 plans/_templates/        ← tree.yaml and manifest.yaml shapes (ship)
 
@@ -149,6 +153,17 @@ CHANGELOG.md                ← version history
 VERSION                     ← current version
 install.sh                  ← installer
 ```
+
+## Viewing the styled docs
+
+`METHOD.md` and `TUTORIAL.md` are designed decks, not plain markdown — but **GitHub and most previewers strip the styling**, so they look unstyled there. To see them with the theme (deep navy on dusty rose, coral accent) and the Mermaid diagrams drawn:
+
+```bash
+npm run build:docs      # → dist/method.html, dist/tutorial.html
+open dist/method.html   # any browser; print to PDF from there
+```
+
+The styling lives in one place — [`theme/theme.css`](theme/theme.css). Edit it once and rebuild; both decks (and any new one you add to `scripts/build-docs.mjs`) pick up the change. The built HTML is self-contained except for fonts, Mermaid, and the markdown renderer, which load from CDN on first open.
 
 ## Three files for project state
 
