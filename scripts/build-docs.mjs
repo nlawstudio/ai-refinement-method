@@ -7,7 +7,7 @@
  * theme/theme.css inlined and Mermaid rendered client-side, producing files you
  * can open in a browser and print to PDF.
  *
- * Usage:  node scripts/build-docs.mjs            (builds METHOD + TUTORIAL)
+ * Usage:  node scripts/build-docs.mjs            (builds METHOD + QUICKSTART)
  *         node scripts/build-docs.mjs FILE.md    (builds one file)
  *
  * No dependencies — pure Node stdlib. markdown-it and mermaid load from CDN in
@@ -22,7 +22,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const theme = readFileSync(join(root, 'theme', 'theme.css'), 'utf8');
 
 const docs = process.argv.slice(2);
-const targets = docs.length ? docs : ['METHOD.md', 'TUTORIAL.md'];
+const targets = docs.length ? docs : ['METHOD.md', 'QUICKSTART.md'];
 
 mkdirSync(join(root, 'dist'), { recursive: true });
 
@@ -75,13 +75,13 @@ mermaid.initialize({
   startOnLoad: false,
   theme: 'base',
   themeVariables: {
-    fontFamily: 'Inter, system-ui, sans-serif',
-    primaryColor: '#F4E6C6',
-    primaryTextColor: '#16233D',
-    primaryBorderColor: '#16233D',
-    lineColor: '#16233D',
-    secondaryColor: '#DBEAE1',
-    tertiaryColor: '#DCE4EC',
+    fontFamily: 'Space Grotesk, Inter, system-ui, sans-serif',
+    primaryColor: '#E9E3F8',
+    primaryTextColor: '#221A3F',
+    primaryBorderColor: '#6C4DF6',
+    lineColor: '#221A3F',
+    secondaryColor: '#FFE0E9',
+    tertiaryColor: '#FFEFDB',
     fontSize: '14px'
   }
 });
@@ -93,6 +93,11 @@ if (location.hash) document.getElementById(location.hash.slice(1))?.scrollIntoVi
 </body>
 </html>
 `;
+
+// The landing page is hand-authored HTML — copy it in so dist/ is a complete
+// deployable site root (index + the styled decks it links to).
+writeFileSync(join(root, 'dist', 'index.html'), readFileSync(join(root, 'site', 'index.html')));
+console.log('copied dist/index.html  (landing page)');
 
 for (const target of targets) {
   const srcPath = join(root, target);

@@ -11,7 +11,7 @@
 #     - .claude/agents/, .claude/commands/ (role and skill definitions)
 #     - .method/ (trigger profiles and promotion rules)
 #     - plans/_templates/ (refinement artifact templates)
-#     - METHOD.md, TUTORIAL.md, INSTALL.md (documentation references)
+#     - METHOD.md, QUICKSTART.md, AGENT_INSTALL.md (documentation references)
 #   - Creates AGENTS.md from AGENTS.template.md if one does not already exist
 #   - Preserves anything that already exists in the target
 
@@ -105,10 +105,21 @@ cp -R "$TEMP_DIR/method/plans/_templates" "$TARGET_DIR/plans/"
 echo "  ✓ plans/_templates/ (tree.yaml + manifest.yaml shapes)"
 
 cp "$TEMP_DIR/method/METHOD.md" "$TARGET_DIR/METHOD.md"
-cp "$TEMP_DIR/method/TUTORIAL.md" "$TARGET_DIR/TUTORIAL.md"
-cp "$TEMP_DIR/method/INSTALL.md" "$TARGET_DIR/INSTALL.md"
+cp "$TEMP_DIR/method/QUICKSTART.md" "$TARGET_DIR/QUICKSTART.md"
 cp "$TEMP_DIR/method/AGENT_INSTALL.md" "$TARGET_DIR/AGENT_INSTALL.md"
-echo "  ✓ METHOD.md, TUTORIAL.md, INSTALL.md, AGENT_INSTALL.md (documentation)"
+echo "  ✓ METHOD.md, QUICKSTART.md, AGENT_INSTALL.md (documentation)"
+
+# Pre-v2.1 installs shipped the quickstart as TUTORIAL.md — clean up on upgrade.
+if [ -f "$TARGET_DIR/TUTORIAL.md" ]; then
+  rm "$TARGET_DIR/TUTORIAL.md"
+  echo "  ✓ TUTORIAL.md      (removed — replaced by QUICKSTART.md)"
+fi
+
+# Pre-2.1 installs shipped INSTALL.md — install/setup now lives in the README.
+if [ -f "$TARGET_DIR/INSTALL.md" ]; then
+  rm "$TARGET_DIR/INSTALL.md"
+  echo "  ✓ INSTALL.md       (removed — install/setup now in the README)"
+fi
 
 mkdir -p "$TARGET_DIR/scripts"
 cp "$TEMP_DIR/method/scripts/sync-schema.sh" "$TARGET_DIR/scripts/"
@@ -234,4 +245,4 @@ echo "  agent session."
 echo ""
 echo "═══════════════════════════════════════════════════════════════════════"
 echo ""
-echo "Manual path (if you'd rather): see INSTALL.md."
+echo "Manual path (if you'd rather): see https://github.com/nlawstudio/ai-refinement-method#install"

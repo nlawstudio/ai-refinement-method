@@ -4,6 +4,27 @@ All notable changes to the method will be documented here. Versions follow [SemV
 
 ---
 
+## [2.1.0] — 2026-06-15
+
+### Added
+- **Landing page** (`site/index.html`) — a self-contained project site (vanilla HTML/CSS/JS, no build dependencies). `npm run build:docs` copies it into `dist/` alongside the styled decks, so `dist/` is a complete deployable site root.
+- **`.github/workflows/pages.yml`** — builds and deploys the site to GitHub Pages on push to `main`.
+
+### Changed
+- **Tiered Definition of Ready** (`method_version` → 2.1.0). The DoR gate is now eight strengthened *core* criteria plus a *conditional* layer keyed on each story's `facets` (`request-path`, `data-change`, `shared-resource`, `external-integration`, `ui`). Concerns that used to surface at implementation time as stop conditions are pulled into the gate: non-functional budgets, typed-and-verified dependencies, module-map-verified architectural impact, per-facet edge enumeration, migration/rollback, observability signals, and AC provenance. The Verifier gains a red-test review (the failing test must fail for the *specified* reason, not merely fail) and epic-level exit checks (dependency DAG, hotspot closure, manifest completeness). Threat-model evidence is now the engineer's recorded risk decisions — severity, real/not, residual-risk owner — rather than mere participation. The test command is parameterized via `method.config.yaml` (`testing.command`) instead of Go-hardcoded. Touches `METHOD.md`, the verifier/decomposer/test-author/threat-modeller/critic/explorer agents, `.method/`, `AGENTS.template.md`, `method.config.template.yaml`, and the plan templates.
+- **`TUTORIAL.md` → `QUICKSTART.md`** — renamed (history preserved) and rewritten as a true 15-minute quickstart: install → first decision → first refined story. All cross-references updated; `npm run build:docs` now emits `dist/quickstart.html`.
+- Restyled the decks and landing page; the strapline is now **"Spec-driven development deserves a better spec."**
+- **README rewritten** as a standalone OSS front door — leads with the agent-driven install as the default path, keeps the problem/why/how narrative (role panel + DoR summary), and folds the manual-install detail into a collapsible section. Now that the landing page carries the polished pitch, the README is leaner but still self-contained.
+
+### Removed
+- **`INSTALL.md`** — its install and setup content moved into the README (install/setup is now in one place, with the agent flow as the default). The installer and `AGENT_INSTALL.md` no longer ship it, and upgrades remove the old shipped copy.
+
+### Fixed
+- Removed build-phase leftovers that contradicted the v2.0.0 "stops at the spec" narrowing: `AGENT_INSTALL.md` ("…and shipped code"), `AGENTS.template.md` ("writing implementation from failing tests"), `CONTRIBUTING.md` ("…and build workflows").
+- Aligned the `plans/_templates/` examples to the `DoR-ready` flag the `/plan` orchestrator actually sets — the templates still carried the orphaned `harness-ready` / `ready_for_build` vocabulary from the removed build phase, which referenced a flag the system never produces.
+
+---
+
 ## [2.0.1] — 2026-06-12
 
 Visual refresh for the styled decks, plus a real render pipeline so they actually display. No changes to the Method itself.

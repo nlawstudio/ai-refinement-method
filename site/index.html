@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Method — spec-driven development deserves a better spec</title>
+<meta name="description" content="An open-source refinement method that turns plain-language intent into build-ready specs — domain mapped, decisions captured, threats modelled, every story testable. It stops at the spec. That's the point.">
+<meta property="og:title" content="The Method — spec-driven development deserves a better spec.">
+<meta property="og:description" content="Turn plain-language intent into build-ready specs. Open source, installs into any repo, works with Claude Code, Cursor, and Codex.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#FAF9F6">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2316233D'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='16' fill='%23E08D6D' text-anchor='middle'%3E%7B%7D%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ————————————————————————————————————————————————
+   The Method — landing page
+   Quiet, docs-shaped. Navy ink on warm paper; one dark
+   "machine" moment (the triage terminal); hairlines do
+   the layout work. Serif appears only in the wordmark.
+   ———————————————————————————————————————————————— */
+:root {
+  --bg: #FAF9F6;
+  --card: #F3F1EB;
+  --ink: #16233D;
+  --muted: #5C6A85;
+  --faint: #9AA3B5;
+  --line: rgba(22, 35, 61, 0.12);
+  --accent: #C75B3D;
+  /* the one dark surface */
+  --dk: #16233D;
+  --dk-ink: #E9E7E2;
+  --dk-mut: #8C9AB5;
+  --dk-faint: #5D6C8C;
+  --dk-accent: #E08D6D;
+  --dk-ok: #8DB892;
+  --serif: 'Instrument Serif', Georgia, serif;
+  --sans: 'Inter', -apple-system, system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); }
+body {
+  font-family: var(--sans);
+  font-size: 15.5px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: rgba(199, 91, 61, 0.22); }
+a { color: inherit; text-decoration: none; }
+a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+.mono { font-family: var(--mono); }
+
+/* ── sidebar ── */
+.side {
+  position: fixed; top: 0; left: 0; bottom: 0; width: 240px;
+  padding: 36px 32px;
+  display: flex; flex-direction: column;
+}
+.wordmark { font-family: var(--serif); font-size: 21px; display: block; margin-bottom: 36px; }
+.wordmark em { color: var(--accent); font-style: italic; }
+.side nav { display: flex; flex-direction: column; gap: 2px; }
+.side nav a {
+  font-size: 13.5px; color: var(--muted); padding: 5px 0;
+  transition: color 0.2s;
+}
+.side nav a:hover { color: var(--ink); }
+.side nav a.active { color: var(--ink); font-weight: 500; }
+.side .ext { margin-top: 22px; padding-top: 22px; border-top: 1px solid var(--line); }
+.side .ext a { font-size: 13px; }
+.side .ext a::after { content: " ↗"; color: var(--faint); font-size: 11px; }
+
+/* ── content column ── */
+main {
+  margin-left: 240px;
+  padding: 84px clamp(24px, 6vw, 80px) 40px;
+  max-width: 980px;
+}
+.col { max-width: 660px; }
+
+section { margin-bottom: 96px; scroll-margin-top: 48px; }
+
+h1 {
+  font-size: clamp(26px, 3.4vw, 36px); font-weight: 600;
+  letter-spacing: -0.02em; line-height: 1.25; margin: 0 0 18px;
+}
+h2 {
+  font-size: 21px; font-weight: 600; letter-spacing: -0.01em;
+  margin: 0 0 14px;
+}
+h3 { font-size: 15.5px; font-weight: 600; margin: 0 0 6px; }
+p { color: var(--muted); margin: 0 0 14px; }
+p strong { color: var(--ink); font-weight: 500; }
+p a, li a { color: var(--ink); border-bottom: 1px solid var(--line); transition: border-color 0.2s, color 0.2s; }
+p a:hover, li a:hover { color: var(--accent); border-bottom-color: rgba(199, 91, 61, 0.4); }
+
+/* ── hero ── */
+.hero { margin-bottom: 72px; }
+.hero p { max-width: 560px; }
+.cta-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-top: 26px; }
+.btn {
+  display: inline-block; background: var(--dk); color: var(--dk-ink);
+  font-size: 13.5px; font-weight: 500; border-radius: 8px;
+  padding: 9px 18px; border: 1px solid var(--dk);
+  transition: opacity 0.2s; cursor: pointer; font-family: var(--sans);
+}
+.btn:hover { opacity: 0.88; }
+.chip {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--mono); font-size: 12.5px; color: var(--muted);
+  background: transparent; border: 1px solid var(--line); border-radius: 8px;
+  padding: 9px 14px; cursor: pointer; transition: border-color 0.2s, color 0.2s;
+  max-width: min(420px, 100%); min-width: 0;
+}
+.chip:hover { border-color: rgba(199, 91, 61, 0.45); color: var(--ink); }
+.chip .txt { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.chip .cp { color: var(--faint); flex: none; font-size: 11px; }
+.chip:hover .cp { color: var(--accent); }
+
+/* ── terminal (the one rich moment) ── */
+.term {
+  background: var(--dk); border-radius: 12px; overflow: hidden;
+  margin-top: 44px;
+  box-shadow: 0 16px 44px rgba(22, 35, 61, 0.14);
+}
+.term-bar {
+  display: flex; align-items: center; gap: 7px;
+  padding: 11px 16px; border-bottom: 1px solid rgba(233, 231, 226, 0.09);
+}
+.term-bar .d { width: 8px; height: 8px; border-radius: 50%; background: var(--dk-faint); opacity: 0.5; }
+.term-bar .t { font-family: var(--mono); font-size: 11px; color: var(--dk-faint); margin-left: 8px; }
+.term-body {
+  font-family: var(--mono); font-size: 13px; line-height: 1.9;
+  padding: 22px 20px 26px; min-height: 218px;
+}
+.term-body .prompt { color: var(--dk-ink); word-break: break-word; }
+.term-body .prompt::before { content: "you › "; color: var(--dk-accent); }
+.term-body .prompt .tc {
+  display: inline-block; width: 7px; height: 14px; background: var(--dk-accent);
+  vertical-align: -2px; animation: blink 1s steps(1) infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+.term-line { color: var(--dk-mut); opacity: 0; transition: opacity 0.4s; }
+.term-line.show { opacity: 1; }
+.term-line::before { content: "  · "; color: var(--dk-faint); }
+.term-line.out { color: var(--dk-ok); }
+.term-line.out::before { content: "  ✓ "; color: var(--dk-ok); }
+.term-line .tag {
+  color: var(--dk-accent); background: rgba(224, 141, 109, 0.13);
+  padding: 1px 7px; border-radius: 4px; font-size: 12px;
+}
+
+/* ── stacked rows ── */
+.rows { border-top: 1px solid var(--line); }
+.row { padding: 22px 0; border-bottom: 1px solid var(--line); }
+.row p { margin: 0; max-width: 600px; }
+.row .k {
+  font-family: var(--mono); font-size: 11px; color: var(--faint);
+  display: block; margin-bottom: 8px;
+}
+
+/* ── role list ── */
+.roles { border-top: 1px solid var(--line); }
+.role {
+  display: grid; grid-template-columns: 150px 1fr auto; gap: 6px 16px;
+  align-items: baseline; padding: 13px 0; border-bottom: 1px solid var(--line);
+}
+.role .nm { font-size: 14.5px; font-weight: 500; grid-column: 1; grid-row: 1; }
+.role .jb { font-size: 13.5px; color: var(--muted); grid-column: 2; grid-row: 1; }
+.role .md { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); grid-column: 3; grid-row: 1; }
+@media (max-width: 640px) {
+  .role { grid-template-columns: 1fr auto; }
+  .role .nm { grid-column: 1; grid-row: 1; }
+  .role .md { grid-column: 2; grid-row: 1; }
+  .role .jb { grid-column: 1 / -1; grid-row: 2; }
+}
+
+/* ── code cards ── */
+.code {
+  background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+  font-family: var(--mono); font-size: 12.5px; line-height: 1.8; color: var(--ink);
+  padding: 16px 18px; margin: 14px 0 8px; overflow-x: auto;
+  position: relative;
+}
+.code .ps1 { color: var(--accent); }
+.code .cm { color: var(--faint); }
+.code .cp-btn {
+  position: absolute; top: 10px; right: 10px;
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.06em;
+  background: var(--bg); border: 1px solid var(--line); color: var(--muted);
+  border-radius: 6px; padding: 4px 10px; cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+.code .cp-btn:hover { color: var(--accent); border-color: rgba(199, 91, 61, 0.45); }
+.code pre { margin: 0; white-space: pre-wrap; word-break: break-word; padding-right: 56px; }
+.note { font-size: 13px; color: var(--faint); margin-top: 8px; }
+.note code {
+  font-family: var(--mono); font-size: 11.5px; background: var(--card);
+  border: 1px solid var(--line); border-radius: 5px; padding: 1px 6px;
+}
+
+/* ── artifacts tree ── */
+.tree {
+  background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+  padding: 18px 20px; overflow-x: auto; margin: 22px 0 0;
+  font-family: var(--mono); font-size: 12.5px; line-height: 2; color: var(--ink);
+}
+.tree .ln { display: block; white-space: pre; }
+.tree .dim { color: var(--faint); }
+.tree .dir { color: var(--accent); }
+.tree .ok { color: #4F7D5B; }
+.tree .mut { color: var(--muted); }
+
+/* ── FAQ ── */
+.faq { border-top: 1px solid var(--line); }
+.faq details { border-bottom: 1px solid var(--line); }
+.faq summary {
+  list-style: none; cursor: pointer; padding: 16px 0;
+  font-size: 14.5px; font-weight: 500;
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; color: var(--faint); font-size: 17px; transition: transform 0.2s; flex: none; }
+.faq details[open] summary::after { transform: rotate(45deg); }
+.faq details p { margin: 0 0 16px; font-size: 14px; max-width: 600px; }
+
+/* ── footer ── */
+footer {
+  margin-left: 240px;
+  padding: 22px clamp(24px, 6vw, 80px) 36px;
+  border-top: 1px solid var(--line);
+  font-family: var(--mono); font-size: 11.5px; color: var(--faint);
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+  max-width: 980px;
+}
+footer .seg { display: flex; gap: 18px; flex-wrap: wrap; }
+footer a { color: var(--muted); transition: color 0.2s; }
+footer a:hover { color: var(--accent); }
+
+/* ── mobile ── */
+.topbar { display: none; }
+@media (max-width: 900px) {
+  .side { display: none; }
+  main, footer { margin-left: 0; }
+  main { padding-top: 76px; }
+  .topbar {
+    display: flex; position: fixed; top: 0; left: 0; right: 0; z-index: 10;
+    justify-content: space-between; align-items: center;
+    padding: 14px 20px;
+    background: rgba(250, 249, 246, 0.85);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .topbar .wordmark { margin: 0; font-size: 19px; }
+  .topbar .gh { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .topbar .gh::after { content: " ↗"; color: var(--faint); }
+  section { margin-bottom: 72px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .term-body .prompt .tc { animation: none; }
+}
+</style>
+</head>
+<body>
+
+<aside class="side">
+  <a class="wordmark" href="#overview">The Method<em>.</em></a>
+  <nav aria-label="Sections">
+    <a href="#overview" class="active">Overview</a>
+    <a href="#how-it-works">How it works</a>
+    <a href="#what-you-get">What you get</a>
+    <a href="#roles">The role panel</a>
+    <a href="#get-started">Get started</a>
+    <a href="#faq">FAQ</a>
+  </nav>
+  <div class="ext">
+    <nav aria-label="External">
+      <a href="https://github.com/nlawstudio/ai-refinement-method">GitHub</a>
+      <a href="./quickstart.html">Quickstart</a>
+      <a href="./method.html">METHOD.md</a>
+      <a href="https://github.com/nlawstudio/ai-refinement-method/releases">v2.1.0</a>
+    </nav>
+  </div>
+</aside>
+
+<div class="topbar">
+  <a class="wordmark" href="#overview">The Method<em>.</em></a>
+  <a class="gh" href="https://github.com/nlawstudio/ai-refinement-method">github</a>
+</div>
+
+<main>
+
+  <section class="hero" id="overview">
+    <h1>Spec-driven development<br>deserves a better spec.</h1>
+    <p>
+      The Method is an open-source refinement layer for AI coding agents. Describe what
+      you want in plain language; it turns that into a <strong>build-ready spec</strong> —
+      domain mapped, decisions captured, threats modelled, every story testable.
+    </p>
+    <p>It stops at the spec. Your coding tool builds from it. <strong>That's the point.</strong></p>
+    <div class="cta-row">
+      <a class="btn" href="#get-started">Get started</a>
+      <button class="chip" id="copy-curl" type="button" aria-label="Copy install command"
+        title="curl -sSL https://raw.githubusercontent.com/nlawstudio/ai-refinement-method/main/install.sh | sh">
+        <span class="txt"><span class="ps1">$</span> curl -sSL https://raw.githubusercontent.com/nlawstudio/ai-refinement-method/main/install.sh | sh</span>
+        <span class="cp" id="copy-curl-state">copy</span>
+      </button>
+    </div>
+
+    <div class="term" role="img" aria-label="Demonstration of the Method triaging plain-language requests">
+      <div class="term-bar">
+        <span class="d"></span><span class="d"></span><span class="d"></span>
+        <span class="t">the-method — triage</span>
+      </div>
+      <div class="term-body" id="term-body">
+        <div class="prompt"><span id="term-typed"></span><span class="tc"></span></div>
+        <div id="term-lines"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how-it-works" class="col">
+    <h2>How it works</h2>
+    <p>From fuzzy intent to committed spec, in one conversation.</p>
+    <div class="rows">
+      <div class="row">
+        <span class="k">01</span>
+        <h3>Describe the work</h3>
+        <p>A question, a bug, a domain to map, an epic — no skill names to memorise.
+        Triage figures out what shape you typed and only goes as deep as the work warrants.</p>
+      </div>
+      <div class="row">
+        <span class="k">02</span>
+        <h3>Refine through interview</h3>
+        <p>Specialised roles convene: scope, decisions, threat model, design, story tree.
+        The AI brings expertise and pushes back on weak reasoning; you bring taste and the
+        final call. Artifacts are drafted from your answers and signed off by you.</p>
+      </div>
+      <div class="row">
+        <span class="k">03</span>
+        <h3>Build from the spec</h3>
+        <p>Ready stories land in your tracker, each with acceptance criteria and a failing
+        test that defines done. Take them to Claude Code, Cursor, or Codex to implement —
+        the spec is now airtight.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="what-you-get" class="col">
+    <h2>What you get</h2>
+    <p>
+      Every output is structured, and every output is in git: scope briefs, threat models
+      with the engineer's engagement recorded, ADRs, design docs, failing tests, a
+      compliance manifest. <strong>Nothing important leaves your head without being
+      recorded.</strong>
+    </p>
+    <pre class="tree" aria-label="Example refinement output"><span class="ln"><span class="dir">plans/bulk-asset-export/</span></span><span class="ln"><span class="dim">├─</span> scope.md              <span class="ok"># signed</span></span><span class="ln"><span class="dim">├─</span> threat-model.md       <span class="ok"># human-engaged</span></span><span class="ln"><span class="dim">├─</span> design.md</span><span class="ln"><span class="dim">├─</span> tree.yaml             <span class="mut"># 12 stories · all ≤ 3 pts</span></span><span class="ln"><span class="dim">├─</span> manifest.yaml         <span class="mut"># SOC 2 / ISO 27001 pack</span></span><span class="ln"><span class="dim">└─</span> tests/                <span class="mut"># 12 failing · for the right reason</span></span><span class="ln"> </span><span class="ln"><span class="dir">docs/adr/</span></span><span class="ln"><span class="dim">├─</span> ADR-021-streaming-export.md</span><span class="ln"><span class="dim">└─</span> ADR-022-export-rate-limiting.md</span><span class="ln"> </span><span class="ln"><span class="dim">tracker ›</span> NEW-EPIC-42 <span class="mut">· 12 stories ·</span> <span class="ok">all DoR ✓</span></span></pre>
+  </section>
+
+  <section id="roles" class="col">
+    <h2>The role panel</h2>
+    <p>
+      Ten roles, each with a distinct job, quality bar, and failure mode. The Method
+      composes them based on what the work needs — you never pick one by name. Every
+      interviewer is a <strong>thinking partner, not a stenographer</strong>: it pushes back.
+    </p>
+    <div class="roles" id="role-list"></div>
+  </section>
+
+  <section id="get-started" class="col">
+    <h2>Get started</h2>
+
+    <h3>Ask your agent to install it</h3>
+    <p>One prompt to Claude Code, Cursor, or Codex. The install runs as a guided
+    interview that adapts the Method to your project — stack, tracker, compliance
+    posture, existing decisions.</p>
+    <div class="code">
+      <button class="cp-btn" id="copy-prompt" type="button">copy</button>
+      <pre>Install the agentic refinement method in this repo.
+Follow the instructions at
+https://github.com/nlawstudio/ai-refinement-method/blob/main/AGENT_INSTALL.md</pre>
+    </div>
+
+    <h3 style="margin-top: 30px">Or copy the files in first</h3>
+    <div class="code">
+      <button class="cp-btn" id="copy-curl2" type="button">copy</button>
+      <pre><span class="ps1">$</span> curl -sSL https://raw.githubusercontent.com/nlawstudio/ai-refinement-method/main/install.sh | sh</pre>
+    </div>
+    <p class="note">
+      Ships as markdown into your repo — ten agents, ten skills, zero runtime
+      dependencies. Existing <code>AGENTS.md</code> and <code>docs/adr/</code> are
+      preserved. Then take 15 minutes with the <a href="./quickstart.html">quickstart</a>.
+    </p>
+  </section>
+
+  <section id="faq" class="col">
+    <h2>FAQ</h2>
+    <div class="faq">
+      <details>
+        <summary>Does it write my production code?</summary>
+        <p>No. The Method stops at a ready spec — stories with failing tests, decisions,
+        threat models, a domain map. Implementation happens in your own coding tool,
+        against everything the Method produced. Separating the two is deliberate: specs
+        are where being wrong is cheap.</p>
+      </details>
+      <details>
+        <summary>Do I need a tracker?</summary>
+        <p>No. Linear, Jira, and GitHub Issues are supported via MCP, but
+        <span class="mono">tracker.type: none</span> keeps everything in git — the
+        <span class="mono">tree.yaml</span> becomes the operational state. Without a
+        tracker connected, refinement runs in dry-run mode and still produces all git
+        artifacts.</p>
+      </details>
+      <details>
+        <summary>Which agents does it work with?</summary>
+        <p>It's built on Claude Code (agents + skills), and the artifacts it produces —
+        markdown, YAML, failing tests — are readable by any tool. Cursor and Codex can run
+        the install and build from the specs; session handoffs work across agents too.</p>
+      </details>
+      <details>
+        <summary>Do I have to use it for everything?</summary>
+        <p>No. For a five-line fix, just fix it. The Method is for work where the upstream
+        thinking matters — decisions, designs, threat models, anything bigger than a bug.</p>
+      </details>
+      <details>
+        <summary>What if it gets something wrong?</summary>
+        <p>Push back — the Method assumes you will, and records every pushback. Agents are
+        plain markdown files in your repo: if one keeps making the same mistake, edit
+        <span class="mono">.claude/agents/{name}.md</span> and the change applies
+        immediately.</p>
+      </details>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="seg">
+    <span>MIT</span>
+    <span>v2.1.0</span>
+    <span>built with the Method</span>
+  </div>
+  <div class="seg">
+    <a href="./quickstart.html">quickstart</a>
+    <a href="./method.html">method</a>
+    <a href="https://github.com/nlawstudio/ai-refinement-method">github ↗</a>
+  </div>
+</footer>
+
+<script>
+/* Triage terminal — the one animated element on the page. */
+const DEMOS = [
+  {
+    intent: 'Should we use UUIDv7 over UUIDv4 for primary keys?',
+    shape: 'decision',
+    steps: ['Architect · interview mode', 'real alternatives found — promotion rule fires'],
+    out: 'docs/adr/ADR-014-uuidv7-primary-keys.md',
+  },
+  {
+    intent: 'Fix the bug where wallet linkage fails for Solana addresses',
+    shape: 'bug',
+    steps: ['Cartographer · cited findings — chains.go:14', 'Test Author · failing test, verified'],
+    out: 'NEW-156 · ready · failing test attached',
+  },
+  {
+    intent: 'Map the domain for our case-management module',
+    shape: 'domain',
+    steps: ['Explorer · event storming', '2 hotspots · 6 glossary terms · contexts proposed'],
+    out: 'plans/case-management/domain-map.md',
+  },
+  {
+    intent: 'Add a bulk asset export feature',
+    shape: 'epic',
+    steps: ['scope → threat model → ADRs → design', 'Decomposer · 12 stories · all ≤ 3 pts'],
+    out: 'NEW-EPIC-42 · 12 stories · all DoR ✓',
+  },
+];
+
+const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const typedEl = document.getElementById('term-typed');
+const linesEl = document.getElementById('term-lines');
+const termBody = document.getElementById('term-body');
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+let termVisible = false;
+new IntersectionObserver((e) => { termVisible = e[0].isIntersecting; }, { threshold: 0.2 }).observe(termBody);
+const whenVisible = async () => { while (!termVisible) await sleep(300); };
+
+function addLine(html, cls) {
+  const d = document.createElement('div');
+  d.className = 'term-line' + (cls ? ' ' + cls : '');
+  d.innerHTML = html;
+  linesEl.appendChild(d);
+  requestAnimationFrame(() => requestAnimationFrame(() => d.classList.add('show')));
+  return d;
+}
+
+async function termLoop() {
+  for (let i = 0; ; i = (i + 1) % DEMOS.length) {
+    const d = DEMOS[i];
+    await whenVisible();
+    typedEl.textContent = '';
+    linesEl.innerHTML = '';
+    await sleep(600);
+    for (const ch of d.intent) {
+      typedEl.textContent += ch;
+      await sleep(16 + Math.random() * 26);
+    }
+    await sleep(450);
+    addLine(`triage → <span class="tag">${d.shape}</span>`);
+    await sleep(600);
+    for (const s of d.steps) { addLine(s); await sleep(650); }
+    await sleep(500);
+    addLine(d.out, 'out');
+    await sleep(3600);
+  }
+}
+function renderStatic(d) {
+  typedEl.textContent = d.intent;
+  addLine(`triage → <span class="tag">${d.shape}</span>`);
+  d.steps.forEach((s) => addLine(s));
+  addLine(d.out, 'out');
+}
+reduced ? renderStatic(DEMOS[0]) : termLoop();
+
+/* Role panel */
+const ROLES = [
+  ['Explorer', 'interviewing', 'Event storming — maps the domain, owns the shared language.'],
+  ['Cartographer', 'doing', 'Reads existing code. Every claim cited, file and line.'],
+  ['Analyst', 'interviewing', 'Scope discovery, and a privacy lens on sensitive data.'],
+  ['Architect', 'interviewing', 'Decisions — drafts ADRs when the promotion rule fires.'],
+  ['Designer', 'drafting', 'Turns decisions and findings into a design doc.'],
+  ['Decomposer', 'drafting', 'Breaks designs into a tree of ready stories.'],
+  ['Test Author', 'drafting', 'Writes the failing test first. Never sees implementation.'],
+  ['Verifier', 'doing', 'The Definition-of-Ready gate every story must pass.'],
+  ['Critic', 'doing', 'Adversarial review. Its job is to refute, not approve.'],
+  ['Threat Modeller', 'interviewing', 'STRIDE at kickoff — your engagement is the evidence.'],
+];
+document.getElementById('role-list').innerHTML = ROLES.map(([nm, md, jb]) => `
+  <div class="role">
+    <span class="nm">${nm}</span>
+    <span class="md">${md}</span>
+    <span class="jb">${jb}</span>
+  </div>`).join('');
+
+/* Sidebar scrollspy */
+const navLinks = [...document.querySelectorAll('.side nav[aria-label="Sections"] a')];
+const sections = navLinks.map((a) => document.querySelector(a.getAttribute('href')));
+const spy = new IntersectionObserver((entries) => {
+  entries.forEach((en) => {
+    if (!en.isIntersecting) return;
+    navLinks.forEach((a) => a.classList.toggle('active', a.getAttribute('href') === '#' + en.target.id));
+  });
+}, { rootMargin: '-30% 0px -60% 0px' });
+sections.forEach((s) => s && spy.observe(s));
+
+/* Copy buttons */
+const CURL = 'curl -sSL https://raw.githubusercontent.com/nlawstudio/ai-refinement-method/main/install.sh | sh';
+const PROMPT = 'Install the agentic refinement method in this repo. Follow the instructions at https://github.com/nlawstudio/ai-refinement-method/blob/main/AGENT_INSTALL.md';
+function wireCopy(btnId, text, stateEl) {
+  const btn = document.getElementById(btnId);
+  if (!btn) return;
+  btn.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(text); } catch (_) { return; }
+    const el = stateEl || btn;
+    const prev = el.textContent;
+    el.textContent = 'copied ✓';
+    setTimeout(() => { el.textContent = prev; }, 1500);
+  });
+}
+wireCopy('copy-curl', CURL, document.getElementById('copy-curl-state'));
+wireCopy('copy-curl2', CURL);
+wireCopy('copy-prompt', PROMPT);
+</script>
+</body>
+</html>

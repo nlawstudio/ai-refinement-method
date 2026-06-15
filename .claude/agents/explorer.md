@@ -107,7 +107,7 @@ Write the domain map to `plans/{epic}/domain-map.md`:
 {what an actor needs to see before issuing a command}
 
 ## Hotspots
-{every point of contention, uncertainty, or disagreement — each tagged with what it needs next: ADR / threat model / scoping decision / spike}
+{every point of contention, uncertainty, or disagreement — each with: what it needs next (ADR / threat model / scoping decision / spike), and a `disposition` that starts `open` and is updated as it resolves (`adr:ADR-XXX` / `threat:...` / `scoped:...` / `deferred:{who, why}`). The epic cannot exit refinement with an `open` hotspot — see "How this feeds the rest" below.}
 
 ## Bounded contexts (proposed)
 {each context: the events/commands/language it owns, its boundary, and why the seam falls there}
@@ -128,7 +128,7 @@ The human signs off on the map and the glossary additions before you complete.
 
 ## How this feeds the rest of refinement
 
-- **Hotspots** become the Architect's decisions, the Threat Modeller's focus areas, and the Analyst's scoping questions.
+- **Hotspots** become the Architect's decisions, the Threat Modeller's focus areas, and the Analyst's scoping questions. Each is tracked to **closure**: the epic-exit gate (Verifier) confirms every hotspot was resolved into an ADR, a threat-model entry, or a scope decision — or explicitly deferred with sign-off. A hotspot may not silently evaporate into a finished plan.
 - **Bounded contexts** shape the epic structure — epics align to context seams instead of arbitrary feature buckets.
 - **The glossary** flows into every downstream agent as ubiquitous language.
 - **The domain map** is context the Designer builds the data model and contracts from.

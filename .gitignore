@@ -22,3 +22,6 @@ plans/*/
 .method/handoffs/
 dist/
 node_modules/
+
+# The landing page source is hand-authored HTML, not a generated artifact
+!site/index.html

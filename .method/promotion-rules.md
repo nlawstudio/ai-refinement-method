@@ -43,17 +43,15 @@ If the conversation reaches a decision but the rule does not fire:
 
 ## Threat model promotion rule
 
-A threat modelling exercise produces a canonical threat model if:
+A threat modelling exercise produces a canonical threat model when the engineer made the **risk decisions** only they can make — not merely that they were present. Coverage is scaffolding the AI generates (STRIDE across the trust boundaries from the data-flow); the *evidence* is the engineer's recorded decisions on top of it:
 
-- It was an **interview**, not a generated STRIDE template
-- The engineer **engaged verbally** with at least the questions: "what are the assets here?", "who would attack this?", "what's the worst-case data exposure?"
-- The engineer's input was **cleaned and structured by the AI and signed off** by the engineer (the signed artifact is the evidence; the raw chat is preserved alongside for verification)
+- **Boundaries enumerated** from the data-flow, STRIDE applied to each, non-applicable cells marked "N/A — because…". The AI may draft this coverage.
+- **The engineer made the calls** only they can: for each surfaced threat, a severity/likelihood rating and a real / not-real judgement; for each real threat, a mitigation linked to a test or ADR; and explicit **residual-risk acceptance, each with a named owner**.
+- The cleaned model was **signed off** by the engineer (the signed artifact is the evidence; the raw chat is preserved alongside).
 
-If those conditions hold, the threat model is stored at `plans/{epic}/threat-model.md` and referenced in the compliance manifest.
+`evidence_quality: human-engaged` means those decisions were made and recorded — not that a transcript exists. If the engineer assents to AI-generated content without making the calls ("just generate it", "looks fine"), the system **refuses to produce a canonical threat model** and labels the draft `not-performed`; it does not count as compliance evidence.
 
-If the engineer skipped the interview ("just generate it") — the system **refuses to produce a canonical threat model**. It produces a draft labelled "not human-engaged" that does not count as compliance evidence.
-
-This is the anti-theatre check.
+This is the anti-theatre check: the bar is decisions, not participation.
 
 ---
 
@@ -74,7 +72,7 @@ Stored at `plans/{epic}/domain-map.md`. Every new domain term agreed during the 
 A node in the refinement tree gets promoted to a tracker story when:
 
 - The node is a leaf (will not be further decomposed)
-- It passes all eight DoR criteria
+- It passes the DoR gate — the eight core criteria plus any its declared facets trigger
 - The Verifier (DoR mode) has confirmed readiness
 - The human has approved promotion (or has a standing approval for the current `/plan` session)
 

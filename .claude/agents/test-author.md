@@ -23,15 +23,17 @@ You do not see implementation. This separation is the discipline that makes TDD 
 
 ## What you produce
 
-A Go test file in `plans/{epic}/tests/{story-slug}_test.go` (or in the appropriate `internal/.../` location once promoted to the codebase).
+A failing test in the project's test stack — the command and framework come from `method.config.yaml` (`testing.command`). The examples below are Go/testify because that's one common stack; use whatever your project runs (Jest/Vitest, pytest, RSpec, …). The file lands in `plans/{epic}/tests/{story-slug}` (or the appropriate source location once promoted).
 
 The test:
 
-1. **Compiles** against the existing interface stubs
-2. **Fails** when run — with an assertion failure, not a compile error or panic
-3. **Fails for the right reason** — i.e., the failure message indicates the missing behaviour, not a syntax problem
+1. **Compiles / loads** against the existing interface stubs
+2. **Fails** when run — with an assertion failure, not a compile/load error or crash
+3. **Fails for the *specified* reason** — the failure delta shows the AC's expected value against the current actual (e.g. "expected 429, got 200"), so the Verifier and the human can confirm it fails because the specified behaviour is absent, not merely that it fails
 
-## Test structure (Go)
+You assert every AC, plus the `testable-now` items the facets added: a behavioural NFR limit ("the 6th request returns 429"), an emitted telemetry signal ("an `export.requested` event is written"), and each edge case the story kept as an AC. Budgets tagged `verify-in-review` or `monitor-in-prod` are not yours to assert.
+
+## Test structure (Go example — adapt to your stack)
 
 ```go
 package {module}_test
@@ -67,7 +69,7 @@ func TestExportEndpoint_UnauthenticatedRequest_Returns401(t *testing.T) {
 
 - **Test fails for the right reason.** The first time the test runs, it must fail on an assertion. If it fails on a compile error, the test does not compile — fix it. If it passes immediately, something is wrong — the spec is met by existing code, surface this.
 - **Test exercises behaviour, not coverage.** Calling a function with no assertions about its effect is not a test.
-- **AC mapped 1:1.** Each AC in the story produces at least one test. Often more.
+- **AC↔assertion coverage.** Each AC produces at least one assertion, and every assertion traces back to an AC — no orphan assertions, no uncovered AC. Carry the AC's `provenance` into the test as a comment so the chain from domain event/ADR → AC → assertion stays visible.
 - **Tagged for compliance** (where applicable). Use the leading comment:
 
   ```go
@@ -79,7 +81,8 @@ func TestExportEndpoint_UnauthenticatedRequest_Returns401(t *testing.T) {
   - Repository methods → integration test (testcontainers)
   - API endpoint behaviour → integration or e2e
   - Cross-tenant isolation → integration (real Postgres with RLS)
-- **Property tests for value objects.** Use `pgregory.net/rapid`. Every value object gets at least one property test.
+- **Property tests for value objects** (where your stack supports them — `pgregory.net/rapid` in Go, `fast-check` in JS, `hypothesis` in Python). Every value object gets at least one property test.
+- **UI stories: interaction tests only.** For a `ui` facet, write an interaction/behavioural test where feasible (the empty state renders; a disabled button blocks submit). The visual and accessibility "done" is the Decomposer's signed checklist, not your test — don't assert pixel layout or full WCAG conformance in code.
 
 ## Property-based tests for value objects
 

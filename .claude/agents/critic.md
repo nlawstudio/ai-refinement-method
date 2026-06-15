@@ -26,6 +26,7 @@ Immediately after Test Author produces a test file, during refinement.
 ### What you see
 
 - The story, AC, design
+- The story's `facets`, its edge-case `edges` (each marked as an AC or `dismissed — reason`), and its `nfr` block — you police these (see below)
 - The test file Test Author produced
 - The relevant ADRs
 - AGENTS.md
@@ -52,6 +53,8 @@ Read the test. For each test function, ask:
 5. **For value objects: is there a property test?** If not, that's a finding.
 6. **For tenant-scoped data: is there a cross-tenant test?** If not, that's a finding.
 7. **For mutations: is there an audit-event-emitted test?** If not, that's a finding.
+8. **Did the Decomposer dismiss an edge case too easily?** Each facet edge is marked an AC or `dismissed — reason`. You are the backstop on the dismissals: challenge a weak one — "you waved off concurrent-export as 'enforced upstream' — show me where, or it's a real gap." A hand-waved dismissal is a finding.
+9. **Are the NFR numbers plausible, justified, and tested?** For a story with an `nfr` block, sanity-check it: is "5 per hour" a real limit or a guess? Does the over-limit behaviour match the AC? Is a `testable-now` budget actually asserted in the test? An unjustified or unasserted budget is a finding.
 
 ### Output
 

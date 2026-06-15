@@ -25,7 +25,7 @@ Example:
 4. **Initialise tree.yaml** — see `plans/_templates/tree.yaml.example` for shape. Root node is the epic.
 5. **Initialise conversation.md** — empty file with a session-start header.
 6. **Query gbrain** for relevant past plans, ADRs, patterns. Surface to the human if relevant ones exist.
-7. **Read AGENTS.md and the 19 ADRs.** Constitution loaded.
+7. **Read AGENTS.md and the accepted ADRs.** Constitution loaded.
 
 ## The mandatory opening sequence
 
@@ -71,7 +71,7 @@ For each leaf passing DoR, promote to tracker under the epic. See "Promotion to 
 
 ### Phase 8 — Compliance manifest
 
-The manifest accumulates as the session proceeds — every promotion writes to it. At session end, verify it is complete.
+The manifest accumulates as the session proceeds — every promotion writes to it. At session end, the Verifier runs the manifest-completeness check (part of its epic-level exit checks): every promoted story's controls, privacy impacts, and test coverage reconciled, and the threat model signed. The manifest does not close with an unreconciled section.
 
 ## The refinement loop (after the mandatory opening)
 
@@ -82,6 +82,7 @@ For nodes that are not yet at DoR:
 
    | Flag | Agent |
    |---|---|
+   | needs-domain-map | Explorer (storm mode) |
    | needs-discovery | Analyst (scope mode) |
    | needs-existing-code-read | Cartographer |
    | needs-decision | Architect (interview mode) |
@@ -134,7 +135,7 @@ When a leaf passes DoR (confirmed by Verifier in DoR mode) and the human approve
    - {any task-specific}
 
    ---
-   Refined under [plans/{epic-slug}/](https://github.com/asset-reality/...)
+   Refined under [plans/{epic-slug}/]({repo-url}/tree/main/plans/{epic-slug})
    ```
 
 3. Set estimate to the point value
@@ -145,11 +146,11 @@ When a leaf passes DoR (confirmed by Verifier in DoR mode) and the human approve
 
 Refinement is complete when:
 
-- All leaves pass DoR
+- All leaves pass the DoR gate (core criteria + their facets' conditional criteria)
+- The Verifier's epic-level exit checks pass: the leaf set forms a valid dependency DAG, every domain-map hotspot is closed (resolved or explicitly deferred), and the compliance manifest reconciles
 - All decisions are captured (promoted to ADRs or recorded as informal decisions)
-- All test specs compile and fail for the right reason
-- Threat model is present and human-reviewed (or explicitly marked as not-performed with human acknowledgement)
-- Compliance manifest is complete
+- All test specs compile and fail for the specified reason
+- Threat model is present and human-reviewed, with the engineer's risk decisions recorded (or explicitly marked not-performed with human acknowledgement)
 - The human marks the plan as complete
 
 Pause (resumable) when:
@@ -182,7 +183,7 @@ Then: open a PR for the `plans/{epic-slug}/` directory. The PR is the artifact t
 - **Always announce promotions.** "This is shaping up as an ADR — OK?" Never silent.
 - **Always tag outputs with mode and decision_required.**
 - **Never silently transition between skills.** If `/plan` surfaces something that warrants `/threat-model` invocation, announce.
-- **Never accept a leaf as ready that does not pass all eight DoR criteria.**
+- **Never accept a leaf as ready that does not pass the DoR gate (core criteria + its facets' conditional criteria).**
 - **Never silently fix architectural issues.** Surface them — route a missing decision to `/decide` or `/adr`, a domain gap to `/storm`, an ambiguous scope back to the Analyst.
 
 ## What happens when something goes wrong

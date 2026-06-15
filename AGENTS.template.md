@@ -38,7 +38,7 @@ Every output must declare its mode in its frontmatter or output envelope.
 
 > The AI does. The human decides — or signs off.
 
-- **AI does, autonomously:** reading code, drafting summaries, generating subnodes, writing test code from AC, writing implementation from failing tests, running scans, mapping controls, drafting ADRs, drafting threat models, generating compliance evidence.
+- **AI does, autonomously:** reading code, drafting summaries, generating subnodes, writing test code from AC, running scans, mapping controls, drafting ADRs, drafting threat models, generating compliance evidence.
 - **Human decides** (or signs off): scope, acceptance criteria, trade-offs at architectural branch points, whether an ADR draft is correct, whether a leaf is "ready", whether the threat model is genuine, what to do with critic findings.
 - **The middle — AI proposes, human signs off:** story-point estimates, decomposition shape, stop conditions, test coverage adequacy.
 
@@ -125,16 +125,22 @@ Every accepted ADR in `/docs/adr/` is binding. Quick reference table:
 
 ### Definition of Ready (the gate)
 
-A leaf story exits refinement only when **all eight** criteria pass:
+A leaf story exits refinement only when the gate passes. The gate has two layers — **eight core criteria** every story meets, plus a **conditional layer** keyed on the story's declared `facets` (the shapes that determine what substance it owes).
+
+**Core — every story:**
 
 1. Story in agreed format (As a [user], I want [action], so that [benefit] — or your equivalent)
-2. Acceptance criteria are testable, single-statement ("given X, when Y, then Z")
+2. Acceptance criteria are testable, single-statement ("given X, when Y, then Z"), each carrying a **provenance** tag (domain event / ADR / threat / `implementation-detail`)
 3. Estimated at **≤3 points** (Fibonacci scale; or your team's equivalent ceiling)
-4. Dependencies identified (by story ID or "no dependencies" tag)
-5. Linked to architectural context (ADR ID or "no architectural impact" tag)
+4. Dependencies **typed and verified** (`depends on {story} for {contract}`, or "no dependencies")
+5. Architectural impact resolved (ADR, or a "no architectural impact" tag the Verifier confirms against `docs/module-map.md`)
 6. Stop conditions listed (standard block + task-specific)
 7. Scope crosses ≤1 architectural boundary
-8. A failing test exists (compiles, fails on assertion — not compile error)
+8. A failing test exists and **fails for the specified reason** (the expected-vs-actual delta matches the AC); every AC maps to an assertion and back
+
+**Conditional — by facet:** `request-path` adds a non-functional budget + over-limit behaviour + telemetry; `data-change` adds migration/rollback/backfill + telemetry; `shared-resource` adds contention/limit budgets; `external-integration` adds timeout/retry behaviour + telemetry; `ui` adds state enumeration + an accessibility bar as signed criteria. Each facet also brings an edge-case checklist — every item becomes an AC or a dismissed-with-reason. Non-functional budgets are declared as *deviations* from the `nfr` baselines in [`method.config.yaml`](method.config.yaml).
+
+**Epic exit** additionally requires a valid dependency DAG, every domain-map hotspot closed, and a reconciled compliance manifest.
 
 ### ADR promotion rule
 
@@ -153,8 +159,8 @@ Every leaf story carries these as part of its spec. They're the contract for who
 - Completing this would require modifying `AGENTS.md`, an ADR, or a skill
 - Three or more attempts at the same problem without progress
 - AC ambiguous or contradictory
-- Declared dependency is complete but output is missing or incorrect
-- Security or performance concern not addressed in the constitution
+- Declared dependency is complete but its output does not match the contract the gate recorded
+- A *new* security or performance concern refinement could not have foreseen (knowable budgets are gate criteria now)
 - Would expand declared scope
 - No test data generator exists for this concept
 - AC cannot be expressed as a single testable assertion

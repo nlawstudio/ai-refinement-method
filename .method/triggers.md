@@ -122,8 +122,9 @@ Invoked when:
 
 Invoked when:
 - A leaf story is a candidate for "ready"
-- All eight DoR criteria need confirmation
-- Test Author has produced a test file (Verifier confirms it fails for the right reason)
+- The DoR gate needs confirmation — the eight core criteria plus any its facets trigger
+- Test Author has produced a test file (Verifier confirms it fails for the specified reason)
+- An epic is closing (Verifier runs the epic-level exit checks: dependency DAG, hotspot closure, manifest completeness)
 
 Operates in **doing** mode. The gate a story passes before exiting refinement.
 

@@ -79,7 +79,7 @@ The method produces a ready spec — stories with failing tests, decisions, thre
 
 You'll see the method invoke agents (Explorer, Cartographer, Analyst, Architect, etc.) — these are role primitives the loop composes. You don't have to pick them by name.
 
-See `TUTORIAL.md` for worked examples at every input size.
+See `QUICKSTART.md` for the 15-minute on-ramp — install, first decision, first refined story.
 
 ## First week
 
@@ -124,7 +124,7 @@ The new dev reads the doc. No approval gate.
 
 ## What this is NOT
 
-- Not a tutorial — the project's TUTORIAL.md (installed by the method) is that
+- Not a quick start — the project's QUICKSTART.md (installed by the method) is that
 - Not the full constitution — AGENTS.md is that
 - Not the framework spec — METHOD.md is that
 - A one-shot orientation that points at all of the above

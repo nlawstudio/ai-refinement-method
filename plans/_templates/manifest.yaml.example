@@ -8,16 +8,24 @@ epic:
   refined_at: 2026-06-08T10:00:00Z
   driver: nicky@ar
 
-# Threat model — interview-driven, transcript is the evidence
+# Threat model — the engineer's recorded risk decisions are the evidence
 threat_model:
   performed_at: 2026-06-08T10:45:00Z
   drafted_by: threat-modeller-agent
   reviewed_by: nicky@ar
   reviewed_at: 2026-06-08T11:14:00Z
   transcript: plans/AR-EPIC-42/threat-model.md
+  boundaries_covered: 4              # trust boundaries STRIDE was applied to
   threats_identified: 7
+  threats_rated_by_engineer: 7      # severity + real/not calls the engineer made
   threats_with_mitigation: 7
+  residual_risks_accepted:          # each real residual risk, with a named owner
+    - risk: "presigned download URL could be shared outside the tenant"
+      accepted_by: nicky@ar
+      review_by: 2026-09-08
   open_threats: 0
+  # human-engaged ONLY because the engineer made the severity / real-not / residual-risk
+  # decisions above — not merely that a transcript exists.
   evidence_quality: human-engaged    # human-engaged | draft-only | not-performed
 
 # Privacy impacts per data-touching story
@@ -111,10 +119,10 @@ evidenced_controls:
 stories_promoted_to_linear:
   - AR-142
   - AR-143
-  - AR-144                                # story-3 once it reaches harness-ready
+  - AR-144                                # story-3 once it reaches DoR-ready
 
 # Sign-off
 sign_off:
   refinement_complete_at: 2026-06-08T16:00:00Z
   signed_off_by: nicky@ar
-  ready_for_build: true
+  spec_ready: true

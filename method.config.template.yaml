@@ -7,7 +7,7 @@
 # Schema docs: https://github.com/nlawstudio/ai-refinement-method/blob/main/METHOD.md#configuration
 # Defaults are documented inline. Any missing field falls through to its default.
 
-method_version: 1.2.0
+method_version: 2.1.0
 
 # ─── Operational tracker ──────────────────────────────────────────────────
 # The Method is tracker-agnostic. Pick one type, fill in the matching block.
@@ -70,5 +70,25 @@ compliance:
 # Used by Verifier and Critic to enforce project-wide test discipline.
 
 testing:
+  command: "go test -run {test-name} ./..."   # how the Verifier runs a single failing test.
+                                              # Set to your stack's runner, e.g.
+                                              #   "npx jest -t {test-name}"  |  "pytest -k {test-name}"
   race_detector_required: true    # require race detector pass on every PR
   property_tests_for_value_objects: true   # require property tests on value objects
+
+# ─── Non-functional baselines ─────────────────────────────────────────────
+# Default budgets a story inherits unless it declares a deviation. The DoR's
+# request-path / shared-resource facets check declared budgets against these,
+# so a story only states what differs from the baseline.
+
+nfr:
+  api_latency_p99_ms: 300         # default p99 latency budget for a request path
+  max_response_bytes: 10485760    # 10 MB default response / result ceiling
+  default_timeout_ms: 30000       # default request timeout
+  # Add project-specific defaults (throughput, queue depth, rate limits) as needed.
+
+# ─── Accessibility ────────────────────────────────────────────────────────
+# The bar a `ui` facet story states as signed criteria (Decomposer + Verifier).
+
+accessibility:
+  bar: "WCAG 2.2 AA"

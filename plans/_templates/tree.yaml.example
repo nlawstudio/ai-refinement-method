@@ -31,7 +31,7 @@ nodes:
     linear_id: AR-EPIC-42
     status: in_refinement
     flag: null                            # root expanded by Analyst at kickoff
-    children: [scope, threat-model, decision-1, story-1, story-2, story-3]
+    children: [scope, threat-model, decision-1, story-1, story-2, story-3, story-4]
 
   # Scope outcome from Analyst interview
   - id: scope
@@ -64,19 +64,38 @@ nodes:
     decision_required: true
     decided_at: 2026-06-08T12:30:00Z
 
-  # Stories — leaves that have reached harness-ready
+  # Stories — leaves that have reached DoR-ready
   - id: story-1
     parent: root
     type: story
     title: "Define export request API endpoint"
-    flag: harness-ready-check
-    status: harness_ready
+    flag: DoR-ready-check
+    status: dor_ready
+    facets: [request-path]
     linked_adrs: [ADR-005, ADR-009, ADR-021]
     points: 2
     ac:
-      - "Given an authenticated user with export permission, when POST /api/v1/exports is called with valid request, then a 202 Accepted response with export ID is returned"
-      - "Given an unauthenticated request, when POST /api/v1/exports is called, then a 401 is returned"
-      - "Given a request from a different tenant context, when an export ID is queried, then a 404 is returned (not 403 — no information leak)"
+      - text: "Given an authenticated user with export permission, when POST /api/v1/exports is called with a valid request, then a 202 Accepted with an export ID is returned"
+        provenance: event:ExportRequested
+      - text: "Given an unauthenticated request, when POST /api/v1/exports is called, then a 401 is returned"
+        provenance: ADR-009
+      - text: "Given a request from a different tenant context, when an export ID is queried, then a 404 is returned (not 403 — no information leak)"
+        provenance: threat-3
+    dependencies: []                      # implementable in isolation
+    nfr:
+      latency_p99_ms: baseline            # inherits method.config.yaml (300ms)
+      over_limit: "n/a — creation endpoint; request volume bounded by story-3"
+      assert: verify-in-review
+    telemetry:
+      - "metric: export_requests_total{tenant,result}"
+      - "log: export.requested with export_id, actor"
+    edges:
+      - case: unauthenticated
+        handling: "AC-2 — 401"
+      - case: wrong-tenant
+        handling: "AC-3 — 404, no info leak"
+      - case: malformed-request
+        handling: "dismissed — schema validation handled by framework middleware (ADR-005)"
     stop_conditions: [standard]
     test_file: plans/AR-EPIC-42/tests/export_api_test.go
     linear_id: AR-142
@@ -87,8 +106,8 @@ nodes:
     parent: root
     type: story
     title: "Audit log emission for export operations"
-    flag: harness-ready-check
-    status: harness_ready
+    flag: DoR-ready-check
+    status: dor_ready
     linked_adrs: [ADR-007]
     points: 1
     ac:
@@ -106,16 +125,66 @@ nodes:
     parent: root
     type: story
     title: "Bulk export rate limiting per tenant"
-    flag: harness-ready-check
-    status: open                          # not yet at harness-ready
+    flag: DoR-ready-check
+    status: open                          # not yet at DoR-ready
+    facets: [shared-resource, request-path]
     linked_adrs: [ADR-009, ADR-021]
     points: 3
     ac:
-      - "Given a tenant has initiated 5 exports in the last hour, when a 6th export is requested, then a 429 Too Many Requests is returned"
-      - "Given the limit window has passed, when a new export is requested, then it proceeds normally"
+      - text: "Given a tenant has initiated 5 exports in the last hour, when a 6th export is requested, then a 429 Too Many Requests is returned"
+        provenance: event:ExportThrottled
+      - text: "Given the limit window has passed, when a new export is requested, then it proceeds normally"
+        provenance: event:ExportThrottled
+    dependencies:
+      - on: story-1
+        for: "POST /api/v1/exports accepts a request and returns an export ID"
+    nfr:
+      rate_limit: "5 per tenant per rolling hour"   # deviation from baseline — set by capacity review
+      over_limit: "429 Too Many Requests, with Retry-After"
+      assert: testable-now                          # the 6th-request behaviour is a behavioural test
+    telemetry:
+      - "metric: export_rate_limited_total{tenant}"
+    edges:
+      - case: limit-exceeded
+        handling: "AC-1 — 429"
+      - case: window-reset
+        handling: "AC-2 — proceeds"
+      - case: concurrent-burst
+        handling: "dismissed — limiter is atomic per tenant (ADR-021); race covered by the integration test"
     stop_conditions: [standard]
     test_file: null                       # Test Author hasn't run yet
-    linear_id: null                       # not yet promoted to Linear
+    linear_id: null                       # not yet promoted to tracker
+    decision_required: false
+
+  # A UI story — states + accessibility bar as signed criteria; no Method-owned visual test
+  - id: story-4
+    parent: root
+    type: story
+    title: "Export status panel"
+    flag: needs-test-spec
+    status: open
+    facets: [ui]
+    linked_adrs: ["no-architectural-impact"]
+    points: 2
+    ac:
+      - text: "Given an export is in progress, when the user opens the panel, then a progress state with percentage is shown"
+        provenance: read-model:ExportStatus
+    dependencies:
+      - on: story-1
+        for: "an export ID and its status are queryable"
+    ui_states:
+      - "loading — skeleton while status loads"
+      - "empty — no exports yet, with a primary action"
+      - "error — status fetch failed, with a retry affordance"
+      - "success — completed, with a download link"
+      - "disabled — download disabled until the export completes"
+    accessibility: "WCAG 2.2 AA — keyboard operable, status announced via aria-live"   # signed checklist
+    edges:
+      - case: status-fetch-failed
+        handling: "error state above"
+    stop_conditions: [standard]
+    # interaction test only; the visual/a11y 'done' is the signed checklist above
+    test_file: plans/AR-EPIC-42/tests/export_panel_interaction_test.ts
     decision_required: false
 
 # Open questions blocking progress

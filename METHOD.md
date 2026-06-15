@@ -569,18 +569,42 @@ The same pattern applies for threat model promotion, tracker story promotion, pr
 
 ## Definition of Ready — the gate
 
-A leaf story cannot exit refinement until it passes every criterion:
+A leaf story cannot exit refinement until it passes the gate. The gate has two layers: a **core** every story meets, and a **conditional layer** that adds criteria based on the story's shape. The shape is declared as a set of **facets**; each facet pulls in the substance a story of that shape needs — so a purely additive story meets only the core, while one that touches a request path, reshapes data, or contends for a shared resource has to earn its "ready."
+
+The principle behind the two layers: **anything knowable at spec time that would otherwise stop a developer belongs in the gate, not in a stop condition.** A stop condition fires at implementation time — the clarifying round-trip refinement exists to prevent — so the gate pulls those facts forward.
+
+### The core — every story
 
 1. **Story in agreed format** ("As a [user], I want [action], so that [benefit]" — or team-agreed equivalent)
-2. **Acceptance criteria are testable, single-statement** — "given X, when Y, then Z" form
+2. **Acceptance criteria are testable, single-statement** — "given X, when Y, then Z" form — and each AC carries its **provenance**: the domain event, ADR, or threat it derives from, or an `implementation-detail` tag
 3. **Estimated at ≤3 points** — anything larger must be split
-4. **Dependencies identified** — by story ID or "no dependencies" tag
-5. **Linked to architectural context** — an ADR ID or "no architectural impact" tag
+4. **Dependencies typed and verified** — each is `depends on {story} for {contract}`, or a "no dependencies" tag; the Verifier confirms the named story actually provides that contract, not merely that an ID exists
+5. **Architectural impact resolved** — linked to an ADR, or a "no architectural impact" tag *confirmed* by diffing the story's touched modules and contracts against the module map; a new cross-boundary edge, external dependency, or data-class flow auto-fails the tag and routes to the Architect. Where no module map exists, the tag is accepted but recorded as `unverified`
 6. **Stop conditions listed** — the standard block plus any task-specific
-7. **Scope crosses ≤1 architectural boundary**
-8. **A failing test exists** — written by Test Author, compiles, fails on assertion
+7. **Scope crosses ≤1 architectural boundary** — "boundary" defined against the module map
+8. **A failing test exists, and fails for the specified reason** — written by Test Author; the Verifier surfaces the expected-vs-actual delta so the human confirms it fails *because the specified behaviour is absent*, not merely that it fails. Every AC maps to at least one assertion, and every assertion back to an AC
 
-A story that cannot be made to meet these isn't ready. It either gets split further, gets an ADR drafted, or becomes an open question.
+### The conditional layer — by facet
+
+A story declares its **facets**; each adds criteria and a canonical edge-case checklist, so enumeration is "work the checklist," not "imagine everything":
+
+- **`request-path`** — a non-functional budget (latency/throughput, payload or result ceiling, timeout, rate/concurrency limit) and the failure behaviour when a limit is exceeded; the telemetry the story emits; edges: auth failure, malformed input, wrong-tenant/authorization, not-found, rate-limited.
+- **`data-change`** — the migration approach (expand/contract or equivalent), its rollback path, and a backfill plan or explicit N/A; the telemetry emitted; edges: idempotency/duplicate, empty/zero, partial failure, concurrent modification.
+- **`shared-resource`** — contention, limit-exceeded, and exhaustion behaviour, each with a budget; edges as applicable.
+- **`external-integration`** — timeout, upstream error, retry/backoff, and partial-response behaviour; the telemetry emitted.
+- **`ui`** — the component's states (loading, empty, error, success, disabled) and the accessibility bar (e.g. WCAG 2.2 AA), stated as signed criteria. The Method's executable-test guarantee covers behavioural and back-end stories; a `ui` story's visual and accessibility "done" is a signed checklist plus an interaction test where feasible, handed to the team's own front-end process.
+
+Non-functional budgets are stated as *deviations* from the project baselines in `method.config.yaml`, so a story only restates what differs. Where a budget or signal is cheaply assertable — "the 6th request returns 429" is a behavioural test, not a load test — it becomes a test; otherwise it is tagged `verify-in-review` or `monitor-in-prod`. Edge cases the story chooses not to handle are dismissed with a one-line reason — the Critic polices the dismissals — so "none" is a recorded decision, not an oversight.
+
+### Epic-level exit
+
+Beyond the per-story gate, an epic does not complete refinement until:
+
+- the leaf set forms a valid dependency **DAG** — no cycles, no story depending on an output no sibling provides;
+- every **hotspot** from the domain map is closed — resolved into an ADR, a threat-model entry, or a scope decision, or explicitly deferred with sign-off (a hotspot may not silently evaporate);
+- the **compliance manifest** is complete — every promoted story's controls, privacy impacts, and test coverage reconciled.
+
+A story that cannot be made to meet its core and triggered criteria isn't ready: it gets split further, gets an ADR drafted, or becomes an open question.
 
 ## Stop conditions
 
@@ -590,8 +614,8 @@ Every leaf story carries a standard block of stop conditions as part of its spec
 - Completing this would require modifying AGENTS.md, an ADR, or a skill
 - Three or more attempts at the same problem without progress
 - Acceptance criteria are ambiguous or contradictory
-- A declared dependency is complete but its output is missing or incorrect
-- A security or performance concern not addressed in the constitution has been discovered
+- A declared dependency is complete but its output does not match the contract the gate recorded
+- A security or performance concern surfaces that refinement could not have foreseen (the knowable budgets are now gate criteria; this is for genuine discovery)
 - Completing this task would require expanding the declared scope
 - No test data generator exists for this concept
 - AC cannot be expressed as a single testable assertion
@@ -1216,7 +1240,7 @@ curl -sSL https://raw.githubusercontent.com/nlawstudio/ai-refinement-method/main
 
 The script clones the method repo and copies the framework files into the target directory. Existing files (`AGENTS.md`, `docs/adr/`, live `plans/{epic}/` directories) are preserved.
 
-See [INSTALL.md](INSTALL.md) for full setup including gbrain MCP and tracker MCP wiring.
+See the [README](https://github.com/nlawstudio/ai-refinement-method#install) for install and setup, including gbrain and tracker MCP wiring.
 
 ### What ships
 
@@ -1228,7 +1252,7 @@ See [INSTALL.md](INSTALL.md) for full setup including gbrain MCP and tracker MCP
 | Promotion rules | `.method/promotion-rules.md` |
 | Templates | `plans/_templates/tree.yaml.example`, `plans/_templates/manifest.yaml.example` |
 | Constitution skeleton | `AGENTS.template.md` (becomes `AGENTS.md` in the target if not already present) |
-| Documentation | `METHOD.md`, `TUTORIAL.md`, `INSTALL.md` |
+| Documentation | `METHOD.md`, `QUICKSTART.md`, `AGENT_INSTALL.md` |
 
 ### What does NOT ship
 
@@ -1253,6 +1277,7 @@ Versions follow SemVer in `VERSION`. Major releases when the role panel or core 
 | **1.2.3** | First public release (open source, MIT). |
 | **1.2.4** | Standard OSS scaffolding (license, contributing, security, CI). |
 | **2.0.0** | Refocused on spec generation. Build phase removed (Builder, `/build`, `/off-course`). Added the Explorer role and `/storm` for event-storming domain discovery, the ubiquitous-language glossary, and an explicit push-back/anti-sycophancy spine across the interviewing agents. |
+| **2.1.0** | Tiered Definition of Ready — eight core criteria plus a conditional layer keyed on story facets (non-functional budgets, migration/rollback, observability, edge enumeration, typed-and-verified dependencies, AC provenance). Red-test review and epic-level exit checks (dependency DAG, hotspot closure, manifest completeness). Threat-model evidence is the engineer's recorded risk decisions. Test command parameterized via `method.config.yaml`. Landing page added; README consolidated to a standalone front door (INSTALL.md retired). |
 | 2.1.0+ | TBD as the Method is used and tuned |
 
 `CHANGELOG.md` tracks what changed at each version. Git tags mark releases; GitHub releases include release notes.
@@ -1273,7 +1298,8 @@ Explicitly not addressed by the Method:
 
 - **Implementation.** The Method produces ready specs; it does not write production code. That's your coding tool's job. See "Where the Method ends" above.
 - **Sprint cadence.** Cycle structure, weekly rhythm, recovery time. A team decision the Method deliberately doesn't prescribe.
-- **CI/CD, deployment, and release automation.** Downstream of the spec.
+- **Deployment mechanics.** Running migrations, the CD pipeline, release automation, the metrics backend and dashboards. The *requirements* are spec concerns the gate now captures — a `data-change` story states its migration and rollback, a `request-path` story names the telemetry it emits — but wiring and executing them is downstream.
+- **The visual and accessibility build of UI stories.** The gate captures a `ui` story's states and accessibility bar as signed criteria, but the Method's executable-test guarantee covers behavioural and back-end stories; the visual/a11y "done" routes to the team's own front-end process.
 - **Hiring, business strategy, and operating model.**
 
 ## Tuning the Method to your project
@@ -1281,7 +1307,7 @@ Explicitly not addressed by the Method:
 The Method ships with defaults; a few things are worth setting deliberately when you adopt it:
 
 1. **Story format and point scale.** Set your scale (Fibonacci, t-shirt, custom) and story format in `method.config.yaml` before relying on the Decomposer's estimates.
-2. **Definition of Ready.** If your team already has a DoR, reconcile it with the canonical eight-point version above — keep the test-exists criterion, adapt the rest.
+2. **Definition of Ready.** If your team already has a DoR, reconcile it with the canonical gate above — the eight core criteria plus the conditional facet layer. Keep the failing-test criterion; adapt the rest, and tune which facets your project uses.
 3. **Compliance vocabulary.** Set your frameworks (SOC 2, ISO 27001, etc.) in `method.config.yaml` so the Threat Modeller and compliance tagging speak your auditor's language.
 4. **Tracker wiring.** Connect your tracker MCP so `/plan` can promote stories; until then, the git `tree.yaml` is the operational state.
 5. **First run.** Pick one small, real piece of work and run the loop end-to-end. Tune the agent prompts (`.claude/agents/*.md`) from what you learn — they're yours once installed.
@@ -1301,7 +1327,8 @@ The Method ships with defaults; a few things are worth setting deliberately when
 | **Domain map** | The Explorer's output: events, commands, policies, read models, hotspots, and proposed bounded contexts. |
 | **Decomposer** | Role: breaks design into DoR-ready story tree. |
 | **Designer** | Role: produces design docs from brief + ADRs + Cartographer's map. |
-| **DoR** | Definition of Ready. The eight-point checklist a leaf story must pass to exit refinement. |
+| **DoR** | Definition of Ready. The gate a leaf story must pass to exit refinement — eight core criteria plus a conditional layer keyed on the story's facets. |
+| **Facet** | A declared shape tag on a story (`request-path`, `data-change`, `shared-resource`, `external-integration`, `ui`) that triggers the conditional DoR criteria and edge-case checklist for that shape. |
 | **Doing** | Agent mode: AI acts autonomously, no human signoff in the moment. |
 | **Drafting** | Agent mode: AI generates a draft, human signs off. |
 | **Epic** | A multi-week scoped outcome with a single owning metric. |

@@ -16,7 +16,7 @@
 
 ## Who you are and what you're doing
 
-You are an AI coding agent (Claude Code, Cursor, Codex, or similar) in a human's project repository. The human has asked you to install the agentic refinement method — a multi-agent system that turns intent into refined work and shipped code.
+You are an AI coding agent (Claude Code, Cursor, Codex, or similar) in a human's project repository. The human has asked you to install the agentic refinement method — a multi-agent system that turns intent into a build-ready spec.
 
 By the end of this install, the human will have:
 
@@ -86,8 +86,7 @@ cp -R /tmp/method/.method .
 mkdir -p plans
 cp -R /tmp/method/plans/_templates plans/
 cp /tmp/method/METHOD.md .
-cp /tmp/method/TUTORIAL.md .
-cp /tmp/method/INSTALL.md .
+cp /tmp/method/QUICKSTART.md .
 cp /tmp/method/AGENT_INSTALL.md .
 
 # Only if AGENTS.md doesn't exist
@@ -111,7 +110,7 @@ cat VERSION           # may or may not exist depending on install path
 
 Tell the human what was copied. Be specific:
 
-> "Installed method v{version} into this directory. 10 role agents in `.claude/agents/`, 10 skills in `.claude/commands/`, trigger profiles and promotion rules in `.method/`, templates in `plans/_templates/`. Framework documentation: `METHOD.md`, `TUTORIAL.md`, `INSTALL.md`. Constitution: `AGENTS.md` (created from template — we'll customise it next). ADR directory: `docs/adr/` (empty, ready for your decisions)."
+> "Installed method v{version} into this directory. 10 role agents in `.claude/agents/`, 10 skills in `.claude/commands/`, trigger profiles and promotion rules in `.method/`, templates in `plans/_templates/`. Framework documentation: `METHOD.md`, `QUICKSTART.md`, `AGENT_INSTALL.md`. Constitution: `AGENTS.md` (created from template — we'll customise it next). ADR directory: `docs/adr/` (empty, ready for your decisions)."
 
 ---
 
@@ -464,7 +463,7 @@ Produce a final summary for the human. Format:
 - Trigger profiles: `.method/triggers.md`
 - Promotion rules: `.method/promotion-rules.md`
 - Templates: `plans/_templates/`
-- Documentation: METHOD.md, TUTORIAL.md, INSTALL.md, AGENT_INSTALL.md
+- Documentation: METHOD.md, QUICKSTART.md, AGENT_INSTALL.md
 
 ## What we customised
 - `AGENTS.md` — filled in with: {project name, stack summary, conventions summary}
@@ -490,7 +489,7 @@ You don't pick a skill. Just describe what you want to do in plain language:
 - "Add the X feature" → routes to epic refinement
 - "Clean-slate rebuild X" → routes to multi-epic decomposition
 
-See `TUTORIAL.md` for worked examples at every input size.
+See `QUICKSTART.md` for the 15-minute on-ramp — install, first decision, first refined story.
 
 The constitution (`AGENTS.md`) is what every agent reads at session start. As your project evolves, update it. Same for ADRs — every accepted decision goes in `docs/adr/`.
 

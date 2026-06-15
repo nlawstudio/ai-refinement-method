@@ -4,7 +4,7 @@ Thanks for your interest in improving the Method. The project is small but ambit
 
 ## What this repo is — and isn't
 
-The Method is a packaged tool that installs into other projects to bring AI-first refinement and build workflows. It is **not** an application — there's no runtime, no users hitting an endpoint, no production deployment. Contributions are mostly to documentation, agent prompts, and shell scripts.
+The Method is a packaged tool that installs into other projects to bring AI-first refinement. It is **not** an application — there's no runtime, no users hitting an endpoint, no production deployment. Contributions are mostly to documentation, agent prompts, and shell scripts.
 
 Treat this repo as a **library of prompts and conventions** that ships across many projects. A change here affects every project that has the Method installed once they upgrade. Bias toward changes that are general and timeless; resist changes that are specific to one project's circumstances.
 
@@ -33,7 +33,7 @@ Treat this repo as a **library of prompts and conventions** that ships across ma
 
 ## Style and tone
 
-The Method's prose has a deliberate voice — direct, technical, light on adverbs, no marketing language. New documentation should match. The `TUTORIAL.md` and `METHOD.md` are stylistic references.
+The Method's prose has a deliberate voice — direct, technical, light on adverbs, no marketing language. New documentation should match. The `QUICKSTART.md` and `METHOD.md` are stylistic references.
 
 For agent files specifically:
 - Lead with the agent's job in one sentence
