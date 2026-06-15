@@ -1,322 +1,213 @@
 /*
- * The Method — deck theme, "candy gradient" edition
+ * The Method — deck theme
  * Single source of truth for the styled docs (METHOD.md, QUICKSTART.md, and any new deck).
- * Palette: deep aubergine ink on soft lavender, candy gradient (violet → pink → peach),
- * mint + butter secondaries. Grain overlay, pill chips, glassy gradient-border cards,
- * serif-italic flourishes. Drawn from the Arc browser school of funky-but-premium.
+ * Calm navy ink on warm paper, one terracotta accent, navy "machine" surfaces for code
+ * and callouts. Matches the landing page (site/index.html). Hairlines do the structural work.
  * Rendered into self-contained HTML by scripts/build-docs.mjs.
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
-  --bg: #F3EFFB;        /* soft lavender — page */
-  --ink: #221A3F;       /* deep aubergine — primary text */
-  --muted: #6F6794;     /* dusty violet-grey — secondary */
-  --line: #DFD7F0;      /* lavender hairline */
-  --accent: #FF4F78;    /* candy pink */
-  --violet: #6C4DF6;    /* electric violet */
-  --peach: #FFA94F;     /* peach */
-  --mint: #3FCDA5;      /* mint */
-  --butter: #FFD66B;    /* butter yellow */
-  --dark: #221A3F;      /* aubergine — dark blocks, code */
-  --code-bg: #E9E3F8;   /* lavender chip — inline code */
-  --paper: #FBF9FF;     /* near-white — cards, text on dark */
-  --chat-bg: #F8F5FE;   /* chat card on lavender */
-  --human: #FF4F78;     /* candy pink — human turns */
-  --agent: #6C4DF6;     /* electric violet — agent turns */
-  --grad: linear-gradient(120deg, #6C4DF6 0%, #FF4F78 55%, #FFA94F 100%);
-  /* legacy aliases (older decks may reference these) */
-  --sage: #3FCDA5;
-  --mustard: #FFD66B;
-  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  --bg: #FAF9F6;        /* warm paper — page */
+  --ink: #16233D;       /* deep navy — primary text */
+  --muted: #5C6A85;     /* slate — secondary text */
+  --faint: #9AA3B5;     /* faint slate — eyebrows, captions */
+  --line: rgba(22, 35, 61, 0.12);   /* navy hairline */
+  --card: #F3F1EB;      /* warm light — cards, inline code */
+  --accent: #C75B3D;    /* terracotta — the single accent */
+  /* the dark "machine" surface — code, callouts, cover */
+  --dk: #16233D;
+  --dk-ink: #ECEAE3;    /* cream text on navy */
+  --dk-mut: #9DA9C0;
+  --dk-faint: #5D6C8C;
+  --dk-accent: #E08D6D; /* warm terracotta on navy */
+  --dk-ok: #8DB892;     /* sage on navy — meta labels */
+  --serif: 'Instrument Serif', Georgia, serif;
+  --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
+  /* legacy aliases so older decks referencing these still resolve */
+  --dark: #16233D; --paper: #ECEAE3; --code-bg: #EFEBE3;
+  --sage: #8DB892; --mustard: #C79A3D; --violet: #16233D;
+  --chat-bg: #F3F1EB; --human: #C75B3D; --agent: #3E5277;
 }
 
 html, body { background: var(--bg); color: var(--ink); margin: 0; padding: 0; }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 17px;
+  font-family: var(--sans);
+  font-size: 16.5px;
   line-height: 1.65;
-  letter-spacing: -0.005em;
+  letter-spacing: -0.003em;
   max-width: 820px;
   margin: 0 auto;
   padding: 80px 48px 160px;
   font-weight: 400;
   counter-reset: h2-counter;
+  -webkit-font-smoothing: antialiased;
 }
+::selection { background: rgba(199, 91, 61, 0.18); }
 
-/* film grain over the whole page — the texture that keeps the candy from being flat */
-body::before {
-  content: ""; position: fixed; inset: 0; z-index: 2; pointer-events: none;
-  background-image: var(--grain);
-  opacity: 0.045;
-}
-
-::selection { background: rgba(255, 79, 120, 0.25); }
-
-h1 {
-  font-family: 'Space Grotesk', 'Inter', sans-serif;
-  font-size: 56px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.05;
-  margin: 0 0 24px 0;
-}
+h1 { font-size: clamp(34px, 6vw, 46px); font-weight: 600; letter-spacing: -0.025em; line-height: 1.08; margin: 0 0 22px 0; }
 h2 {
-  font-family: 'Space Grotesk', 'Inter', sans-serif;
-  font-size: 34px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2;
-  margin: 96px 0 24px 0;
+  font-size: clamp(25px, 4.5vw, 30px); font-weight: 600; letter-spacing: -0.02em; line-height: 1.22;
+  margin: 84px 0 22px 0; padding-top: 30px; border-top: 1px solid var(--line);
 }
 h2::before {
-  content: "✦ " counter(h2-counter, decimal-leading-zero);
-  counter-increment: h2-counter;
-  display: block; width: fit-content;
-  font-family: 'Space Mono', ui-monospace, monospace;
-  font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
-  color: #FFFFFF; font-weight: 700;
-  background: var(--grad);
-  padding: 6px 14px; border-radius: 999px;
-  margin-bottom: 18px;
+  content: "§ " counter(h2-counter, decimal-leading-zero);
+  counter-increment: h2-counter; display: block; width: fit-content;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--accent); font-weight: 500; margin-bottom: 14px;
 }
-h3 {
-  font-family: 'Space Grotesk', 'Inter', sans-serif;
-  font-size: 23px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3;
-  margin: 44px 0 16px 0;
-}
+h3 { font-size: 21px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3; margin: 40px 0 14px 0; }
 h4 {
-  font-family: 'Space Mono', ui-monospace, monospace;
-  font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--violet); margin: 32px 0 12px 0;
+  font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted); margin: 30px 0 12px 0;
 }
 
 p { margin: 0 0 18px 0; }
-ul, ol { margin: 0 0 18px 0; padding-left: 24px; }
-li { margin-bottom: 8px; }
-ol > li::marker { color: var(--violet); font-weight: 600; }
-ul > li::marker { content: "✦ "; color: var(--accent); font-size: 0.85em; }
+ul, ol { margin: 0 0 18px 0; padding-left: 22px; }
+li { margin-bottom: 7px; }
+li::marker { color: var(--accent); }
 
 strong { font-weight: 600; }
-em {
-  font-family: 'Instrument Serif', Georgia, serif;
-  font-style: italic; font-weight: 400; font-size: 1.12em;
-  color: var(--accent);
-}
+em { font-style: italic; color: var(--accent); }
 
 code {
-  font-family: 'Space Mono', ui-monospace, monospace;
-  font-size: 0.82em; color: #5B3DE0; background: var(--code-bg);
-  padding: 2px 8px; border-radius: 6px;
+  font-family: var(--mono); font-size: 0.84em; color: #9A4326;
+  background: var(--card); padding: 2px 7px; border-radius: 5px;
 }
 pre {
-  background: linear-gradient(var(--dark), var(--dark)) padding-box, var(--grad) border-box;
-  border: 1px solid transparent;
-  color: #F1EDFF;
-  padding: 22px 26px; border-radius: 16px;
-  font-size: 14px; line-height: 1.6; margin: 24px 0; overflow-x: auto;
+  background: var(--dk); color: var(--dk-ink);
+  padding: 22px 26px; border-radius: 12px;
+  font-size: 13.5px; line-height: 1.6; margin: 24px 0; overflow-x: auto;
 }
 pre code { background: transparent; color: inherit; padding: 0; font-size: 1em; }
 
 table { width: 100%; border-collapse: collapse; margin: 20px 0 28px 0; font-size: 15px; }
 th {
-  text-align: left;
-  font-family: 'Space Mono', ui-monospace, monospace;
-  font-weight: 700; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--violet);
-  padding: 12px 16px 12px 0; border-bottom: 2px solid var(--violet);
+  text-align: left; font-family: var(--mono); font-weight: 500; font-size: 11px;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+  padding: 12px 16px 12px 0; border-bottom: 2px solid var(--ink);
 }
 td { padding: 12px 16px 12px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
 td:first-child, th:first-child { padding-left: 0; }
 tr:last-child td { border-bottom: none; }
 
 blockquote {
-  border-left: 4px solid;
-  border-image: var(--grad) 1;
-  padding: 8px 0 8px 26px; margin: 32px 0;
-  font-family: 'Instrument Serif', Georgia, serif; font-style: italic;
-  font-size: 25px; font-weight: 400; line-height: 1.35; letter-spacing: 0;
+  border-left: 3px solid var(--accent);
+  padding: 4px 0 4px 24px; margin: 30px 0;
+  font-family: var(--serif); font-style: italic;
+  font-size: 23px; font-weight: 400; line-height: 1.35; color: var(--ink); letter-spacing: 0;
 }
 blockquote p { margin: 0; }
-blockquote em { font-size: 1em; }
+blockquote em { font-size: 1em; font-family: inherit; }
 
-hr { border: none; margin: 56px 0; text-align: center; }
-hr::after {
-  content: "✦ ✦ ✦"; color: var(--violet); opacity: 0.5;
-  font-size: 13px; letter-spacing: 1.2em; padding-left: 1.2em;
-}
+hr { border: none; border-top: 1px solid var(--line); margin: 52px 0; }
 
-a {
-  color: var(--violet); text-decoration: none;
-  border-bottom: 1.5px solid rgba(108, 77, 246, 0.35);
-}
-a:hover { color: var(--accent); border-bottom-color: var(--accent); background: rgba(255, 79, 120, 0.08); }
+a { color: var(--ink); text-decoration: none; border-bottom: 1px solid rgba(199, 91, 61, 0.4); }
+a:hover { color: var(--accent); border-bottom-color: var(--accent); }
 
-/* ── Cover — aurora gradient block with grain and a sparkle ── */
+/* ── Cover — navy title card ── */
 .cover {
-  position: relative; overflow: hidden;
-  background:
-    radial-gradient(at 85% -10%, rgba(255, 79, 120, 0.85) 0%, transparent 55%),
-    radial-gradient(at -15% 115%, rgba(108, 77, 246, 0.95) 0%, transparent 60%),
-    radial-gradient(at 115% 95%, rgba(255, 169, 79, 0.65) 0%, transparent 50%),
-    #2B2154;
-  color: var(--paper);
-  border-radius: 28px; margin: 0 0 80px 0; padding: 84px 60px 60px;
+  background: var(--dk); color: var(--dk-ink);
+  border-radius: 18px; margin: 0 0 72px 0; padding: 76px 56px 56px;
 }
-.cover::before {
-  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
-  background-image: var(--grain); opacity: 0.14; mix-blend-mode: overlay;
-}
-.cover::after {
-  content: "✦"; position: absolute; top: 24px; right: 48px; z-index: 0;
-  font-size: 110px; line-height: 1; color: rgba(255, 255, 255, 0.22);
-  transform: rotate(14deg);
-}
-.cover > * { position: relative; z-index: 1; }
 .cover .eyebrow {
-  display: inline-block; width: fit-content;
-  font-family: 'Space Mono', ui-monospace, monospace;
-  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--paper); font-weight: 700; margin-bottom: 36px;
-  background: rgba(255, 255, 255, 0.14);
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  border-radius: 999px; padding: 7px 16px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--dk-accent); font-weight: 500; margin-bottom: 30px;
 }
 .cover h1 {
-  font-size: 80px; font-weight: 700; letter-spacing: -0.035em; line-height: 0.98;
-  margin: 0 0 28px 0; color: var(--paper); max-width: 640px;
+  font-size: clamp(38px, 8.5vw, 60px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.02;
+  margin: 0 0 24px 0; color: var(--dk-ink); max-width: 640px;
 }
 .cover .subtitle {
-  font-family: 'Instrument Serif', Georgia, serif; font-style: italic;
-  font-size: 27px; color: rgba(251, 249, 255, 0.88); font-weight: 400;
-  max-width: 600px; line-height: 1.3; margin-bottom: 56px; letter-spacing: 0;
+  font-size: 22px; color: var(--dk-mut); font-weight: 400; max-width: 600px;
+  line-height: 1.4; margin-bottom: 48px; letter-spacing: -0.01em;
 }
 .cover .meta {
-  font-family: 'Space Mono', ui-monospace, monospace;
-  font-size: 13px; color: rgba(251, 249, 255, 0.62); letter-spacing: 0.02em; line-height: 2;
+  font-family: var(--mono); font-size: 13px; color: var(--dk-faint);
+  letter-spacing: 0.02em; line-height: 2;
 }
 .cover .meta strong {
-  color: var(--mint); font-weight: 700; text-transform: uppercase;
-  font-size: 11px; letter-spacing: 0.14em; display: inline-block; width: 120px;
+  color: var(--dk-ok); font-weight: 500; text-transform: uppercase;
+  font-size: 11px; letter-spacing: 0.12em; display: inline-block; width: 120px;
 }
 
-/* ── Table of contents — glassy card ── */
-.toc {
-  background: rgba(255, 255, 255, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  box-shadow: 0 12px 40px rgba(34, 26, 63, 0.08);
-  border-radius: 20px; padding: 32px 36px; margin: 48px 0 80px 0;
-}
+/* ── Table of contents — quiet card ── */
+.toc { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 30px 34px; margin: 44px 0 72px 0; }
 .toc .toc-label {
-  width: fit-content;
-  font-family: 'Space Mono', ui-monospace, monospace;
-  font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
-  font-weight: 700; margin-bottom: 18px;
-  background: var(--grad);
-  -webkit-background-clip: text; background-clip: text; color: transparent;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--accent); font-weight: 500; margin-bottom: 16px;
 }
 .toc ol { list-style: none; padding: 0; margin: 0; counter-reset: toc-counter; font-size: 15px; }
 .toc li { display: flex; align-items: baseline; padding: 6px 0; margin: 0; counter-increment: toc-counter; }
 .toc li::before {
   content: counter(toc-counter, decimal-leading-zero);
-  font-family: 'Space Mono', ui-monospace, monospace;
-  font-size: 11px; color: var(--violet); letter-spacing: 0.1em;
-  margin-right: 18px; font-weight: 700; min-width: 24px;
+  font-family: var(--mono); font-size: 11px; color: var(--faint); letter-spacing: 0.1em;
+  margin-right: 18px; font-weight: 500; min-width: 24px;
 }
 .toc a { color: var(--ink); border-bottom: none; font-weight: 500; }
-.toc a:hover { color: var(--accent); background: transparent; }
+.toc a:hover { color: var(--accent); }
 
-/* ── Callout — aubergine block with aurora corners ── */
-.callout {
-  position: relative; overflow: hidden;
-  background:
-    radial-gradient(at 100% 0%, rgba(255, 79, 120, 0.45) 0%, transparent 45%),
-    radial-gradient(at 0% 100%, rgba(108, 77, 246, 0.55) 0%, transparent 50%),
-    var(--dark);
-  color: var(--paper); padding: 40px 44px; border-radius: 20px; margin: 40px 0;
-}
-.callout::before {
-  content: ""; position: absolute; inset: 0; pointer-events: none;
-  background-image: var(--grain); opacity: 0.1; mix-blend-mode: overlay;
-}
-.callout > * { position: relative; }
+/* ── Callout — navy block ── */
+.callout { background: var(--dk); color: var(--dk-ink); padding: 36px 40px; border-radius: 14px; margin: 40px 0; }
 .callout .callout-label {
-  font-family: 'Space Mono', ui-monospace, monospace;
-  font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--butter); font-weight: 700; margin-bottom: 14px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--dk-accent); font-weight: 500; margin-bottom: 14px;
 }
-.callout p { font-size: 20px; line-height: 1.45; font-weight: 500; letter-spacing: -0.01em; margin: 0 0 12px 0; }
+.callout p { font-size: 19px; line-height: 1.45; font-weight: 400; letter-spacing: -0.01em; margin: 0 0 12px 0; color: var(--dk-ink); }
 .callout p:last-child { margin-bottom: 0; }
-.callout em { color: var(--peach); }
+.callout em { color: var(--dk-accent); font-style: italic; }
 
-/* ── Role cards (METHOD) — glassy, gradient border ── */
+/* ── Role cards (METHOD) — hairline card ── */
 .role-card {
-  border: 1.5px solid transparent;
-  background: linear-gradient(var(--paper), var(--paper)) padding-box, var(--grad) border-box;
-  box-shadow: 0 10px 32px rgba(34, 26, 63, 0.08);
-  border-radius: 20px; padding: 28px 32px; margin: 28px 0;
+  border: 1px solid var(--line); border-left: 3px solid var(--accent);
+  border-radius: 12px; padding: 26px 30px; margin: 24px 0; background: var(--card);
 }
-.role-card h3 { margin-top: 0; margin-bottom: 6px; font-size: 22px; }
+.role-card h3 { margin-top: 0; margin-bottom: 6px; font-size: 21px; }
 .role-card .role-tags {
-  width: fit-content;
-  font-family: 'Space Mono', ui-monospace, monospace;
-  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
-  font-weight: 700; margin-bottom: 18px;
-  background: var(--grad);
-  -webkit-background-clip: text; background-clip: text; color: transparent;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--accent); font-weight: 500; margin-bottom: 18px;
 }
 .role-card dl { display: grid; grid-template-columns: 140px 1fr; gap: 8px 16px; margin: 0; font-size: 15px; }
 .role-card dt {
-  font-family: 'Space Mono', ui-monospace, monospace;
-  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--violet); font-weight: 700; padding-top: 2px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--muted); font-weight: 500; padding-top: 2px;
 }
 .role-card dd { margin: 0; }
 
-/* ── Chat transcripts (QUICKSTART) — bubbles ── */
-.chat {
-  background: var(--chat-bg); border: 1px solid var(--line);
-  border-radius: 20px; padding: 20px; margin: 32px 0; font-size: 15px; line-height: 1.55;
-}
-.chat .turn {
-  margin-bottom: 12px; padding: 14px 18px; border-radius: 14px;
-  background: rgba(255, 255, 255, 0.7); border: 1px solid var(--line);
-}
+/* ── Chat transcripts (QUICKSTART) — quiet bubbles ── */
+.chat { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px; margin: 32px 0; font-size: 15px; line-height: 1.55; }
+.chat .turn { margin-bottom: 10px; padding: 14px 18px; border-radius: 10px; background: #FFFFFF; border: 1px solid var(--line); }
 .chat .turn:last-child { margin-bottom: 0; }
-.chat .turn:has(.role.human) {
-  background: rgba(255, 79, 120, 0.07);
-  border-color: rgba(255, 79, 120, 0.22);
-}
-.chat .turn:has(.role.agent) {
-  background: rgba(108, 77, 246, 0.06);
-  border-color: rgba(108, 77, 246, 0.2);
-}
+.chat .turn:has(.role.human) { background: rgba(199, 91, 61, 0.06); border-color: rgba(199, 91, 61, 0.2); }
+.chat .turn:has(.role.agent) { background: rgba(22, 35, 61, 0.035); border-color: rgba(22, 35, 61, 0.12); }
 .chat .role {
-  font-family: 'Space Mono', ui-monospace, monospace;
-  font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
-  font-weight: 700; margin-bottom: 8px; display: block;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+  font-weight: 600; margin-bottom: 8px; display: block;
 }
 .chat .role::before { content: "● "; font-size: 8px; vertical-align: 1px; }
-.chat .role.human { color: var(--human); }
-.chat .role.agent { color: var(--agent); }
+.chat .role.human { color: var(--accent); }
+.chat .role.agent { color: #3E5277; }
 .chat .body { color: var(--ink); }
 .chat .body p:last-child { margin-bottom: 0; }
+.chat em { color: var(--accent); font-style: italic; }
 
 /* ── Diagram captions ── */
 .diagram-caption {
-  font-family: 'Space Mono', ui-monospace, monospace;
-  font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--muted); text-align: center; margin-top: 8px; margin-bottom: 24px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--faint); text-align: center; margin-top: 8px; margin-bottom: 24px;
 }
 
-/* ── Mermaid — glassy light card (overrides the dark pre styling) ── */
+/* ── Mermaid — light card ── */
 pre.mermaid {
-  background: rgba(255, 255, 255, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  box-shadow: 0 12px 40px rgba(34, 26, 63, 0.06);
-  color: var(--ink);
-  margin: 28px 0; text-align: center;
+  background: var(--card); border: 1px solid var(--line); color: var(--ink);
+  margin: 28px 0; text-align: center; border-radius: 12px;
 }
 
 @media print {
   body { max-width: none; padding: 24px; font-size: 11pt; }
-  body::before { display: none; }
   h1, h2 { break-after: avoid; }
   table, pre, blockquote, .callout, .role-card, .chat { break-inside: avoid; }
   a { color: var(--ink); border-bottom: none; }

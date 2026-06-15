@@ -145,9 +145,9 @@ flowchart LR
     Triage --> Loop[Recursive decomposition<br/>until DoR]
     Loop --> Output[Linear / Jira / GitHub<br/>+ git audit trail]
 
-    style Intent fill:#FF4F78,color:#fff
-    style Triage fill:#FFEFDB
-    style Output fill:#E9E3F8
+    style Intent fill:#C75B3D,color:#fff
+    style Triage fill:#F0ECE4
+    style Output fill:#E6EAF1
 ```
 
 <div class="diagram-caption">The whole Method in one diagram</div>

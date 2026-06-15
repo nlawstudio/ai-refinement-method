@@ -112,11 +112,11 @@ flowchart TB
 
     tracker --> Audit[(Git audit trail<br/>tree, transcript,<br/>ADRs, threat model,<br/>compliance manifest)]
 
-    style Start fill:#D5674C,color:#fff
-    style Triage fill:#F4E6C6
-    style Decompose fill:#EFDED9
-    style tracker fill:#DCE4EC
-    style Audit fill:#F4E6C6
+    style Start fill:#C75B3D,color:#fff
+    style Triage fill:#F0ECE4
+    style Decompose fill:#F0ECE4
+    style tracker fill:#E6EAF1
+    style Audit fill:#F0ECE4
 ```
 
 <div class="diagram-caption">The unified loop — same shape, depth adapts to the input</div>
@@ -145,8 +145,8 @@ flowchart LR
     Memory[(gbrain memory<br/>session/project/org)] -.-> Loop
     Memory -.-> Roles
 
-    style Loop fill:#D5674C,color:#fff
-    style Memory fill:#EFDED9
+    style Loop fill:#C75B3D,color:#fff
+    style Memory fill:#F0ECE4
 ```
 
 <div class="diagram-caption">Layers — the developer interacts with the loop; everything else is internal</div>
@@ -162,9 +162,9 @@ flowchart LR
     B -->|Has a good draft| D[DRAFTING<br/>AI drafts<br/>Human signs off]
     B -->|Needs human expertise| E[INTERVIEWING<br/>AI asks<br/>Human answers<br/>AI cleans + structures<br/>Human signs off]
 
-    style C fill:#DBEAE1
-    style D fill:#F4E6C6
-    style E fill:#EFDED9
+    style C fill:#E2EDE5
+    style D fill:#F0ECE4
+    style E fill:#F0ECE4
 ```
 
 <div class="diagram-caption">The three modes of every agent output</div>
@@ -224,10 +224,10 @@ flowchart TB
         Critic[Critic<br/>adversarial review]
     end
 
-    style Understand fill:#DBEAE1
-    style Discovery fill:#EFDED9
-    style Design fill:#F4E6C6
-    style Spec fill:#DCE4EC
+    style Understand fill:#E2EDE5
+    style Discovery fill:#F0ECE4
+    style Design fill:#F0ECE4
+    style Spec fill:#E6EAF1
 ```
 
 <div class="diagram-caption">The role panel — grouped by where they fire. The Explorer maps the domain; the Cartographer reads the code; the rest turn that understanding into a ready spec.</div>
@@ -403,10 +403,10 @@ flowchart TD
     Shape -->|Epic-sized work| EPIC[Full refinement:<br/>scope → threat → ADRs<br/>→ design → decompose<br/>→ tests → tracker]
     Shape -->|Goal too big for 1 epic| MULTI[Epic decomposition first:<br/>break goal into epic shapes<br/>→ then per-epic full flow]
 
-    style Intent fill:#D5674C,color:#fff
-    style Shape fill:#F4E6C6
-    style EPIC fill:#DCE4EC
-    style MULTI fill:#DCE4EC
+    style Intent fill:#C75B3D,color:#fff
+    style Shape fill:#F0ECE4
+    style EPIC fill:#E6EAF1
+    style MULTI fill:#E6EAF1
 ```
 
 <div class="diagram-caption">Triage — how the method decides what depth to run at</div>
@@ -448,9 +448,9 @@ flowchart LR
     BC -.shapes.-> Epics[Epic structure]
     Glossary -.read by.-> Everyone[Every agent, thereafter]
 
-    style Intent fill:#D5674C,color:#fff
-    style Storm fill:#DBEAE1
-    style Glossary fill:#F4E6C6
+    style Intent fill:#C75B3D,color:#fff
+    style Storm fill:#E2EDE5
+    style Glossary fill:#F0ECE4
 ```
 
 <div class="diagram-caption">Event storming as the front of refinement — its outputs feed decisions, scope, and structure</div>
@@ -496,9 +496,9 @@ flowchart TB
 
     Leaf --> Done([Leaf complete])
 
-    style Unit fill:#F4E6C6
-    style Check fill:#EFDED9
-    style Done fill:#DCE4EC
+    style Unit fill:#F0ECE4
+    style Check fill:#F0ECE4
+    style Done fill:#E6EAF1
 ```
 
 <div class="diagram-caption">Recursive decomposition — every non-leaf node loops back through DoR</div>
@@ -519,10 +519,10 @@ flowchart TB
     FullFlow --> PerEpic
     PerEpic -->|All epics refined| Complete([Multi-epic plan complete])
 
-    style Goal fill:#D5674C,color:#fff
-    style Review fill:#F4E6C6
-    style FullFlow fill:#DCE4EC
-    style Complete fill:#DCE4EC
+    style Goal fill:#C75B3D,color:#fff
+    style Review fill:#F0ECE4
+    style FullFlow fill:#E6EAF1
+    style Complete fill:#E6EAF1
 ```
 
 <div class="diagram-caption">Multi-epic decomposition — adds one outer loop before the per-epic flow</div>
@@ -558,9 +558,9 @@ flowchart LR
     C -->|Both yes| ADR[Promote to canonical ADR<br/>announce to human]
     C -->|Either no| Informal[Record as informal<br/>decision in session log]
 
-    style A fill:#D5674C,color:#fff
-    style C fill:#F4E6C6
-    style ADR fill:#DCE4EC
+    style A fill:#C75B3D,color:#fff
+    style C fill:#F0ECE4
+    style ADR fill:#E6EAF1
 ```
 
 <div class="diagram-caption">Promotion rules decide what gets created — skills are entry points, not gatekeepers</div>
@@ -646,10 +646,10 @@ flowchart TD
     Review -->|No| Edit[Edit per human feedback]
     Edit --> Review
 
-    style Conv fill:#D5674C,color:#fff
-    style A fill:#F4E6C6
-    style B fill:#F4E6C6
-    style Land fill:#DCE4EC
+    style Conv fill:#C75B3D,color:#fff
+    style A fill:#F0ECE4
+    style B fill:#F0ECE4
+    style Land fill:#E6EAF1
 ```
 
 <div class="diagram-caption">ADR promotion — never silent</div>
@@ -675,10 +675,10 @@ flowchart TB
     INT --- PROP
     PROP --- UNIT
 
-    style UNIT fill:#DCE4EC
-    style PROP fill:#F4E6C6
-    style INT fill:#EFDED9
-    style E2E fill:#DBEAE1
+    style UNIT fill:#E6EAF1
+    style PROP fill:#F0ECE4
+    style INT fill:#F0ECE4
+    style E2E fill:#E2EDE5
 ```
 
 <div class="diagram-caption">The testing pyramid — bottom-heavy by design</div>
@@ -750,9 +750,9 @@ flowchart LR
 
     Manifest --> Audit[SOC 2 / ISO 27001<br/>evidence pack]
 
-    style Practices fill:#EFDED9
-    style Manifest fill:#DCE4EC
-    style Audit fill:#D5674C,color:#fff
+    style Practices fill:#F0ECE4
+    style Manifest fill:#E6EAF1
+    style Audit fill:#C75B3D,color:#fff
 ```
 
 <div class="diagram-caption">Compliance baked in — engagement produces evidence as a side effect</div>
@@ -821,9 +821,9 @@ flowchart LR
     Convene --> Drive
     Drive --> Disperse
 
-    style Convene fill:#EFDED9
-    style Drive fill:#F4E6C6
-    style Disperse fill:#DCE4EC
+    style Convene fill:#F0ECE4
+    style Drive fill:#F0ECE4
+    style Disperse fill:#E6EAF1
 ```
 
 <div class="diagram-caption">Team pattern — async by default, sync only when stakes warrant</div>
@@ -867,10 +867,10 @@ flowchart TB
     Project --> Loop
     Org --> Loop
 
-    style Loop fill:#D5674C,color:#fff
-    style Org fill:#EFDED9
-    style Project fill:#F4E6C6
-    style Session fill:#DCE4EC
+    style Loop fill:#C75B3D,color:#fff
+    style Org fill:#F0ECE4
+    style Project fill:#F0ECE4
+    style Session fill:#E6EAF1
 ```
 
 <div class="diagram-caption">Memory rings — outer rings inform inner-ring decisions</div>
@@ -938,10 +938,10 @@ flowchart TB
     Loop --> Structured
     Loop -.queries.-> OnDemand
 
-    style Loop fill:#D5674C,color:#fff
-    style Always fill:#DCE4EC
-    style Structured fill:#F4E6C6
-    style OnDemand fill:#EFDED9
+    style Loop fill:#C75B3D,color:#fff
+    style Always fill:#E6EAF1
+    style Structured fill:#F0ECE4
+    style OnDemand fill:#F0ECE4
 ```
 
 <div class="diagram-caption">Three tiers of context — different load patterns, different update cadences</div>
@@ -1095,10 +1095,10 @@ flowchart TB
     tracker -.bidirectional link.-> Git
     Git -.refines into.-> tracker
 
-    style Loop fill:#D5674C,color:#fff
-    style tracker fill:#DCE4EC
-    style Git fill:#F4E6C6
-    style gbrain fill:#EFDED9
+    style Loop fill:#C75B3D,color:#fff
+    style tracker fill:#E6EAF1
+    style Git fill:#F0ECE4
+    style gbrain fill:#F0ECE4
 ```
 
 <div class="diagram-caption">tracker holds operational state. Git holds the audit trail. gbrain holds memory.</div>
