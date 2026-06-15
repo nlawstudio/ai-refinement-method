@@ -48,7 +48,9 @@ const slug = (s) => s.toLowerCase().trim()
   .replace(/[^\\w\\s-]/g, '')
   .replace(/\\s+/g, '-');
 
-const md = markdownit({ html: true, linkify: true, breaks: false });
+// linkify off: bare filenames like METHOD.md / AGENTS.md would otherwise be
+// auto-linked as domains (.md is a real TLD). Use explicit [text](link) instead.
+const md = markdownit({ html: true, linkify: false, breaks: false });
 
 // Render \`\`\`mermaid fences as <pre class="mermaid"> with raw (unescaped) source.
 const fence = md.renderer.rules.fence;
@@ -70,6 +72,21 @@ md.renderer.rules.heading_open = (tokens, idx, opts, env, self) => {
 
 const source = decodeURIComponent(escape(atob(document.getElementById('src').textContent)));
 document.getElementById('doc').innerHTML = md.render(source);
+
+// Rewrite internal links so the built decks are navigable on the site:
+// the two decks render to *.html, every other repo file resolves on GitHub.
+// External links and in-page #anchors are left untouched.
+const REPO = 'https://github.com/nlawstudio/ai-refinement-method/blob/main/';
+const DECK = { 'METHOD.md': 'method.html', 'QUICKSTART.md': 'quickstart.html' };
+for (const a of document.querySelectorAll('#doc a[href]')) {
+  const href = a.getAttribute('href');
+  if (/^(https?:|mailto:|#)/.test(href)) continue;
+  const hashAt = href.indexOf('#');
+  const hash = hashAt >= 0 ? href.slice(hashAt) : '';
+  const path = (hashAt >= 0 ? href.slice(0, hashAt) : href).replace(/^\\.\\//, '');
+  if (!path) continue;
+  a.setAttribute('href', (DECK[path] || REPO + path) + hash);
+}
 
 mermaid.initialize({
   startOnLoad: false,
