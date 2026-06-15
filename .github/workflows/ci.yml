@@ -45,6 +45,6 @@ jobs:
           args: >-
             --offline
             --no-progress
-            README.md TUTORIAL.md METHOD.md INSTALL.md AGENT_INSTALL.md
+            README.md QUICKSTART.md METHOD.md AGENT_INSTALL.md
             CHANGELOG.md CONTRIBUTING.md SECURITY.md CODE_OF_CONDUCT.md
           fail: true
