@@ -33,7 +33,7 @@ Code got cheap. Spec quality is the new bottleneck. The Method points AI at the 
 
 It's not dictation, and it's not vibe coding. The AI is a thinking partner — it brings expertise, surfaces the gaps, and *pushes back* on weak reasoning. You bring taste, domain knowledge, and the final call. You stay the author; the Method makes you a sharper one.
 
-Under the hood it layers **ten specialised agents** and **ten skills** on top of Claude Code, governed by a constitution your project owns. You describe what you want in plain language; the Method figures out the shape of the work and runs the right depth of refinement.
+Under the hood it layers **ten specialised agents** and **twelve skills** on top of Claude Code, governed by a constitution your project owns. You describe what you want in plain language; the Method figures out the shape of the work and runs the right depth of refinement.
 
 <div class="callout">
 <div class="callout-label">In one sentence</div>

@@ -4,6 +4,19 @@ All notable changes to the method will be documented here. Versions follow [SemV
 
 ---
 
+## [2.2.0] — 2026-06-15
+
+### Added
+- **Stewardship layer** — two project-level skills that keep cross-cutting quality legible across the whole project, the across-time complement to the per-epic Definition of Ready:
+  - `/posture` — a standing snapshot + trend of UX, testing, compliance, and NFR health; rebuilds the human's mental model and writes a dated record (`docs/quality-posture.md`) so drift is visible over time.
+  - `/audit` — an on-demand deep adversarial sweep for where a concern has actually eroded; ranked findings with evidence (Cartographer survey + Critic refutation).
+- **Thesis pillar** in METHOD.md naming the principle the stewardship layer serves: the human stays the author of the *non-local, non-failing* quality (UX, testing, compliance, NFRs) that erodes silently as AI takes more of the build.
+
+### Changed
+- **Landing page** refreshed to orient newcomers and surface the new ideas: a "new to spec-driven development?" explainer (linking GitHub's Spec Kit and AWS Kiro), a "Stay in control as scope grows" section introducing the stewardship layer, and FAQ entries on how the Method differs from spec-generators and how it keeps quality under control.
+
+---
+
 ## [2.1.0] — 2026-06-15
 
 ### Added

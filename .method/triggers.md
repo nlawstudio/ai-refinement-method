@@ -158,6 +158,17 @@ Operates in **interviewing** mode. The engineer's engaged input — cleaned by t
 
 ---
 
+## Stewardship — /posture and /audit
+
+Both are invoked **deliberately by the human**, not driven by triage:
+
+- `/posture` — periodically, or whenever the human has lost track of where cross-cutting quality stands. Light, recurring. May be *suggested* (never auto-run) after several epics have shipped since the last record, or at a retro.
+- `/audit` — on demand, when the human wants to know where a concern (UX, testing, compliance, NFRs) has actually drifted across the project. Deep, adversarial. A natural follow-up when `/posture` flags a concern as ambiguous.
+
+Both operate in **doing** mode and surface findings for the human to triage — neither fixes anything; drift routes back into refinement.
+
+---
+
 ## How to tune
 
 If a role is invoked too eagerly: tighten the conditions above. Make them more specific.

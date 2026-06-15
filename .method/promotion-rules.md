@@ -122,6 +122,17 @@ The current tag vocabulary:
 
 ---
 
+## Quality posture promotion rule
+
+A `/posture` snapshot becomes the canonical record when:
+
+- The human has reviewed the snapshot (it reads the durable artifacts rather than making a new judgement, but the human confirms it reflects reality)
+- It is written to `docs/quality-posture.md`, overwriting the prior snapshot
+
+Because the record is a single file in git, its history is the trend — no separate versioning. An `/audit` produces **findings, not a canonical artifact**: its job is to surface drift for the human to route back into refinement (an epic, an ADR, a test), where the normal promotion rules then apply.
+
+---
+
 ## What promotions are NOT
 
 - Promotions are **not** silent. Every promotion is announced and confirmed.

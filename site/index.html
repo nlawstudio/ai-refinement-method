@@ -100,6 +100,10 @@ p a:hover, li a:hover { color: var(--accent); border-bottom-color: rgba(199, 91,
 /* ── hero ── */
 .hero { margin-bottom: 72px; }
 .hero p { max-width: 560px; }
+.hero-note { font-size: 14px; color: var(--faint); max-width: 600px; margin: 22px 0 0; padding-top: 20px; border-top: 1px solid var(--line); }
+.hero-note strong { color: var(--ink); font-weight: 600; }
+.hero-note a { color: var(--muted); border-bottom: 1px solid var(--line); }
+.hero-note a:hover { color: var(--accent); border-bottom-color: var(--accent); }
 .cta-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-top: 26px; }
 .btn {
   display: inline-block; background: var(--dk); color: var(--dk-ink);
@@ -273,6 +277,7 @@ footer a:hover { color: var(--accent); }
     <a href="#overview" class="active">Overview</a>
     <a href="#how-it-works">How it works</a>
     <a href="#what-you-get">What you get</a>
+    <a href="#stay-in-control">Stay in control</a>
     <a href="#roles">The role panel</a>
     <a href="#get-started">Get started</a>
     <a href="#faq">FAQ</a>
@@ -282,7 +287,7 @@ footer a:hover { color: var(--accent); }
       <a href="https://github.com/nlawstudio/ai-refinement-method">GitHub</a>
       <a href="./quickstart.html">Quickstart</a>
       <a href="./method.html">METHOD.md</a>
-      <a href="https://github.com/nlawstudio/ai-refinement-method/releases">v2.1.0</a>
+      <a href="https://github.com/nlawstudio/ai-refinement-method/releases">v2.2.0</a>
     </nav>
   </div>
 </aside>
@@ -302,6 +307,12 @@ footer a:hover { color: var(--accent); }
       domain mapped, decisions captured, threats modelled, every story testable.
     </p>
     <p>It stops at the spec. Your coding tool builds from it. <strong>That's the point.</strong></p>
+    <p class="hero-note">
+      <strong>New to spec-driven development?</strong> It's the fast-growing practice of letting a
+      written spec — not the prompt — be the source of truth your AI agents build from (see GitHub's
+      <a href="https://github.com/github/spec-kit">Spec Kit</a> or <a href="https://kiro.dev">AWS Kiro</a>).
+      Those generate a spec. The Method makes it a <em>good</em> one — rigorous enough to stake production on.
+    </p>
     <div class="cta-row">
       <a class="btn" href="#get-started">Get started</a>
       <button class="chip" id="copy-curl" type="button" aria-label="Copy install command"
@@ -361,6 +372,36 @@ footer a:hover { color: var(--accent); }
     <pre class="tree" aria-label="Example refinement output"><span class="ln"><span class="dir">plans/bulk-asset-export/</span></span><span class="ln"><span class="dim">├─</span> scope.md              <span class="ok"># signed</span></span><span class="ln"><span class="dim">├─</span> threat-model.md       <span class="ok"># human-engaged</span></span><span class="ln"><span class="dim">├─</span> design.md</span><span class="ln"><span class="dim">├─</span> tree.yaml             <span class="mut"># 12 stories · all ≤ 3 pts</span></span><span class="ln"><span class="dim">├─</span> manifest.yaml         <span class="mut"># SOC 2 / ISO 27001 pack</span></span><span class="ln"><span class="dim">└─</span> tests/                <span class="mut"># 12 failing · for the right reason</span></span><span class="ln"> </span><span class="ln"><span class="dir">docs/adr/</span></span><span class="ln"><span class="dim">├─</span> ADR-021-streaming-export.md</span><span class="ln"><span class="dim">└─</span> ADR-022-export-rate-limiting.md</span><span class="ln"> </span><span class="ln"><span class="dim">tracker ›</span> NEW-EPIC-42 <span class="mut">· 12 stories ·</span> <span class="ok">all DoR ✓</span></span></pre>
   </section>
 
+  <section id="stay-in-control" class="col">
+    <h2>Stay in control as scope grows</h2>
+    <p>
+      Here's the trap nobody warns you about: the more the AI builds, the less you hold the
+      whole in your head — and the quality that lives <em>across</em> the project, not in any
+      one file, slips without anything turning red. User experience, test adequacy, compliance,
+      NFRs. No diff shows them eroding; a thin test still passes; a missing budget still ships.
+      You stay accountable for them and the least able to see them.
+    </p>
+    <p>
+      The Method keeps them yours to hold. Inside an epic, the Definition of Ready forces each
+      story to declare its budgets, its migration, its edge cases — no silent gaps. Across the
+      whole project, a <strong>stewardship layer</strong> rebuilds your view:
+    </p>
+    <div class="rows">
+      <div class="row">
+        <span class="k">/posture</span>
+        <h3>The standing pulse</h3>
+        <p>A quick, recurring snapshot of where UX, testing, compliance, and NFR quality stand —
+        and what's moved since last time. Written to git, so its history is the trend.</p>
+      </div>
+      <div class="row">
+        <span class="k">/audit</span>
+        <h3>The deep sweep</h3>
+        <p>An on-demand adversarial dig for where a concern has actually drifted — ranked findings
+        with evidence, each pointing back into refinement, where you stay the author.</p>
+      </div>
+    </div>
+  </section>
+
   <section id="roles" class="col">
     <h2>The role panel</h2>
     <p>
@@ -391,7 +432,7 @@ https://github.com/nlawstudio/ai-refinement-method/blob/main/AGENT_INSTALL.md</p
       <pre><span class="ps1">$</span> curl -sSL https://raw.githubusercontent.com/nlawstudio/ai-refinement-method/main/install.sh | sh</pre>
     </div>
     <p class="note">
-      Ships as markdown into your repo — ten agents, ten skills, zero runtime
+      Ships as markdown into your repo — ten agents, twelve skills, zero runtime
       dependencies. Existing <code>AGENTS.md</code> and <code>docs/adr/</code> are
       preserved. Then take 15 minutes with the <a href="./quickstart.html">quickstart</a>.
     </p>
@@ -406,6 +447,24 @@ https://github.com/nlawstudio/ai-refinement-method/blob/main/AGENT_INSTALL.md</p
         threat models, a domain map. Implementation happens in your own coding tool,
         against everything the Method produced. Separating the two is deliberate: specs
         are where being wrong is cheap.</p>
+      </details>
+      <details>
+        <summary>How is this different from GitHub Spec Kit or Kiro?</summary>
+        <p>Those generate a spec from your intent — a real step up from prompting blind. The
+        Method is the layer that makes the spec <em>rigorous</em>: it event-storms the domain,
+        captures decisions as ADRs, produces a threat model that counts as real compliance
+        evidence, holds every story to a Definition of Ready, and watches quality drift across
+        the whole project. It's plain markdown in your repo, too — agent-agnostic, no IDE
+        lock-in, yours to tune.</p>
+      </details>
+      <details>
+        <summary>How do I keep quality under control as the AI does more?</summary>
+        <p>That's the problem the Method is built around. Per story, the Definition of Ready
+        drags the non-local concerns — NFRs, migrations, edge cases, compliance — into the open
+        so none slip silently. Across the project, <span class="mono">/posture</span> gives you a
+        standing read of where UX, testing, compliance, and NFR quality stand, and
+        <span class="mono">/audit</span> digs for where they've drifted. You stay the author of
+        the quality that erodes without anything turning red.</p>
       </details>
       <details>
         <summary>Do I need a tracker?</summary>
@@ -441,7 +500,7 @@ https://github.com/nlawstudio/ai-refinement-method/blob/main/AGENT_INSTALL.md</p
 <footer>
   <div class="seg">
     <span>MIT</span>
-    <span>v2.1.0</span>
+    <span>v2.2.0</span>
     <span>built with the Method</span>
   </div>
   <div class="seg">

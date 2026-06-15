@@ -31,6 +31,7 @@
 <li><a href="#domain-discovery">Domain discovery — event storming and ubiquitous language</a></li>
 <li><a href="#recursive-decomposition">Recursive decomposition</a></li>
 <li><a href="#skills-as-internal-capabilities">Skills as internal capabilities</a></li>
+<li><a href="#stewardship-posture-and-audit">Stewardship — posture and audit</a></li>
 <li><a href="#definition-of-ready">Definition of Ready — the gate</a></li>
 <li><a href="#stop-conditions">Stop conditions</a></li>
 <li><a href="#adrs-and-the-promotion-rule">ADRs and the promotion rule</a></li>
@@ -76,6 +77,8 @@ AI fixes the economics. A patient, expert facilitator is available on demand; th
 **This isn't vibe coding. It's vibe spec'ing.** That other camp ships by feel and finds out at runtime — fine for prototypes, fatal for software that has to stand up. The Method takes the same speed and looseness and points it upstream, where being wrong is cheap and being right compounds. It's for production B2B, regulated environments, systems with a real audit and a real blast radius. For that work, the hour saved skipping refinement is the quarter spent in remediation.
 
 The human contributes judgment. The Method interrogates it, structures it, remembers it, and turns it into work the team can ship.
+
+**The quality that erodes silently stays yours to hold.** Some quality properties don't live in any one file or change — user experience, whether the tests actually pin the behaviour, compliance posture, non-functional requirements. They're *non-local*: no single diff shows them slipping. And they're *non-failing*: nothing turns red when they erode — a thin test still passes, a missing budget still ships, a UX seam just compounds. As AI takes more of the build, the human's role slides from *doing* to *monitoring* — and these are exactly the properties that vanish from the "does it work?" loop while staying the human's to answer for. So the Method makes them legible and forces engagement: inside an epic through the Definition of Ready — facets that make a request path declare its budgets, the anti-theatre check, the Critic that won't let a dismissal pass unargued; across the whole project through the stewardship layer (`/posture` and `/audit`), which rebuilds your picture of where those concerns stand and where they are drifting. You stay the author of the things that fail quietly.
 
 <div class="callout">
 <div class="callout-label">Isn't this waterfall?</div>
@@ -546,6 +549,8 @@ Power users who want explicit control can still invoke them directly.
 | `/review` | Critic | Intent references a PR, file, or design to review |
 | `/onboard` | Cartographer + Architect | New dev orientation requested |
 | `/handoff` | None (meta-skill) | End of session or "pick up where I left off" |
+| `/posture` | Cartographer (light survey) | Invoked deliberately — recurring quality snapshot (not triage-driven) |
+| `/audit` | Cartographer + Critic | Invoked deliberately — deep cross-cutting drift sweep (not triage-driven) |
 
 ### Cross-skill promotion
 
@@ -566,6 +571,17 @@ flowchart LR
 <div class="diagram-caption">Promotion rules decide what gets created — skills are entry points, not gatekeepers</div>
 
 The same pattern applies for threat model promotion, tracker story promotion, privacy impact promotion, and compliance tag promotion. All rules are in `.method/promotion-rules.md` — transparent and tunable.
+
+## Stewardship — posture and audit
+
+The Definition of Ready keeps quality honest *inside* an epic. But some quality is non-local — user experience, test adequacy, compliance, NFRs — and erodes *across* the project, silently, as more gets built. No single spec or diff shows it slipping, and nothing turns red when it does. As AI takes more of the build, the human slides from doing to monitoring, and these are exactly the properties that go invisible while staying the human's to answer for.
+
+The **stewardship layer** is the across-time complement to the per-epic gate. Two skills, both invoked deliberately by the human (not driven by triage):
+
+- **`/posture`** — a light, recurring snapshot of where each cross-cutting concern stands and how it has moved since last time. It reads the durable artifacts (compliance manifests, tests, NFR budgets vs. baselines, open hotspots, the ADR index), summarises the standing, and writes a dated record to `docs/quality-posture.md` — one file in git, so its history *is* the trend. The point is to rebuild the human's mental model of the whole.
+- **`/audit`** — a deep, on-demand adversarial sweep for where a concern has actually drifted. The survey fans out (one lens per concern), the Critic refutes each candidate, and what survives is ranked with evidence and a next step. The project-level complement to the Critic's per-artifact refutation.
+
+Neither fixes anything. Both surface drift and point back into refinement, where the human stays the author. The gate prevents, posture orients, audit adjudicates — together they answer the question that gets harder as scope grows: *where has the quality gone, and where is it slipping?*
 
 ## Definition of Ready — the gate
 
@@ -1278,6 +1294,7 @@ Versions follow SemVer in `VERSION`. Major releases when the role panel or core 
 | **1.2.4** | Standard OSS scaffolding (license, contributing, security, CI). |
 | **2.0.0** | Refocused on spec generation. Build phase removed (Builder, `/build`, `/off-course`). Added the Explorer role and `/storm` for event-storming domain discovery, the ubiquitous-language glossary, and an explicit push-back/anti-sycophancy spine across the interviewing agents. |
 | **2.1.0** | Tiered Definition of Ready — eight core criteria plus a conditional layer keyed on story facets (non-functional budgets, migration/rollback, observability, edge enumeration, typed-and-verified dependencies, AC provenance). Red-test review and epic-level exit checks (dependency DAG, hotspot closure, manifest completeness). Threat-model evidence is the engineer's recorded risk decisions. Test command parameterized via `method.config.yaml`. Landing page added; README consolidated to a standalone front door (INSTALL.md retired). |
+| **2.2.0** | Stewardship layer — `/posture` (standing quality snapshot + trend) and `/audit` (deep adversarial drift sweep), the across-time complement to the per-epic Definition of Ready. Thesis pillar on staying the author of non-local, non-failing quality (UX, testing, compliance, NFRs). |
 | 2.1.0+ | TBD as the Method is used and tuned |
 
 `CHANGELOG.md` tracks what changed at each version. Git tags mark releases; GitHub releases include release notes.
@@ -1345,6 +1362,7 @@ The Method ships with defaults; a few things are worth setting deliberately when
 | **Promotion rule** | The conditions under which a conversation produces a canonical artifact. |
 | **Role** | An agent primitive. Ten exist in this framework. |
 | **Skill** | An internal capability composing roles × modes. Not the user-facing surface. |
+| **Stewardship layer** | `/posture` and `/audit` — the across-time, whole-project complement to the Definition of Ready; keeps non-local quality (UX, testing, compliance, NFRs) legible and surfaces drift. |
 | **Story** | A leaf work item that meets DoR. Estimated at ≤3 points. |
 | **Stop condition** | An explicit trigger documented on a story — signals that implementation hit a refinement gap and should return to the Method. |
 | **Test Author** | Role: writes the failing test from AC. Does not see implementation. The test is the spec a developer later builds against. |

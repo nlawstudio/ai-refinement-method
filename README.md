@@ -72,7 +72,7 @@ The agent reads [`AGENT_INSTALL.md`](AGENT_INSTALL.md) — a structured prompt t
 curl -sSL https://raw.githubusercontent.com/nlawstudio/ai-refinement-method/main/install.sh | sh
 ```
 
-The script copies the framework files in; existing `AGENTS.md`, `method.config.yaml`, and `docs/adr/` are preserved. Re-run the same command to upgrade — it only overwrites framework files. Pin a version with `sh -s -- --ref v2.1.0`. After a manual install you'll customise `AGENTS.md` and `method.config.yaml` and connect your MCPs yourself (credentials live in `~/.claude/mcp.json`, never in the repo).
+The script copies the framework files in; existing `AGENTS.md`, `method.config.yaml`, and `docs/adr/` are preserved. Re-run the same command to upgrade — it only overwrites framework files. Pin a version with `sh -s -- --ref v2.2.0`. After a manual install you'll customise `AGENTS.md` and `method.config.yaml` and connect your MCPs yourself (credentials live in `~/.claude/mcp.json`, never in the repo).
 
 <details>
 <summary><b>What gets installed, manual install, and post-install configuration</b></summary>

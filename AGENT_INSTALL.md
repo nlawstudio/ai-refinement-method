@@ -102,7 +102,7 @@ Confirm the install worked:
 
 ```sh
 ls .claude/agents/    # should list 10 role .md files
-ls .claude/commands/  # should list ~10 skill .md files
+ls .claude/commands/  # should list ~12 skill .md files
 ls .method/          # triggers.md and promotion-rules.md
 ls plans/_templates/  # tree.yaml.example, manifest.yaml.example
 cat VERSION           # may or may not exist depending on install path
@@ -110,7 +110,7 @@ cat VERSION           # may or may not exist depending on install path
 
 Tell the human what was copied. Be specific:
 
-> "Installed method v{version} into this directory. 10 role agents in `.claude/agents/`, 10 skills in `.claude/commands/`, trigger profiles and promotion rules in `.method/`, templates in `plans/_templates/`. Framework documentation: `METHOD.md`, `QUICKSTART.md`, `AGENT_INSTALL.md`. Constitution: `AGENTS.md` (created from template — we'll customise it next). ADR directory: `docs/adr/` (empty, ready for your decisions)."
+> "Installed method v{version} into this directory. 10 role agents in `.claude/agents/`, 12 skills in `.claude/commands/`, trigger profiles and promotion rules in `.method/`, templates in `plans/_templates/`. Framework documentation: `METHOD.md`, `QUICKSTART.md`, `AGENT_INSTALL.md`. Constitution: `AGENTS.md` (created from template — we'll customise it next). ADR directory: `docs/adr/` (empty, ready for your decisions)."
 
 ---
 
