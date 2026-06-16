@@ -7,7 +7,7 @@
 # Schema docs: https://github.com/nlawstudio/ai-refinement-method/blob/main/METHOD.md#configuration
 # Defaults are documented inline. Any missing field falls through to its default.
 
-method_version: 2.2.0
+method_version: 2.2.1
 
 # ─── Operational tracker ──────────────────────────────────────────────────
 # The Method is tracker-agnostic. Pick one type, fill in the matching block.

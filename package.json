@@ -1,6 +1,6 @@
 {
   "name": "ai-refinement-method",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "private": true,
   "description": "Build tooling for the Method's styled docs.",
   "type": "module",

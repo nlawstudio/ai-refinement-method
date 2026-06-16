@@ -1,6 +1,11 @@
-# The Method
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="site/logo-light.png">
+    <img src="site/logo.png" alt="The Method" width="300">
+  </picture>
+</p>
 
-*An agentic refinement layer for AI coding agents.*
+<p align="center"><em>An agentic refinement layer for AI coding agents.</em></p>
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](LICENSE)
 [![Version](https://img.shields.io/github/v/release/nlawstudio/ai-refinement-method?label=version)](https://github.com/nlawstudio/ai-refinement-method/releases)
@@ -19,6 +24,8 @@ Code got cheap. Spec quality is the new bottleneck — and everyone building ser
 The Method puts that rigour within reach of every team. It's not dictation, and it's not vibe coding: the AI is a thinking partner that brings expertise, surfaces gaps, and *pushes back* on weak reasoning. You stay the author; it makes you a sharper one. And it deliberately stops at the spec — implementation happens in your own coding tool, against everything the Method produced. **That's the point.**
 
 It's built for software that has to stand up — production B2B, regulated environments, systems with a real audit and a real blast radius. For that work, the hour saved skipping refinement is the quarter spent in remediation.
+
+There's a deeper reason the upstream work matters. As models write more of the code, the code itself commoditises — cheap to generate, easy to regenerate, tied to whichever model you're using this quarter. What doesn't commoditise is your team's judgment about your own domain: the decisions, the threat reasoning, the language, the standards. The Method captures that judgment as plain files in your repo — a constitution, ADRs, a domain glossary, refined specs — owned by you and independent of any one model. Swap the model underneath and it all stays. You can hand a task to an agent; you can't hand off the learning, and this is where it's kept — compounding, every spec sharpening the next.
 
 ## How it works
 
@@ -72,7 +79,7 @@ The agent reads [`AGENT_INSTALL.md`](AGENT_INSTALL.md) — a structured prompt t
 curl -sSL https://raw.githubusercontent.com/nlawstudio/ai-refinement-method/main/install.sh | sh
 ```
 
-The script copies the framework files in; existing `AGENTS.md`, `method.config.yaml`, and `docs/adr/` are preserved. Re-run the same command to upgrade — it only overwrites framework files. Pin a version with `sh -s -- --ref v2.2.0`. After a manual install you'll customise `AGENTS.md` and `method.config.yaml` and connect your MCPs yourself (credentials live in `~/.claude/mcp.json`, never in the repo).
+The script copies the framework files in; existing `AGENTS.md`, `method.config.yaml`, and `docs/adr/` are preserved. Re-run the same command to upgrade — it only overwrites framework files. Pin a version with `sh -s -- --ref v2.2.1`. After a manual install you'll customise `AGENTS.md` and `method.config.yaml` and connect your MCPs yourself (credentials live in `~/.claude/mcp.json`, never in the repo).
 
 <details>
 <summary><b>What gets installed, manual install, and post-install configuration</b></summary>

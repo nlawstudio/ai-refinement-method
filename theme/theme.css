@@ -6,7 +6,7 @@
  * Rendered into self-contained HTML by scripts/build-docs.mjs.
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
   --bg: #FAF9F6;        /* warm paper — page */
@@ -23,7 +23,6 @@
   --dk-faint: #5D6C8C;
   --dk-accent: #E08D6D; /* warm terracotta on navy */
   --dk-ok: #8DB892;     /* sage on navy — meta labels */
-  --serif: 'Instrument Serif', Georgia, serif;
   --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
   /* legacy aliases so older decks referencing these still resolve */
@@ -97,11 +96,10 @@ tr:last-child td { border-bottom: none; }
 blockquote {
   border-left: 3px solid var(--accent);
   padding: 4px 0 4px 24px; margin: 30px 0;
-  font-family: var(--serif); font-style: italic;
-  font-size: 23px; font-weight: 400; line-height: 1.35; color: var(--ink); letter-spacing: 0;
+  font-size: 22px; font-weight: 500; line-height: 1.4; color: var(--ink); letter-spacing: -0.01em;
 }
 blockquote p { margin: 0; }
-blockquote em { font-size: 1em; font-family: inherit; }
+blockquote em { font-size: 1em; }
 
 hr { border: none; border-top: 1px solid var(--line); margin: 52px 0; }
 

@@ -4,6 +4,17 @@ All notable changes to the method will be documented here. Versions follow [SemV
 
 ---
 
+## [2.2.1] — 2026-06-16
+
+### Added
+- **Project logo** on the landing page (sidebar + mobile bar) and at the top of the README, with a light variant for dark mode. Cleaned to a trimmed, transparent asset; `npm run build:docs` copies it into `dist/`.
+
+### Changed
+- **Thesis deepened** — METHOD.md and the README now name the principle directly: as models write more of the code, the code commoditises, but the judgment you capture does not. The Method's artifacts (constitution, ADRs, glossary, specs) are that judgment, in files you own and independent of any one model — swap the model, keep the expertise. You can offload the task; you can't offload the learning.
+- **Typography** — dropped Instrument Serif; the decks and landing page are now Inter + JetBrains Mono only.
+
+---
+
 ## [2.2.0] — 2026-06-15
 
 ### Added

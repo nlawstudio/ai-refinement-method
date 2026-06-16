@@ -12,13 +12,13 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2316233D'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='16' fill='%23E08D6D' text-anchor='middle'%3E%7B%7D%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* ————————————————————————————————————————————————
    The Method — landing page
    Quiet, docs-shaped. Navy ink on warm paper; one dark
    "machine" moment (the triage terminal); hairlines do
-   the layout work. Serif appears only in the wordmark.
+   the layout work. Two faces only: Inter and JetBrains Mono.
    ———————————————————————————————————————————————— */
 :root {
   --bg: #FAF9F6;
@@ -35,7 +35,6 @@
   --dk-faint: #5D6C8C;
   --dk-accent: #E08D6D;
   --dk-ok: #8DB892;
-  --serif: 'Instrument Serif', Georgia, serif;
   --sans: 'Inter', -apple-system, system-ui, sans-serif;
   --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
 }
@@ -60,7 +59,8 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px soli
   padding: 36px 32px;
   display: flex; flex-direction: column;
 }
-.wordmark { font-family: var(--serif); font-size: 21px; display: block; margin-bottom: 36px; }
+.wordmark { display: block; margin-bottom: 36px; }
+.wordmark img { height: 42px; width: auto; display: block; }
 .wordmark em { color: var(--accent); font-style: italic; }
 .side nav { display: flex; flex-direction: column; gap: 2px; }
 .side nav a {
@@ -259,6 +259,7 @@ footer a:hover { color: var(--accent); }
     border-bottom: 1px solid var(--line);
   }
   .topbar .wordmark { margin: 0; font-size: 19px; }
+  .topbar .wordmark img { height: 26px; }
   .topbar .gh { font-family: var(--mono); font-size: 12px; color: var(--muted); }
   .topbar .gh::after { content: " ↗"; color: var(--faint); }
   section { margin-bottom: 72px; }
@@ -272,7 +273,7 @@ footer a:hover { color: var(--accent); }
 <body>
 
 <aside class="side">
-  <a class="wordmark" href="#overview">The Method<em>.</em></a>
+  <a class="wordmark" href="#overview"><img src="./logo.png" alt="The Method"></a>
   <nav aria-label="Sections">
     <a href="#overview" class="active">Overview</a>
     <a href="#how-it-works">How it works</a>
@@ -287,13 +288,13 @@ footer a:hover { color: var(--accent); }
       <a href="https://github.com/nlawstudio/ai-refinement-method">GitHub</a>
       <a href="./quickstart.html">Quickstart</a>
       <a href="./method.html">METHOD.md</a>
-      <a href="https://github.com/nlawstudio/ai-refinement-method/releases">v2.2.0</a>
+      <a href="https://github.com/nlawstudio/ai-refinement-method/releases">v2.2.1</a>
     </nav>
   </div>
 </aside>
 
 <div class="topbar">
-  <a class="wordmark" href="#overview">The Method<em>.</em></a>
+  <a class="wordmark" href="#overview"><img src="./logo.png" alt="The Method"></a>
   <a class="gh" href="https://github.com/nlawstudio/ai-refinement-method">github</a>
 </div>
 
@@ -500,7 +501,7 @@ https://github.com/nlawstudio/ai-refinement-method/blob/main/AGENT_INSTALL.md</p
 <footer>
   <div class="seg">
     <span>MIT</span>
-    <span>v2.2.0</span>
+    <span>v2.2.1</span>
     <span>built with the Method</span>
   </div>
   <div class="seg">
