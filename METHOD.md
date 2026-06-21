@@ -1298,6 +1298,7 @@ Versions follow SemVer in `VERSION`. Major releases when the role panel or core 
 | **2.1.0** | Tiered Definition of Ready — eight core criteria plus a conditional layer keyed on story facets (non-functional budgets, migration/rollback, observability, edge enumeration, typed-and-verified dependencies, AC provenance). Red-test review and epic-level exit checks (dependency DAG, hotspot closure, manifest completeness). Threat-model evidence is the engineer's recorded risk decisions. Test command parameterized via `method.config.yaml`. Landing page added; README consolidated to a standalone front door (INSTALL.md retired). |
 | **2.2.0** | Stewardship layer — `/posture` (standing quality snapshot + trend) and `/audit` (deep adversarial drift sweep), the across-time complement to the per-epic Definition of Ready. Thesis pillar on staying the author of non-local, non-failing quality (UX, testing, compliance, NFRs). |
 | **2.2.1** | Thesis deepened — your captured judgment is an owned, model-independent asset, not commoditised along with the code. Project logo wired into the landing page and README; typography reduced to Inter + JetBrains Mono (Instrument Serif dropped). |
+| **2.2.2** | Landing page reworked to lead with the outcome — small, senior teams doing big-org delivery at pace, the guided experience, durable documented assets, and team alignment via the shared gbrain memory. |
 | 2.1.0+ | TBD as the Method is used and tuned |
 
 `CHANGELOG.md` tracks what changed at each version. Git tags mark releases; GitHub releases include release notes.

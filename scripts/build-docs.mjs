@@ -114,7 +114,7 @@ if (location.hash) document.getElementById(location.hash.slice(1))?.scrollIntoVi
 // The landing page is hand-authored HTML — copy it in so dist/ is a complete
 // deployable site root (index + the styled decks it links to).
 writeFileSync(join(root, 'dist', 'index.html'), readFileSync(join(root, 'site', 'index.html')));
-for (const asset of ['logo.png', 'logo-light.png']) {
+for (const asset of ['logo.png', 'logo-light.png', 'nicky-headshot.jpg']) {
   writeFileSync(join(root, 'dist', asset), readFileSync(join(root, 'site', asset)));
 }
 console.log('copied dist/index.html  (landing page) + logo assets');

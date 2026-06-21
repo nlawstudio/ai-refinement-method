@@ -4,6 +4,13 @@ All notable changes to the method will be documented here. Versions follow [SemV
 
 ---
 
+## [2.2.2] — 2026-06-21
+
+### Changed
+- **Landing page reworked to lead with the outcome.** Repositioned around what the Method delivers rather than how it works: a small, senior team doing what used to take a whole delivery org — domain modelling, threat modelling, refinement — themselves and at pace, with the rigour intact and the process overhead gone. New beats for the founder, the guided-conversation experience, the questions it surfaces, the durable documented assets, and team alignment through the shared gbrain memory. The hero terminal now demonstrates the interrogation rather than routing intents; added a founder headshot.
+
+---
+
 ## [2.2.1] — 2026-06-16
 
 ### Added
